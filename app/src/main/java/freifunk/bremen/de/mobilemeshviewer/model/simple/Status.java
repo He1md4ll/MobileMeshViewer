@@ -14,4 +14,9 @@ public class Status {
     @SerializedName("online")
     @Expose
     public Boolean online;
+
+    @Override
+    public String toString() {
+        return online ? "Online" : "Offline";
+    }
 }

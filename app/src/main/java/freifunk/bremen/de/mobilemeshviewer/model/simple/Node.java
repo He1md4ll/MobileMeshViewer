@@ -17,4 +17,9 @@ public class Node {
     @SerializedName("status")
     @Expose
     public Status status;
+
+    @Override
+    public String toString() {
+        return name + " [" + status + "]";
+    }
 }

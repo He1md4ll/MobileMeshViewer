@@ -14,7 +14,7 @@ import retrofit.RxJavaCallAdapterFactory;
 @Singleton
 public class ConnectionManager {
 
-    public static final String URL_ALL_ACHIEVEMENTS = "http://chaos-krauts.de/Achievement/";
+    public static final String URL = "http://downloads.bremen.freifunk.net/";
     private Optional<Retrofit> retrofitOptional = Optional.absent();
 
     @Inject
@@ -23,7 +23,7 @@ public class ConnectionManager {
     public Retrofit getRetrofitConnection() {
         if (!retrofitOptional.isPresent()) {
             retrofitOptional = Optional.of(new Retrofit.Builder()
-                    .baseUrl(URL_ALL_ACHIEVEMENTS)
+                    .baseUrl(URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build());
