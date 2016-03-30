@@ -56,7 +56,7 @@ public class NodeCheckerService {
         executor.shutdown();
     }
 
-    /* package */Optional<NodeList> fetchList() {
+    public Optional<NodeList> fetchList() {
         final FreifunkRestConsumer freifunkService;
         Optional<NodeList> nodeListOpt = Optional.absent();
         try {

@@ -18,7 +18,7 @@ import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
 @ContentView(R.layout.activity_mesh_viewer)
-public class MeshViewer extends RoboActivity
+public class MeshViewerActivity extends RoboActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @InjectView(R.id.toolbar)
@@ -41,7 +41,7 @@ public class MeshViewer extends RoboActivity
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                return MeshViewer.this.onActionBarItemSelected(item);
+                return MeshViewerActivity.this.onActionBarItemSelected(item);
             }
         });
 
@@ -117,7 +117,7 @@ public class MeshViewer extends RoboActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new SimpleNodeListFragment();
+                    return new NodeListFragment();
                 case 1:
                     return new GatewayListFragment();
             }

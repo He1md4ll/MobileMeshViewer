@@ -7,13 +7,25 @@ public class Status {
 
     @SerializedName("clients")
     @Expose
-    public Long clients;
+    private Long clients;
     @SerializedName("lastcontact")
     @Expose
-    public String lastcontact;
+    private String lastcontact;
     @SerializedName("online")
     @Expose
-    public Boolean online;
+    private Boolean online;
+
+    public Long getClients() {
+        return clients;
+    }
+
+    public String getLastcontact() {
+        return lastcontact;
+    }
+
+    public Boolean getOnline() {
+        return online;
+    }
 
     @Override
     public String toString() {

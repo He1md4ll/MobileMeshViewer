@@ -1,15 +1,15 @@
 package freifunk.bremen.de.mobilemeshviewer;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
-import java.io.IOException;
+import java.util.List;
 
-import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
+import freifunk.bremen.de.mobilemeshviewer.model.simple.Node;
 import freifunk.bremen.de.mobilemeshviewer.model.simple.NodeList;
 import freifunk.bremen.de.mobilemeshviewer.service.NodeCheckerService;
-import retrofit.Call;
-import retrofit.Response;
 
 public class NodeController {
 
@@ -27,16 +27,12 @@ public class NodeController {
         nodeCheckerService.stopMonitoring();
     }
 
-    public NodeList getSimpleNodeList() {
-        try {
-            final FreifunkRestConsumer freifunkService = retrofitServiceManager.getFreifunkService();
-            final Call<NodeList> nodeList = freifunkService.getNodeList();
-            final Response<NodeList> response = nodeList.execute();
-            return response.body();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+    public List<Node> getSimpleNodeList() {
+        final Optional<NodeList> nodeListOpt = nodeCheckerService.fetchList();
+        if (nodeListOpt.isPresent()) {
+            return nodeListOpt.get().getNodes();
+        } else {
+            return Lists.newArrayList();
         }
-        return null;
     }
 }

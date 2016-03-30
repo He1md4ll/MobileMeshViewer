@@ -17,6 +17,7 @@
             android:clickable="false"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:title="@string/toolbarText" />
 
         <android.support.design.widget.TabLayout

@@ -7,16 +7,32 @@ public class Node {
 
     @SerializedName("name")
     @Expose
-    public String name;
+    private String name;
     @SerializedName("position")
     @Expose
-    public Position position;
+    private Position position;
     @SerializedName("id")
     @Expose
-    public String id;
+    private String id;
     @SerializedName("status")
     @Expose
-    public Status status;
+    private Status status;
+
+    public String getName() {
+        return name;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
 
     @Override
     public String toString() {

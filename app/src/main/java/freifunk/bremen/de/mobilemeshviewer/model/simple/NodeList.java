@@ -10,11 +10,23 @@ public class NodeList {
 
     @SerializedName("nodes")
     @Expose
-    public List<Node> nodes = new ArrayList<Node>();
+    private List<Node> nodes = new ArrayList<Node>();
     @SerializedName("version")
     @Expose
-    public String version;
+    private String version;
     @SerializedName("updated_at")
     @Expose
-    public String updatedAt;
+    private String updatedAt;
+
+    public List<Node> getNodes() {
+        return nodes;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
 }
