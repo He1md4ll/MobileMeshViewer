@@ -7,8 +7,16 @@ public class Position {
 
     @SerializedName("long")
     @Expose
-    public Double _long;
+    private Double _long;
     @SerializedName("lat")
     @Expose
-    public Double lat;
+    private Double lat;
+
+    public Double getLong() {
+        return _long;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
 }
