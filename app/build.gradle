@@ -28,8 +28,13 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+
+    testCompile 'org.mockito:mockito-all:1.8.4'
+    testCompile "org.robolectric:robolectric:3.0"
+
+    provided 'org.roboguice:roboblender:3.+'
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:support-v13:+'
+    compile 'com.android.support:support-v13:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
@@ -37,9 +42,5 @@ dependencies {
     compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
     compile 'com.google.guava:guava:18.0'
     compile 'org.roboguice:roboguice:3.+'
-
-    testCompile 'org.mockito:mockito-all:1.8.4'
-    testCompile "org.robolectric:robolectric:3.0"
-
-    provided 'org.roboguice:roboblender:3.+'
+    compile 'com.android.support:support-v4:23.0.1'
 }

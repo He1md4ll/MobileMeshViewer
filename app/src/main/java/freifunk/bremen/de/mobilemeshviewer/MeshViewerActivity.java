@@ -2,6 +2,7 @@ package freifunk.bremen.de.mobilemeshviewer;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -78,6 +79,8 @@ public class MeshViewerActivity extends RoboActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            final Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
