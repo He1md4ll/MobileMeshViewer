@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
-import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
 import freifunk.bremen.de.mobilemeshviewer.model.simple.Node;
 import freifunk.bremen.de.mobilemeshviewer.model.simple.NodeList;
 import freifunk.bremen.de.mobilemeshviewer.service.NodeCheckerService;
@@ -15,9 +14,6 @@ public class NodeController {
 
     @Inject
     private NodeCheckerService nodeCheckerService;
-    @Inject
-    private RetrofitServiceManager retrofitServiceManager;
-
 
     public void start() {
         nodeCheckerService.startMonitoring();

@@ -38,7 +38,6 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         return inflater.inflate(android.R.layout.list_content, container, false);
     }
 

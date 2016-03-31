@@ -1,0 +1,72 @@
+package freifunk.bremen.de.mobilemeshviewer;
+
+import android.content.AsyncTaskLoader;
+import android.content.Context;
+
+import com.google.inject.Inject;
+
+import java.util.List;
+
+import freifunk.bremen.de.mobilemeshviewer.model.full.gateway.Gateway;
+
+public class GatewayListLoader extends AsyncTaskLoader<List<Gateway>> {
+
+    @Inject
+    private GatewayController gatewayController;
+    private List<Gateway> gatewayList;
+
+    @Inject
+    public GatewayListLoader(Context context) {
+        super(context);
+    }
+
+    @Override
+    public List<Gateway> loadInBackground() {
+        return gatewayController.getGatewayList();
+    }
+
+    @Override
+    public void deliverResult(List<Gateway> gatewayList) {
+        this.gatewayList = gatewayList;
+
+        if (isStarted()) {
+            super.deliverResult(gatewayList);
+        }
+    }
+
+    @Override
+    protected void onStartLoading() {
+        if (this.gatewayList != null) {
+            deliverResult(this.gatewayList);
+        }
+
+        // TODO: Implement event mechanism to inform about gatewayChange
+        // TODO: Register event observer
+        boolean gatewayChange = false;
+
+        if (takeContentChanged() || this.gatewayList == null || gatewayChange) {
+            forceLoad();
+        }
+    }
+
+    @Override
+    protected void onStopLoading() {
+        cancelLoad();
+    }
+
+    @Override
+    public void onCanceled(List<Gateway> gatewayList) {
+        super.onCanceled(gatewayList);
+    }
+
+    @Override
+    protected void onReset() {
+        super.onReset();
+        onStopLoading();
+
+        if (this.gatewayList != null) {
+            this.gatewayList = null;
+        }
+        //TODO: Unregister event observer
+    }
+}

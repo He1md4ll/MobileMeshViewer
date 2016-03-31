@@ -80,4 +80,5 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="list_no_nodes">No Nodes</string>
+    <string name="list_no_gateways">No Gateways</string>
 </resources>
