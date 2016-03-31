@@ -12,6 +12,12 @@
         android:layout_width="wrap_content" android:layout_height="match_parent"
         android:layout_gravity="start" android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_mesh_viewer"
-        app:menu="@menu/activity_mesh_viewer_drawer" />
+        app:menu="@menu/activity_mesh_viewer_drawer" >
+
+        <ImageView android:layout_width="350dp" android:layout_height="76dp"
+            android:layout_gravity="bottom|right"
+            android:src="@drawable/ffhb_skyline" android:id="@+id/imageView" />
+
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>
