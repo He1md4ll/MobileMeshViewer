@@ -7,6 +7,9 @@ import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
@@ -14,21 +17,33 @@ import retrofit.RxJavaCallAdapterFactory;
 @Singleton
 public class ConnectionManager {
 
-    public static final String URL = "http://downloads.bremen.freifunk.net/";
-    private Optional<Retrofit> retrofitOptional = Optional.absent();
+    public static final String URL_FREIFUNK = "http://downloads.bremen.freifunk.net/";
+    public static final String URL_MORTZU = "http://status.ffhb.mortzu.de/";
+
+    private Map<String, Retrofit> retrofitMap = new HashMap<>();
 
     @Inject
     private ConnectivityManager connectivityManager;
 
-    public Retrofit getRetrofitConnection() {
-        if (!retrofitOptional.isPresent()) {
-            retrofitOptional = Optional.of(new Retrofit.Builder()
-                    .baseUrl(URL)
+    public Retrofit getRetrofitFreifunkConnection() {
+        return getRetrofitConnection(URL_FREIFUNK);
+    }
+
+    public Retrofit getRetrofitMortzuConnection() {
+        return getRetrofitConnection(URL_MORTZU);
+    }
+
+    public Retrofit getRetrofitConnection(String url) {
+        Retrofit retrofit = retrofitMap.get(url);
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                    .build());
+                    .build();
+            retrofitMap.put(url, retrofit);
         }
-        return retrofitOptional.get();
+        return retrofit;
     }
 
     public boolean isNetworkAvailable() {

@@ -7,22 +7,37 @@ import com.google.inject.Singleton;
 import java.io.IOException;
 
 import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
+import freifunk.bremen.de.mobilemeshviewer.api.MortzuRestConsumer;
 
 @Singleton
 public class RetrofitServiceManager {
 
-    private Optional<FreifunkRestConsumer> achievementServiceOptional = Optional.absent();
+    private Optional<FreifunkRestConsumer> freifunkServiceOptional = Optional.absent();
+    private Optional<MortzuRestConsumer> mortzuServiceOptional = Optional.absent();
+
 
     @Inject
     private ConnectionManager connectionManager;
 
     public FreifunkRestConsumer getFreifunkService() throws IOException {
         if (connectionManager.isNetworkAvailable()) {
-            if (!achievementServiceOptional.isPresent()) {
-                achievementServiceOptional = Optional.fromNullable(connectionManager
-                        .getRetrofitConnection().create(FreifunkRestConsumer.class));
+            if (!freifunkServiceOptional.isPresent()) {
+                freifunkServiceOptional = Optional.fromNullable(connectionManager
+                        .getRetrofitFreifunkConnection().create(FreifunkRestConsumer.class));
             }
-            return achievementServiceOptional.get();
+            return freifunkServiceOptional.get();
+        } else {
+            throw new IOException("No network connection present!");
+        }
+    }
+
+    public MortzuRestConsumer getMortzuService() throws IOException {
+        if (connectionManager.isNetworkAvailable()) {
+            if (!mortzuServiceOptional.isPresent()) {
+                mortzuServiceOptional = Optional.fromNullable(connectionManager
+                        .getRetrofitMortzuConnection().create(MortzuRestConsumer.class));
+            }
+            return mortzuServiceOptional.get();
         } else {
             throw new IOException("No network connection present!");
         }

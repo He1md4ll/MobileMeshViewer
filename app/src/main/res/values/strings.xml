@@ -31,9 +31,6 @@
     <string name="pref_title_gate_mon">Gatewayüberwachung</string>
     <string name="pref_description_gate_mon">Prüfung der Gateways auf Konnektivität</string>
 
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
     <string name="pref_title_ringtone">Alarmton</string>
 
     <string name="pref_title_vibrate">Vibrieren</string>
@@ -63,5 +60,7 @@
     <string name="pref_description_autostart">App bei Systemstart ausführen</string>
     <string name="pref_title_autostart">App in Autostart</string>
 
+    <string name="list_no_nodes">No Nodes</string>
+    <string name="list_no_gateways">No Gateways</string>
 
 </resources>

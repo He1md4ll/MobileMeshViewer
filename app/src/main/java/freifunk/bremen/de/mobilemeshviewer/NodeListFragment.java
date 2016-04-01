@@ -2,17 +2,18 @@ package freifunk.bremen.de.mobilemeshviewer;
 
 import android.app.LoaderManager;
 import android.content.Loader;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.view.MenuItemCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.google.inject.Inject;
@@ -21,70 +22,70 @@ import java.util.ArrayList;
 import java.util.List;
 
 import freifunk.bremen.de.mobilemeshviewer.model.simple.Node;
-import roboguice.fragment.provided.RoboFragment;
-import roboguice.inject.InjectView;
+import roboguice.fragment.provided.RoboListFragment;
 
-public class NodeListFragment extends RoboFragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener,
+public class NodeListFragment extends RoboListFragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener,
         LoaderManager.LoaderCallbacks<List<Node>> {
 
-    @Inject
-    private NodeController nodeController;
     @Inject
     private NodeListLoader nodeListLoader;
     @Inject
     private InputMethodManager imm;
-    @InjectView(R.id.list_view)
-    private ListView listView;
 
     private SearchView searchView;
     private ArrayAdapter<Node> adapter;
     private String currentFilter;
-    private Toolbar toolbar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_nodelist, container, false);
+        return inflater.inflate(android.R.layout.list_content, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         super.onActivityCreated(savedInstanceState);
 
+        setHasOptionsMenu(true);
+        setEmptyText(getActivity().getString(R.string.list_no_nodes));
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<Node>());
-        listView.setAdapter(adapter);
-        getLoaderManager().initLoader(0, null, this);
+        setListAdapter(adapter);
+        setListShown(false);
 
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        MenuItem item = setupSearchMenuItem();
-        setupSearchView();
-        item.setActionView(searchView);
+        getLoaderManager().initLoader(0, null, this);
     }
 
-    private void setupSearchView() {
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem item = menu.add("Search");
+        item.setIcon(android.R.drawable.ic_menu_search);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM
+                | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
         searchView = new SearchView(getActivity());
         searchView.setOnQueryTextListener(this);
         searchView.setOnCloseListener(this);
         searchView.setIconifiedByDefault(false);
-        searchView.setFocusable(true);
-    }
-
-    @NonNull
-    private MenuItem setupSearchMenuItem() {
-        MenuItem item = toolbar.getMenu().add("Search");
-        item.setIcon(android.R.drawable.ic_menu_search);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM
-                | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        searchView.setBackgroundColor(Color.WHITE);
+        item.setActionView(searchView);
+        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
+            public boolean onMenuItemActionExpand(MenuItem item) {
                 item.getActionView().requestFocus();
-                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                item.getActionView().requestFocusFromTouch();
+                if (!imm.isAcceptingText()) {
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                if (imm.isAcceptingText()) {
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                }
+                searchView.setQuery("", false);
                 return true;
             }
         });
-        return item;
     }
 
     @Override
@@ -97,6 +98,12 @@ public class NodeListFragment extends RoboFragment implements SearchView.OnQuery
     public void onLoadFinished(Loader<List<Node>> loader, List<Node> data) {
         adapter.clear();
         adapter.addAll(data);
+
+        if (isResumed()) {
+            setListShown(true);
+        } else {
+            setListShownNoAnimation(true);
+        }
     }
 
     @Override

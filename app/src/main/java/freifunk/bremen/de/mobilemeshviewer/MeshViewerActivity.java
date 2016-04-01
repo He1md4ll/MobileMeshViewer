@@ -13,14 +13,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
-import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboAppCompatActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
 @ContentView(R.layout.activity_mesh_viewer)
-public class MeshViewerActivity extends RoboActivity
+public class MeshViewerActivity extends RoboAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @InjectView(R.id.toolbar)
@@ -38,14 +39,7 @@ public class MeshViewerActivity extends RoboActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        toolbar.inflateMenu(R.menu.mesh_viewer);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return MeshViewerActivity.this.onActionBarItemSelected(item);
-            }
-        });
+        setSupportActionBar(toolbar);
 
         sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -72,13 +66,16 @@ public class MeshViewerActivity extends RoboActivity
         }
     }
 
-    public boolean onActionBarItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mesh_viewer, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             final Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
@@ -90,11 +87,10 @@ public class MeshViewerActivity extends RoboActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_myNodes) {
-            // Handle the camera action
+
         } else if (id == R.id.nav_nodeFinder) {
 
         } else if (id == R.id.nav_settings) {
