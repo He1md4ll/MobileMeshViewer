@@ -18,9 +18,14 @@ import android.widget.SearchView;
 
 import com.google.inject.Inject;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import freifunk.bremen.de.mobilemeshviewer.event.NodeChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.model.simple.Node;
 import roboguice.fragment.provided.RoboListFragment;
 
@@ -35,6 +40,18 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
     private SearchView searchView;
     private ArrayAdapter<Node> adapter;
     private String currentFilter;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -129,5 +146,10 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
         currentFilter = !TextUtils.isEmpty(newText) ? newText : null;
         adapter.getFilter().filter(currentFilter);
         return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onGatewayChanged(NodeChangedEvent event) {
+        nodeListLoader.onContentChanged();
     }
 }

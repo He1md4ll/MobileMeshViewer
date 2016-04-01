@@ -40,11 +40,7 @@ public class GatewayListLoader extends AsyncTaskLoader<List<Gateway>> {
             deliverResult(this.gatewayList);
         }
 
-        // TODO: Implement event mechanism to inform about gatewayChange
-        // TODO: Register event observer
-        boolean gatewayChange = false;
-
-        if (takeContentChanged() || this.gatewayList == null || gatewayChange) {
+        if (takeContentChanged() || this.gatewayList == null) {
             forceLoad();
         }
     }
@@ -67,6 +63,5 @@ public class GatewayListLoader extends AsyncTaskLoader<List<Gateway>> {
         if (this.gatewayList != null) {
             this.gatewayList = null;
         }
-        //TODO: Unregister event observer
     }
 }

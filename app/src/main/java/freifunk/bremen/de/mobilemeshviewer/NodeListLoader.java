@@ -43,11 +43,7 @@ public class NodeListLoader extends AsyncTaskLoader<List<Node>> {
             deliverResult(this.nodeList);
         }
 
-        // TODO: Implement event mechanism to inform about nodeChange
-        // TODO: Register event observer
-        boolean nodeChange = false;
-
-        if (takeContentChanged() || this.nodeList == null || nodeChange) {
+        if (takeContentChanged() || this.nodeList == null) {
             forceLoad();
         }
     }
@@ -70,6 +66,5 @@ public class NodeListLoader extends AsyncTaskLoader<List<Node>> {
         if (this.nodeList != null) {
             this.nodeList = null;
         }
-        //TODO: Unregister event observer
     }
 }
