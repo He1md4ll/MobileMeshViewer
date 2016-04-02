@@ -97,6 +97,6 @@ public class VpnServer {
 
     @Override
     public String toString() {
-        return name;
+        return uplink.get(0).getIpv4() == 1 || uplink.get(0).getIpv6() == 1 ? "Online" : "Offline";
     }
 }

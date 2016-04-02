@@ -2,9 +2,8 @@ package freifunk.bremen.de.mobilemeshviewer;
 
 import android.app.LoaderManager;
 import android.content.Loader;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.SearchView;
 
 import com.google.inject.Inject;
 
@@ -73,36 +71,12 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item = menu.add("Search");
-        item.setIcon(android.R.drawable.ic_menu_search);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM
-                | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-        searchView = new SearchView(getActivity());
+        MenuItem searchViewItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchViewItem.getActionView();
+        searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(this);
         searchView.setOnCloseListener(this);
         searchView.setIconifiedByDefault(false);
-        searchView.setBackgroundColor(Color.WHITE);
-        item.setActionView(searchView);
-        MenuItemCompat.setOnActionExpandListener(item, new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                item.getActionView().requestFocus();
-                item.getActionView().requestFocusFromTouch();
-                if (!imm.isAcceptingText()) {
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                if (imm.isAcceptingText()) {
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                }
-                searchView.setQuery("", false);
-                return true;
-            }
-        });
     }
 
     @Override

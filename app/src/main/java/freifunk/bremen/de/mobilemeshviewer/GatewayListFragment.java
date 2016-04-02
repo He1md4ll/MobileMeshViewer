@@ -4,6 +4,8 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -50,12 +52,18 @@ public class GatewayListFragment extends RoboListFragment implements LoaderManag
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setHasOptionsMenu(true);
         setEmptyText(getActivity().getString(R.string.list_no_gateways));
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<Gateway>());
         setListAdapter(adapter);
         setListShown(false);
 
         getLoaderManager().initLoader(1, null, this);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.removeItem(R.id.action_search);
     }
 
     @Override
