@@ -27,13 +27,19 @@
 
     <string name="pref_title_node_mon">Knotenüberwachung</string>
     <string name="pref_description_node_mon">Prüfung der "Eigenen Knoten" auf Konnektivität</string>
+    <string name="pref_default_node_mon">false</string>
 
     <string name="pref_title_gate_mon">Gatewayüberwachung</string>
     <string name="pref_description_gate_mon">Prüfung der Gateways auf Konnektivität</string>
+    <string name="pref_default_gate_mon">false</string>
+
 
     <string name="pref_title_ringtone">Alarmton</string>
+    <string name="pref_default_ringtone"></string>
 
     <string name="pref_title_vibrate">Vibrieren</string>
+    <string name="pref_default_vibrate">false</string>
+
 
     <string name="pref_title_sync_frequency">Aktualisierungsrate</string>
     <string-array name="pref_sync_frequency_titles">
@@ -56,9 +62,11 @@
         <item>2</item>
         <item>1</item>
     </string-array>
+    <string name="pref_default_sync_frequency">5</string>
 
     <string name="pref_description_autostart">App bei Systemstart ausführen</string>
     <string name="pref_title_autostart">App in Autostart</string>
+    <string name="pref_default_autostart">false</string>
 
     <string name="list_no_nodes">No Nodes</string>
     <string name="list_no_gateways">No Gateways</string>

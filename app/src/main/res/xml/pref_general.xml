@@ -1,44 +1,40 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreference
-        android:defaultValue="true"
-        android:key="pref_title_autostart"
+        android:defaultValue="@string/pref_default_autostart"
+        android:key="pref_autostart"
         android:summary="@string/pref_description_autostart"
         android:title="@string/pref_title_autostart"/>
 
     <SwitchPreference
-        android:defaultValue="true"
-        android:key="pref_title_node_mon"
+        android:defaultValue="@string/pref_default_node_mon"
+        android:key="pref_node_mon"
         android:summary="@string/pref_description_node_mon"
         android:title="@string/pref_title_node_mon"/>
 
     <SwitchPreference
-        android:defaultValue="true"
-        android:key="pref_title_gate_mon"
+        android:defaultValue="@string/pref_default_gate_mon"
+        android:key="pref_gate_mon"
         android:summary="@string/pref_description_gate_mon"
         android:title="@string/pref_title_gate_mon"/>
 
     <ListPreference
-        android:defaultValue="180"
+        android:defaultValue="@string/pref_default_sync_frequency"
         android:entries="@array/pref_sync_frequency_titles"
         android:entryValues="@array/pref_sync_frequency_values"
-        android:key="sync_frequency"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null"
+        android:key="pref_sync_frequency"
         android:title="@string/pref_title_sync_frequency" />
 
     <RingtonePreference
-        android:defaultValue="content://settings/system/notification_sound"
-        android:dependency="pref_title_node_mon"
-        android:key="pref_title_ringtone"
+        android:defaultValue="@string/pref_default_ringtone"
+        android:key="pref_ringtone"
         android:ringtoneType="notification"
-        android:title="@string/pref_title_ringtone" />
+        android:title="@string/pref_title_ringtone"
+        android:summary=""/>
 
-    <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
     <SwitchPreference
-        android:defaultValue="true"
-        android:key="pref_title_vibrate"
-        android:dependency="pref_title_node_mon"
+        android:defaultValue="@string/pref_default_vibrate"
+        android:key="pref_vibrate"
         android:title="@string/pref_title_vibrate" />
 
 </PreferenceScreen>
