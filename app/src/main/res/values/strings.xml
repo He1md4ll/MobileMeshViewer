@@ -36,6 +36,7 @@
 
     <string name="pref_title_ringtone">Alarmton</string>
     <string name="pref_default_ringtone"></string>
+    <string name="pref_ringtone_silent">Stumm</string>
 
     <string name="pref_title_vibrate">Vibrieren</string>
     <string name="pref_default_vibrate">false</string>
