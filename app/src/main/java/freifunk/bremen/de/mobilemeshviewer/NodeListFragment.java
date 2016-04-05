@@ -1,6 +1,7 @@
 package freifunk.bremen.de.mobilemeshviewer;
 
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.inject.Inject;
 
@@ -35,7 +37,6 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
     @Inject
     private InputMethodManager imm;
 
-    private SearchView searchView;
     private ArrayAdapter<Node> adapter;
     private String currentFilter;
 
@@ -73,11 +74,19 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuItem searchViewItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchViewItem.getActionView();
-        searchView.setIconifiedByDefault(false);
+        searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(this);
         searchView.setOnCloseListener(this);
-        searchView.setIconifiedByDefault(false);
     }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Node node = (Node) l.getItemAtPosition(position);
+        final Intent intent = new Intent(this.getActivity(), NodeActivity.class);
+        intent.putExtra(NodeActivity.BUNDLE_NODE, node);
+        startActivity(intent);
+    }
+
 
     @Override
     public Loader<List<Node>> onCreateLoader(int id, Bundle args) {
@@ -104,9 +113,6 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
 
     @Override
     public boolean onClose() {
-        if (!TextUtils.isEmpty(searchView.getQuery())) {
-            searchView.setQuery(null, true);
-        }
         return true;
     }
 

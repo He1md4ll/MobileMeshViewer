@@ -71,5 +71,6 @@
 
     <string name="list_no_nodes">No Nodes</string>
     <string name="list_no_gateways">No Gateways</string>
+    <string name="title_activity_node">NodeActivity</string>
 
 </resources>
