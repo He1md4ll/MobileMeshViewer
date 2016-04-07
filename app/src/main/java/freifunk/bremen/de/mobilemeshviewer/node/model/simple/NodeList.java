@@ -1,4 +1,4 @@
-package freifunk.bremen.de.mobilemeshviewer.model.simple;
+package freifunk.bremen.de.mobilemeshviewer.node.model.simple;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

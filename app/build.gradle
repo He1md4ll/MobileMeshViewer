@@ -42,5 +42,4 @@ dependencies {
     compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
     compile 'com.google.guava:guava:18.0'
     compile 'org.roboguice:roboguice:3.+'
-    compile 'com.android.support:support-v4:23.0.1'
 }

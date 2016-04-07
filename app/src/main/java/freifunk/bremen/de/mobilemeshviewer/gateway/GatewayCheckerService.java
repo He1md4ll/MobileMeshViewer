@@ -1,4 +1,4 @@
-package freifunk.bremen.de.mobilemeshviewer.service;
+package freifunk.bremen.de.mobilemeshviewer.gateway;
 
 import android.util.Log;
 
@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit;
 
 import freifunk.bremen.de.mobilemeshviewer.api.MortzuRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
-import freifunk.bremen.de.mobilemeshviewer.event.GatewayChangedEvent;
-import freifunk.bremen.de.mobilemeshviewer.model.full.gateway.Gateway;
+import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
+import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import retrofit.Call;
 import retrofit.Response;
 
@@ -37,7 +37,7 @@ public class GatewayCheckerService {
             final List<Gateway> gatewayList = loadList();
             if (checkForChange(gatewayList)) {
                 currentGatewayListOptional = Optional.of(gatewayList);
-                EventBus.getDefault().post(new GatewayChangedEvent());
+                EventBus.getDefault().post(new GatewayListUpdatedEvent());
             }
 
         }

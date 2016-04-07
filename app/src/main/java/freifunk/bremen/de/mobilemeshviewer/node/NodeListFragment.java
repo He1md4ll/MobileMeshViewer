@@ -1,9 +1,10 @@
-package freifunk.bremen.de.mobilemeshviewer;
+package freifunk.bremen.de.mobilemeshviewer.node;
 
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -25,8 +26,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import freifunk.bremen.de.mobilemeshviewer.event.NodeChangedEvent;
-import freifunk.bremen.de.mobilemeshviewer.model.simple.Node;
+import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
+import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import roboguice.fragment.provided.RoboListFragment;
 
 public class NodeListFragment extends RoboListFragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener,
@@ -34,6 +36,8 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
 
     @Inject
     private NodeListLoader nodeListLoader;
+    @Inject
+    private NodeController nodeController;
     @Inject
     private InputMethodManager imm;
 
@@ -44,6 +48,7 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        nodeController.startNodeAlarm();
     }
 
     @Override
@@ -129,7 +134,12 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void onGatewayChanged(NodeChangedEvent event) {
+    public void onNodeListUpdated(NodeListUpdatedEvent event) {
         nodeListLoader.onContentChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNodeListUpdatedMain(NodeListUpdatedEvent event) {
+        Snackbar.make(getListView().getRootView(), "List was reloaded in background", Snackbar.LENGTH_SHORT);
     }
 }

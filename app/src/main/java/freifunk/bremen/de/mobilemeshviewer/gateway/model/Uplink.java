@@ -1,10 +1,10 @@
 
-package freifunk.bremen.de.mobilemeshviewer.model.full.gateway;
+package freifunk.bremen.de.mobilemeshviewer.gateway.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Ntp {
+public class Uplink {
 
     @SerializedName("ipv4")
     @Expose

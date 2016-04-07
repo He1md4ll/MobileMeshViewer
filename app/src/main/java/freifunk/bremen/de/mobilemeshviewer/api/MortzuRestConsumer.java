@@ -2,7 +2,7 @@ package freifunk.bremen.de.mobilemeshviewer.api;
 
 import java.util.List;
 
-import freifunk.bremen.de.mobilemeshviewer.model.full.gateway.Gateway;
+import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import retrofit.Call;
 import retrofit.http.GET;
 

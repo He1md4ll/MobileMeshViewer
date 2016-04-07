@@ -1,11 +1,10 @@
-package freifunk.bremen.de.mobilemeshviewer;
+package freifunk.bremen.de.mobilemeshviewer.gateway;
 
 import com.google.inject.Inject;
 
 import java.util.List;
 
-import freifunk.bremen.de.mobilemeshviewer.model.full.gateway.Gateway;
-import freifunk.bremen.de.mobilemeshviewer.service.GatewayCheckerService;
+import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 
 public class GatewayController {
 

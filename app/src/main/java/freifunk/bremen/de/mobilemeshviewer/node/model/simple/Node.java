@@ -1,8 +1,9 @@
-package freifunk.bremen.de.mobilemeshviewer.model.simple;
+package freifunk.bremen.de.mobilemeshviewer.node.model.simple;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.common.base.Objects;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -93,5 +94,18 @@ public class Node implements Parcelable {
         position = in.readParcelable(Position.class.getClassLoader());
         id = in.readString();
         status = in.readParcelable(Status.class.getClassLoader());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Node)) return false;
+        Node node = (Node) o;
+        return Objects.equal(id, node.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

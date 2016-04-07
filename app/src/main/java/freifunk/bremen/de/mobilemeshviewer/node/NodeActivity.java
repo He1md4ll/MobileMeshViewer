@@ -1,4 +1,4 @@
-package freifunk.bremen.de.mobilemeshviewer;
+package freifunk.bremen.de.mobilemeshviewer.node;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,7 +7,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import freifunk.bremen.de.mobilemeshviewer.model.simple.Node;
+import com.google.inject.Inject;
+
+import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import roboguice.activity.RoboAppCompatActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectExtra;
@@ -20,18 +23,17 @@ public class NodeActivity extends RoboAppCompatActivity {
 
     @InjectExtra(value = BUNDLE_NODE)
     private Node node;
-
     @InjectView(R.id.node_name)
     private TextView nodeName;
-
     @InjectView(R.id.node_id)
     private TextView nodeId;
-
     @InjectView(R.id.toolbar)
     private Toolbar toolbar;
-
     @InjectView(R.id.fab)
     private FloatingActionButton fab;
+    @Inject
+    private NodeController nodeController;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +47,9 @@ public class NodeActivity extends RoboAppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Not implemented yet", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                nodeController.addNodeToObservedNodeList(node);
+                Snackbar.make(view, "Added Node to observed Nodes", Snackbar.LENGTH_LONG)
+                        .show();
             }
         });
     }

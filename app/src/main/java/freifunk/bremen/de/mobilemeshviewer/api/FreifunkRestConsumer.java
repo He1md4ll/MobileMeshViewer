@@ -1,6 +1,6 @@
 package freifunk.bremen.de.mobilemeshviewer.api;
 
-import freifunk.bremen.de.mobilemeshviewer.model.simple.NodeList;
+import freifunk.bremen.de.mobilemeshviewer.node.model.simple.NodeList;
 import retrofit.Call;
 import retrofit.http.GET;
 

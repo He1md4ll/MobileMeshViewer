@@ -1,4 +1,4 @@
-package freifunk.bremen.de.mobilemeshviewer;
+package freifunk.bremen.de.mobilemeshviewer.node;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
-import freifunk.bremen.de.mobilemeshviewer.model.simple.Node;
+import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 
 public class NodeListLoader extends AsyncTaskLoader<List<Node>> {
 

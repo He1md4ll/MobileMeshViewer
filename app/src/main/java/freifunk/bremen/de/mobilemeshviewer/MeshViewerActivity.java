@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -16,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import freifunk.bremen.de.mobilemeshviewer.gateway.GatewayListFragment;
+import freifunk.bremen.de.mobilemeshviewer.node.NodeListFragment;
 import roboguice.activity.RoboAppCompatActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;

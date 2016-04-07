@@ -1,4 +1,4 @@
-package freifunk.bremen.de.mobilemeshviewer.model.simple;
+package freifunk.bremen.de.mobilemeshviewer.node.model.simple;
 
 import android.os.Parcel;
 import android.os.Parcelable;

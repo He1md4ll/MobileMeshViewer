@@ -1,4 +1,4 @@
-package freifunk.bremen.de.mobilemeshviewer;
+package freifunk.bremen.de.mobilemeshviewer.gateway;
 
 import android.app.LoaderManager;
 import android.content.Loader;
@@ -19,8 +19,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import freifunk.bremen.de.mobilemeshviewer.event.GatewayChangedEvent;
-import freifunk.bremen.de.mobilemeshviewer.model.full.gateway.Gateway;
+import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
+import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import roboguice.fragment.provided.RoboListFragment;
 
 
@@ -90,7 +91,7 @@ public class GatewayListFragment extends RoboListFragment implements LoaderManag
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void onGatewayChanged(GatewayChangedEvent event) {
+    public void onGatewayListUpdated(GatewayListUpdatedEvent event) {
         gatewayListLoader.onContentChanged();
     }
 }
