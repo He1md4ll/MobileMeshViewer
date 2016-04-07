@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -24,6 +25,7 @@ import freifunk.bremen.de.mobilemeshviewer.node.model.simple.NodeList;
 import retrofit.Call;
 import retrofit.Response;
 
+@Singleton
 public class NodeChecker {
 
     @Inject
