@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import freifunk.bremen.de.mobilemeshviewer.R;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
+import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import roboguice.fragment.provided.RoboListFragment;
 
@@ -134,12 +136,18 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void onNodeListUpdated(NodeListUpdatedEvent event) {
+    public void onNodeListUpdated(NodeListUpdatedEvent ignored) {
         nodeListLoader.onContentChanged();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onNodeListUpdatedMain(NodeListUpdatedEvent event) {
-        Snackbar.make(getListView().getRootView(), "List was reloaded in background", Snackbar.LENGTH_SHORT);
+    public void onNodeListUpdatedMain(NodeListUpdatedEvent ignored) {
+        Snackbar.make(getListView(), "List was reloaded in background", Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onNodeStatusChanged(NodeStatusChangedEvent event) {
+        Log.d(this.getClass().getSimpleName(), "Updating observed node after status change");
+        nodeController.addNodeToObservedNodeList(event.getNode());
     }
 }

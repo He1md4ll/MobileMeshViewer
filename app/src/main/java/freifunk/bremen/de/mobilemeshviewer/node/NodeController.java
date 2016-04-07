@@ -42,9 +42,8 @@ public class NodeController {
 
     public void addNodeToObservedNodeList(Node node) {
         final List<Node> observedNodeList = getObservedNodeList();
-        if (observedNodeList.indexOf(node) == -1) {
-            observedNodeList.add(node);
-        }
+        observedNodeList.remove(node);
+        observedNodeList.add(node);
         final String jsonString = new Gson().toJson(observedNodeList, new TypeToken<List<Node>>() {
         }.getType());
         sharedPreferences.edit().putString(SettingsActivity.NODE_LIST_KEY, jsonString).apply();

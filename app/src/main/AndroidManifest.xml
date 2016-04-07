@@ -45,6 +45,11 @@
             android:enabled="true"
             android:exported="false" />
 
+        <service
+            android:name=".NotificationService"
+            android:enabled="true"
+            android:exported="false" />
+
         <receiver
             android:name=".node.NodeAlarmReceiver"
             android:enabled="true"

@@ -12,7 +12,7 @@ import roboguice.service.RoboService;
 public class NodeCheckerService extends RoboService {
 
     @Inject
-    private NodeChecker nodeCheckerService;
+    private NodeChecker nodeChecker;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -26,7 +26,7 @@ public class NodeCheckerService extends RoboService {
 
             @Override
             protected Void doInBackground(Void... ignored) {
-                nodeCheckerService.reloadList();
+                nodeChecker.reloadList();
                 return null;
             }
 
@@ -36,5 +36,11 @@ public class NodeCheckerService extends RoboService {
             }
         }.execute();
         return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(this.getClass().getSimpleName(), "Stopping service");
+        super.onDestroy();
     }
 }

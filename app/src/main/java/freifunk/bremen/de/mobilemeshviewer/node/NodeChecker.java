@@ -18,7 +18,6 @@ import freifunk.bremen.de.mobilemeshviewer.SettingsActivity;
 import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
-import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChange;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.NodeList;
@@ -43,46 +42,32 @@ public class NodeChecker {
 
     public void reloadList() {
         final Optional<NodeList> newNodeListOptional = loadList();
-        final Optional<NodeList> oldNodeListOptional = currentNodeListOptional.or(newNodeListOptional);
-        currentNodeListOptional = newNodeListOptional;
-        checkForChange(oldNodeListOptional);
+        checkForChange(newNodeListOptional);
         EventBus.getDefault().post(new NodeListUpdatedEvent());
         Log.i(this.getClass().getSimpleName(), "Node list reloaded");
     }
 
-    private void checkForChange(Optional<NodeList> oldNodeListOptional) {
-        final List<Node> observedNodeList = getOberservedNodeList();
-        final List<Node> currentNodeList = Lists.newArrayList(currentNodeListOptional.get().getNodes());
-        final List<Node> oldNodeList = Lists.newArrayList(oldNodeListOptional.get().getNodes());
+    private void checkForChange(Optional<NodeList> newNodeListOptional) {
+        final List<Node> observedNodeList = getObservedNodeList();
+        final List<Node> newNodeList = Lists.newArrayList(newNodeListOptional.get().getNodes());
 
-        currentNodeList.retainAll(observedNodeList);
-        oldNodeList.retainAll(observedNodeList);
+        newNodeList.retainAll(observedNodeList);
 
+        Log.d(this.getClass().getSimpleName(), "Determining node status of observed nodes");
         for (Node observedNode : observedNodeList) {
-            Log.d(this.getClass().getSimpleName(), "Determining node status of observed nodes");
-            final int currentNodeIndex = currentNodeList.indexOf(observedNode);
-            final Node currentNode = currentNodeList.get(currentNodeIndex);
-            final int oldNodeIndex = oldNodeList.indexOf(observedNode);
-            final Node oldNode = oldNodeList.get(oldNodeIndex);
-            determineStatus(currentNode, oldNode);
+            final int newNodeIndex = newNodeList.indexOf(observedNode);
+            final Node newNode = newNodeList.get(newNodeIndex);
+            determineStatus(observedNode, newNode);
         }
     }
 
-    private void determineStatus(Node currentNode, Node oldNode) {
-        if (currentNode == null && oldNode != null) {
-            EventBus.getDefault().post(new NodeStatusChangedEvent(NodeStatusChange.DISAPPEARED, currentNode));
-        } else if (currentNode != null && oldNode == null) {
-            EventBus.getDefault().post(new NodeStatusChangedEvent(NodeStatusChange.APPEARED, currentNode));
-        } else if (currentNode != null && currentNode.getStatus().getOnline() != oldNode.getStatus().getOnline()) {
-            if (currentNode.getStatus().getOnline()) {
-                EventBus.getDefault().post(new NodeStatusChangedEvent(NodeStatusChange.WENT_ONLINE, currentNode));
-            } else {
-                EventBus.getDefault().post(new NodeStatusChangedEvent(NodeStatusChange.WENT_OFFLINE, currentNode));
-            }
+    private void determineStatus(Node observedNode, Node newNode) {
+        if (newNode != null && newNode.getStatus().getOnline() != observedNode.getStatus().getOnline()) {
+            EventBus.getDefault().post(new NodeStatusChangedEvent(newNode));
         }
     }
 
-    private List<Node> getOberservedNodeList() {
+    private List<Node> getObservedNodeList() {
         Log.d(this.getClass().getSimpleName(), "Retrieving observed node list");
         final String jsonNodeList = sharedPreferences.getString(SettingsActivity.NODE_LIST_KEY, "");
         return Optional.fromNullable(new Gson().<List<Node>>fromJson(jsonNodeList, new TypeToken<List<Node>>() {
