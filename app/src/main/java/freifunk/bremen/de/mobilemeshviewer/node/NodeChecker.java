@@ -35,11 +35,7 @@ public class NodeChecker {
     private Optional<NodeList> currentNodeListOptional = Optional.absent();
 
     public Optional<NodeList> fetchList() {
-        if (currentNodeListOptional.isPresent()) {
-            return currentNodeListOptional;
-        } else {
-            return loadList();
-        }
+        return currentNodeListOptional;
     }
 
     public void reloadList() {
@@ -65,7 +61,10 @@ public class NodeChecker {
 
     private void determineStatus(Node observedNode, Node newNode) {
         if (newNode != null && newNode.getStatus().getOnline() != observedNode.getStatus().getOnline()) {
-            EventBus.getDefault().post(new NodeStatusChangedEvent(newNode));
+            NodeStatusChangedEvent stickyEvent = EventBus.getDefault().getStickyEvent(NodeStatusChangedEvent.class);
+            if (stickyEvent != null && !newNode.equals(stickyEvent.getNode())) {
+                EventBus.getDefault().postSticky(new NodeStatusChangedEvent(newNode));
+            }
         }
     }
 

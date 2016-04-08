@@ -145,9 +145,10 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
         Snackbar.make(getListView(), "List was reloaded in background", Snackbar.LENGTH_SHORT).show();
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    @Subscribe(sticky = true, threadMode = ThreadMode.BACKGROUND)
     public void onNodeStatusChanged(NodeStatusChangedEvent event) {
         Log.d(this.getClass().getSimpleName(), "Updating observed node after status change");
         nodeController.addNodeToObservedNodeList(event.getNode());
+        EventBus.getDefault().removeStickyEvent(event);
     }
 }
