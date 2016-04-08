@@ -1,12 +1,9 @@
 package freifunk.bremen.de.mobilemeshviewer.node;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -15,7 +12,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 import java.util.List;
 
-import freifunk.bremen.de.mobilemeshviewer.SettingsActivity;
+import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
@@ -29,7 +26,7 @@ import retrofit.Response;
 public class NodeChecker {
 
     @Inject
-    SharedPreferences sharedPreferences;
+    private PreferenceController preferenceController;
     @Inject
     private RetrofitServiceManager retrofitServiceManager;
     private Optional<NodeList> currentNodeListOptional = Optional.absent();
@@ -46,7 +43,7 @@ public class NodeChecker {
     }
 
     private void checkForChange(Optional<NodeList> newNodeListOptional) {
-        final List<Node> observedNodeList = getObservedNodeList();
+        final List<Node> observedNodeList = preferenceController.getObservedNodeList();
         final List<Node> newNodeList = Lists.newArrayList(newNodeListOptional.get().getNodes());
 
         newNodeList.retainAll(observedNodeList);
@@ -63,16 +60,10 @@ public class NodeChecker {
         if (newNode != null && newNode.getStatus().getOnline() != observedNode.getStatus().getOnline()) {
             NodeStatusChangedEvent stickyEvent = EventBus.getDefault().getStickyEvent(NodeStatusChangedEvent.class);
             if (stickyEvent != null && !newNode.equals(stickyEvent.getNode())) {
-                EventBus.getDefault().postSticky(new NodeStatusChangedEvent(newNode));
+                preferenceController.addNodeToObservedNodeList(newNode);
+                EventBus.getDefault().post(new NodeStatusChangedEvent(newNode));
             }
         }
-    }
-
-    private List<Node> getObservedNodeList() {
-        Log.d(this.getClass().getSimpleName(), "Retrieving observed node list");
-        final String jsonNodeList = sharedPreferences.getString(SettingsActivity.NODE_LIST_KEY, "");
-        return Optional.fromNullable(new Gson().<List<Node>>fromJson(jsonNodeList, new TypeToken<List<Node>>() {
-        }.getType())).or(Lists.<Node>newArrayList());
     }
 
     private Optional<NodeList> loadList() {

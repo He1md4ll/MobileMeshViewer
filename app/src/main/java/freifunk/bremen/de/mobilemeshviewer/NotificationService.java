@@ -44,7 +44,7 @@ public class NotificationService extends RoboService {
         super.onDestroy();
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.BACKGROUND)
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onNodeStatusChanged(NodeStatusChangedEvent event) {
         final Node node = event.getNode();
         NotificationCompat.Builder mBuilder =

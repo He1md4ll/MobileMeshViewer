@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -145,10 +144,9 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
         Snackbar.make(getListView(), "List was reloaded in background", Snackbar.LENGTH_SHORT).show();
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.BACKGROUND)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNodeStatusChanged(NodeStatusChangedEvent event) {
-        Log.d(this.getClass().getSimpleName(), "Updating observed node after status change");
-        nodeController.addNodeToObservedNodeList(event.getNode());
-        EventBus.getDefault().removeStickyEvent(event);
+        final Node node = event.getNode();
+        Snackbar.make(getListView(), "Observed node " + node.getName() + " changed state to " + node.getStatus(), Snackbar.LENGTH_SHORT).show();
     }
 }

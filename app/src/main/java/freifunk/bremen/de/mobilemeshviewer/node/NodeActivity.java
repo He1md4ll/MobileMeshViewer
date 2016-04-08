@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.google.inject.Inject;
 
+import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.R;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import roboguice.activity.RoboAppCompatActivity;
@@ -33,6 +34,8 @@ public class NodeActivity extends RoboAppCompatActivity {
     private FloatingActionButton fab;
     @Inject
     private NodeController nodeController;
+    @Inject
+    private PreferenceController preferenceController;
 
 
     @Override
@@ -47,7 +50,7 @@ public class NodeActivity extends RoboAppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nodeController.addNodeToObservedNodeList(node);
+                preferenceController.addNodeToObservedNodeList(node);
                 Snackbar.make(view, "Added Node to observed Nodes", Snackbar.LENGTH_LONG)
                         .show();
             }
