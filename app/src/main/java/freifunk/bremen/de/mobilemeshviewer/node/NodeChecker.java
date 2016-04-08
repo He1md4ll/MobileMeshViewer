@@ -58,11 +58,8 @@ public class NodeChecker {
 
     private void determineStatus(Node observedNode, Node newNode) {
         if (newNode != null && newNode.getStatus().getOnline() != observedNode.getStatus().getOnline()) {
-            NodeStatusChangedEvent stickyEvent = EventBus.getDefault().getStickyEvent(NodeStatusChangedEvent.class);
-            if (stickyEvent != null && !newNode.equals(stickyEvent.getNode())) {
-                preferenceController.addNodeToObservedNodeList(newNode);
-                EventBus.getDefault().post(new NodeStatusChangedEvent(newNode));
-            }
+            preferenceController.addNodeToObservedNodeList(newNode);
+            EventBus.getDefault().post(new NodeStatusChangedEvent(newNode));
         }
     }
 
