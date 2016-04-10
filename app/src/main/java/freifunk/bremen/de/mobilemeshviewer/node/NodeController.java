@@ -36,14 +36,15 @@ public class NodeController {
     }
 
     public void startNodeAlarm() {
-        PendingIntent pendingAlarmIntent = stopNodeAlarm();
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingAlarmIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, -1, 1000 * 60, getPendingIntent());
     }
 
-    public PendingIntent stopNodeAlarm() {
+    public void stopNodeAlarm() {
+        alarmManager.cancel(getPendingIntent());
+    }
+
+    private PendingIntent getPendingIntent() {
         final Intent alarmIntent = new Intent(context, NodeAlarmReceiver.class);
-        final PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
-        alarmManager.cancel(pendingAlarmIntent);
-        return pendingAlarmIntent;
+        return PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
     }
 }

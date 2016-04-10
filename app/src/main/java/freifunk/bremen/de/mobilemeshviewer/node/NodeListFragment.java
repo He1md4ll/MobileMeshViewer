@@ -134,7 +134,7 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
         return true;
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeListUpdated(NodeListUpdatedEvent ignored) {
         nodeListLoader.onContentChanged();
     }

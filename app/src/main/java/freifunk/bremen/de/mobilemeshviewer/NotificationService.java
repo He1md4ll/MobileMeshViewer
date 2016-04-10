@@ -44,7 +44,7 @@ public class NotificationService extends RoboService {
         super.onDestroy();
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeStatusChanged(NodeStatusChangedEvent event) {
         final Node node = event.getNode();
         NotificationCompat.Builder mBuilder =
@@ -70,7 +70,7 @@ public class NotificationService extends RoboService {
         Log.d(this.getClass().getSimpleName(), "Build notification to inform about node change");
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeListUpdated(NodeListUpdatedEvent ignored) {
         stopSelf();
     }
