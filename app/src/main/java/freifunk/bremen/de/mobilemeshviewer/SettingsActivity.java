@@ -34,8 +34,6 @@ import java.util.Map;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public static final String NODE_LIST_KEY = "pref_nodeList";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
@@ -12,6 +11,7 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
+import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.NodeList;
 
@@ -24,7 +24,7 @@ public class NodeController {
     @Inject
     private Context context;
     @Inject
-    private SharedPreferences sharedPreferences;
+    private PreferenceController preferenceController;
 
     public List<Node> getSimpleNodeList() {
         final Optional<NodeList> nodeListOpt = nodeChecker.fetchList();
@@ -36,7 +36,8 @@ public class NodeController {
     }
 
     public void startNodeAlarm() {
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, -1, 1000 * 60, getPendingIntent());
+        //TODO: Listen for interval changes
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, -1000, preferenceController.getAlarmInterval(), getPendingIntent());
     }
 
     public void stopNodeAlarm() {
@@ -45,6 +46,6 @@ public class NodeController {
 
     private PendingIntent getPendingIntent() {
         final Intent alarmIntent = new Intent(context, NodeAlarmReceiver.class);
-        return PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+        return PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 }
