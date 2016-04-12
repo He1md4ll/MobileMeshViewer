@@ -36,8 +36,10 @@ public class NodeController {
     }
 
     public void startNodeAlarm() {
-        //TODO: Listen for interval changes
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, -1000, preferenceController.getAlarmInterval(), getPendingIntent());
+        final PendingIntent pendingIntent = getPendingIntent();
+        final long interval = preferenceController.getAlarmInterval();
+        context.sendBroadcast(getAlarmIntent());
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, interval, interval, pendingIntent);
     }
 
     public void stopNodeAlarm() {
@@ -45,7 +47,11 @@ public class NodeController {
     }
 
     private PendingIntent getPendingIntent() {
-        final Intent alarmIntent = new Intent(context, NodeAlarmReceiver.class);
+        final Intent alarmIntent = getAlarmIntent();
         return PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+    }
+
+    private Intent getAlarmIntent() {
+        return new Intent(context, NodeAlarmReceiver.class);
     }
 }

@@ -15,9 +15,11 @@ import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 
 public class PreferenceController {
 
+
     public static final String PREF_NODE_LIST_KEY = "pref_nodeList";
+    public static final String PREF_ALARM_INTERVAL = "pref_sync_frequency";
     private static final long MINUTE_MULTIPLIER = 60 * 1000;
-    private static final String PREF_ALARM_INTERVAL = "pref_sync_frequency";
+    private static final String DEFAULT_ALARM_INTERVAL = "5";
     @Inject
     private SharedPreferences sharedPreferences;
 
@@ -39,7 +41,7 @@ public class PreferenceController {
     }
 
     public long getAlarmInterval() {
-        final String alarmInterval = sharedPreferences.getString(PREF_ALARM_INTERVAL, null);
+        final String alarmInterval = sharedPreferences.getString(PREF_ALARM_INTERVAL, DEFAULT_ALARM_INTERVAL);
         return Long.valueOf(alarmInterval) * MINUTE_MULTIPLIER;
     }
 }

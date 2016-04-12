@@ -1,12 +1,10 @@
 package freifunk.bremen.de.mobilemeshviewer;
 
 
-import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -14,11 +12,9 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,17 +39,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         setupDescription();
     }
 
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            // Show the Up button in the action bar.
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         int id = item.getItemId();
@@ -64,15 +49,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             return true;
         }
         return super.onMenuItemSelected(featureId, item);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onBuildHeaders(List<Header> target) {
-        //loadHeadersFromResource(R.xml.pref_headers, target);
     }
 
     private void setupDescription(){
@@ -118,8 +94,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        String stringValue = key.toString();
-
         Preference preference = findPreference(key);
 
         if (preference instanceof ListPreference) {
@@ -137,12 +111,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         } else if (preference instanceof RingtonePreference) {
             // For ringtone preferences, look up the correct display value
             // using RingtoneManager.
-            if (TextUtils.isEmpty(stringValue)) {
+            if (TextUtils.isEmpty(key)) {
                 // Empty values correspond to 'silent' (no ringtone).
 
             } else {
                 Ringtone ringtone = RingtoneManager.getRingtone(
-                        preference.getContext(), Uri.parse(preference.getSharedPreferences().getString(stringValue, stringValue)));
+                        preference.getContext(), Uri.parse(preference.getSharedPreferences().getString(key, key)));
 
                 if (ringtone == null) {
                     // Clear the summary if there was a lookup error.
