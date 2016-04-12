@@ -51,7 +51,6 @@ public class NotificationService extends RoboService {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeStatusChanged(NodeStatusChangedEvent event) {
-        //TODO: Add GatewayStatusChangedEvent
         final Node node = event.getNode();
         final String notificationTitle = "State of observed node changed";
         final String notificationText = "State of node " + node.getName() + " changed to " + node.getStatus();
@@ -64,7 +63,6 @@ public class NotificationService extends RoboService {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeStatusChanged(GatewayStatusChangedEvent event) {
-        //TODO: Add GatewayStatusChangedEvent
         final Gateway gateway = event.getGateway();
         final String notificationTitle = "State of gateway changed";
         final String notificationText = "State of gateway " + gateway.getName() + " changed";

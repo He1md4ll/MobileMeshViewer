@@ -40,8 +40,8 @@ public class GatewayChecker {
 
     public void reloadList() {
         List<Gateway> newGatewayList = loadList();
-        currentGatewayListOptional = Optional.<List<Gateway>>of(Lists.newArrayList(newGatewayList));
         checkForChange(newGatewayList);
+        currentGatewayListOptional = Optional.of(newGatewayList);
         EventBus.getDefault().post(new GatewayListUpdatedEvent());
         Log.i(this.getClass().getSimpleName(), "Gateway list list reloaded");
     }
