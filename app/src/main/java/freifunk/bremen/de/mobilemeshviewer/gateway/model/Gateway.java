@@ -1,102 +1,50 @@
-
 package freifunk.bremen.de.mobilemeshviewer.gateway.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Gateway {
-
-    @SerializedName("uuid")
-    @Expose
-    private String uuid;
-    @SerializedName("name")
-    @Expose
     private String name;
-    @SerializedName("provider")
-    @Expose
-    private String provider;
-    @SerializedName("vpn-servers")
-    @Expose
-    private List<VpnServer> vpnServers = new ArrayList<VpnServer>();
-    @SerializedName("lastupdated")
-    @Expose
-    private String lastupdated;
+    private IpStatus ntp;
+    private IpStatus addresses;
+    private IpStatus dns;
+    private IpStatus uplink;
 
-    /**
-     * @return The uuid
-     */
-    public String getUuid() {
-        return uuid;
+    public Gateway(String name, IpStatus ntp, IpStatus addresses, IpStatus dns, IpStatus uplink) {
+        this.name = name;
+        this.ntp = ntp;
+        this.addresses = addresses;
+        this.dns = dns;
+        this.uplink = uplink;
     }
 
-    /**
-     * @param uuid The uuid
-     */
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public static Gateway fromGatewayBO(GatewayBO gatewayBO, int breakEven) {
+        final IpStatus ntpStatus = IpStatus.determineStatus(gatewayBO.getNtpSum4(), gatewayBO.getNtpSum6(), breakEven);
+        final IpStatus addressesStatus = IpStatus.determineStatus(gatewayBO.getAddressesSum4(), gatewayBO.getAddressesSum6(), breakEven);
+        final IpStatus dnsStatus = IpStatus.determineStatus(gatewayBO.getDnsSum4(), gatewayBO.getDnsSum6(), breakEven);
+        final IpStatus uplinkStatus = IpStatus.determineStatus(gatewayBO.getUplinkSum4(), gatewayBO.getUplinkSum6(), breakEven);
+        return new Gateway(gatewayBO.getName(), ntpStatus, addressesStatus, dnsStatus, uplinkStatus);
     }
 
-    /**
-     * @return The name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * @param name The name
-     */
-    public void setName(String name) {
-        this.name = name;
+    public IpStatus getNtp() {
+        return ntp;
     }
 
-    /**
-     * @return The provider
-     */
-    public String getProvider() {
-        return provider;
+    public IpStatus getAddresses() {
+        return addresses;
     }
 
-    /**
-     * @param provider The provider
-     */
-    public void setProvider(String provider) {
-        this.provider = provider;
+    public IpStatus getDns() {
+        return dns;
     }
 
-    /**
-     * @return The vpnServers
-     */
-    public List<VpnServer> getVpnServers() {
-        return vpnServers;
-    }
-
-    /**
-     * @param vpnServers The vpn-servers
-     */
-    public void setVpnServers(List<VpnServer> vpnServers) {
-        this.vpnServers = vpnServers;
-    }
-
-    /**
-     * @return The lastupdated
-     */
-    public String getLastupdated() {
-        return lastupdated;
-    }
-
-    /**
-     * @param lastupdated The lastupdated
-     */
-    public void setLastupdated(String lastupdated) {
-        this.lastupdated = lastupdated;
+    public IpStatus getUplink() {
+        return uplink;
     }
 
     @Override
     public String toString() {
-        return name + " " + vpnServers;
+        return name + " [" + uplink + "]";
     }
 }

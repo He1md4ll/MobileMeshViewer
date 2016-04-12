@@ -1,13 +1,15 @@
 
 package freifunk.bremen.de.mobilemeshviewer.gateway.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VpnServer {
+public class VpnServer implements Comparable {
 
     @SerializedName("name")
     @Expose
@@ -98,5 +100,14 @@ public class VpnServer {
     @Override
     public String toString() {
         return uplink.get(0).getIpv4() == 1 || uplink.get(0).getIpv6() == 1 ? "Online" : "Offline";
+    }
+
+    @Override
+    public int compareTo(@NonNull Object another) {
+        if (another instanceof VpnServer) {
+            return this.getName().compareTo(((VpnServer) another).getName());
+        } else {
+            return 0;
+        }
     }
 }
