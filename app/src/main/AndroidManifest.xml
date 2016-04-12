@@ -44,7 +44,6 @@
             android:name=".node.NodeCheckerService"
             android:enabled="true"
             android:exported="false" />
-
         <service
             android:name=".NotificationService"
             android:enabled="true"
@@ -54,6 +53,16 @@
             android:name=".node.NodeAlarmReceiver"
             android:enabled="true"
             android:exported="false" />
+
+        <activity
+            android:name=".node.MyNodesActivity"
+            android:label="@string/title_activity_my_nodes"
+            android:parentActivityName=".MeshViewerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity" />
+        </activity>
     </application>
 
 </manifest>

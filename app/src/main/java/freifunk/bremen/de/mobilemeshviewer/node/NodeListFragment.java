@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -39,11 +38,7 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
     private NodeListLoader nodeListLoader;
     @Inject
     private NodeController nodeController;
-    @Inject
-    private InputMethodManager imm;
-
     private ArrayAdapter<Node> adapter;
-    private String currentFilter;
 
     @Override
     public void onStart() {
@@ -129,7 +124,7 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        currentFilter = !TextUtils.isEmpty(newText) ? newText : null;
+        String currentFilter = !TextUtils.isEmpty(newText) ? newText : null;
         adapter.getFilter().filter(currentFilter);
         return true;
     }

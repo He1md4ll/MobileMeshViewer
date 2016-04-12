@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import freifunk.bremen.de.mobilemeshviewer.gateway.GatewayListFragment;
+import freifunk.bremen.de.mobilemeshviewer.node.MyNodesActivity;
 import freifunk.bremen.de.mobilemeshviewer.node.NodeListFragment;
 import roboguice.activity.RoboAppCompatActivity;
 import roboguice.inject.ContentView;
@@ -91,11 +92,12 @@ public class MeshViewerActivity extends RoboAppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_myNodes) {
-
+            final Intent intent = new Intent(this, MyNodesActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_nodeFinder) {
 
         } else if (id == R.id.nav_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
+            final Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_debug) {
 
