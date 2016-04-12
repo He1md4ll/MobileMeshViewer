@@ -1,5 +1,7 @@
 package freifunk.bremen.de.mobilemeshviewer.gateway.model;
 
+import com.google.common.base.Objects;
+
 public class Gateway {
     private String name;
     private IpStatus ntp;
@@ -46,5 +48,18 @@ public class Gateway {
     @Override
     public String toString() {
         return name + " [" + uplink + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Gateway)) return false;
+        Gateway gateway = (Gateway) o;
+        return Objects.equal(name, gateway.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name);
     }
 }

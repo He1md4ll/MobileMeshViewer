@@ -19,6 +19,7 @@ import java.util.List;
 import freifunk.bremen.de.mobilemeshviewer.api.MortzuRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
 import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
+import freifunk.bremen.de.mobilemeshviewer.event.GatewayStatusChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.CheckServer;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.GatewayBO;
@@ -46,11 +47,21 @@ public class GatewayChecker {
     }
 
     private void checkForChange(List<Gateway> newGatewayList) {
-        //TODO: Implement comparison
         if (currentGatewayListOptional.isPresent()) {
-            List<Gateway> currentGatewayList = currentGatewayListOptional.get();
-            for (Gateway currentGateway : currentGatewayList) {
+            List<Gateway> currentGatewayList = Lists.newArrayList(currentGatewayListOptional.get());
+            currentGatewayList.retainAll(newGatewayList);
+            if (currentGatewayList.size() == newGatewayList.size()) {
+                for (int i = 0; i < currentGatewayList.size(); i++) {
+                    compareState(currentGatewayList.get(i), newGatewayList.get(i));
+                }
             }
+
+        }
+    }
+
+    private void compareState(Gateway currentGateway, Gateway newGateway) {
+        if (currentGateway.getUplink() != newGateway.getUplink() || currentGateway.getAddresses() != newGateway.getAddresses()) {
+            new GatewayStatusChangedEvent(newGateway);
         }
     }
 
