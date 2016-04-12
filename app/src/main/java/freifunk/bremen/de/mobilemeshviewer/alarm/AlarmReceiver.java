@@ -1,4 +1,4 @@
-package freifunk.bremen.de.mobilemeshviewer.node;
+package freifunk.bremen.de.mobilemeshviewer.alarm;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,10 +9,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import freifunk.bremen.de.mobilemeshviewer.NotificationService;
-import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
+import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
 
-public class NodeAlarmReceiver extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
 
     private static boolean alarmProcessing = false;
 
@@ -21,7 +20,7 @@ public class NodeAlarmReceiver extends BroadcastReceiver {
         if (!alarmProcessing) {
             alarmProcessing = true;
             EventBus.getDefault().register(this);
-            final Intent nodeServiceIntent = new Intent(context, NodeCheckerService.class);
+            final Intent nodeServiceIntent = new Intent(context, CheckerService.class);
             context.startService(nodeServiceIntent);
             final Intent notificationServiceIntent = new Intent(context, NotificationService.class);
             context.startService(notificationServiceIntent);
@@ -32,7 +31,7 @@ public class NodeAlarmReceiver extends BroadcastReceiver {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onNodeListUpdated(NodeListUpdatedEvent ignored) {
+    public void onNodeListUpdated(GatewayListUpdatedEvent ignored) {
         EventBus.getDefault().unregister(this);
         alarmProcessing = false;
         Log.i(this.getClass().getSimpleName(), "Alarm successfully processed");

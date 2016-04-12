@@ -37,6 +37,7 @@ public class NodeChecker {
 
     public void reloadList() {
         final Optional<NodeList> newNodeListOptional = loadList();
+        currentNodeListOptional = newNodeListOptional;
         checkForChange(newNodeListOptional);
         EventBus.getDefault().post(new NodeListUpdatedEvent());
         Log.i(this.getClass().getSimpleName(), "Node list reloaded");
@@ -72,9 +73,6 @@ public class NodeChecker {
             Response<NodeList> response = call.execute();
             if (response.isSuccess()) {
                 nodeListOpt = Optional.fromNullable(response.body());
-                if (!currentNodeListOptional.isPresent()) {
-                    currentNodeListOptional = nodeListOpt;
-                }
                 Log.d(this.getClass().getSimpleName(), "Checked for new node list from server");
             } else {
                 Log.w(this.getClass().getSimpleName(), "Response no success, error code: " + response.code());

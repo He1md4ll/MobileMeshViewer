@@ -34,9 +34,6 @@ public class NodeListLoader extends AsyncTaskLoader<List<Node>> {
         }
     }
 
-    /**
-     * Handles a request to start the Loader.
-     */
     @Override
     protected void onStartLoading() {
         if (this.nodeList != null) {

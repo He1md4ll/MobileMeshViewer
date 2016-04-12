@@ -5,14 +5,12 @@ import android.util.Log;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import freifunk.bremen.de.mobilemeshviewer.api.MortzuRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
@@ -21,45 +19,27 @@ import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import retrofit.Call;
 import retrofit.Response;
 
-public class GatewayCheckerService {
-
-    public static final int DELAY = 15;
+@Singleton
+public class GatewayChecker {
 
     @Inject
     private RetrofitServiceManager retrofitServiceManager;
-
     private Optional<List<Gateway>> currentGatewayListOptional = Optional.absent();
-    private ScheduledExecutorService executor;
 
-    private Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            final List<Gateway> gatewayList = loadList();
-            if (checkForChange(gatewayList)) {
-                currentGatewayListOptional = Optional.of(gatewayList);
-                EventBus.getDefault().post(new GatewayListUpdatedEvent());
-            }
-
-        }
-
-        private boolean checkForChange(List<Gateway> gatewayList) {
-            List<Gateway> currentGatewayList = currentGatewayListOptional.get();
-            //TODO: Implement comparison
-            return false;
-        }
-    };
-
-    public void startMonitoring() {
-        executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(runnable, DELAY, DELAY, TimeUnit.SECONDS);
+    public Optional<List<Gateway>> fetchList() {
+        return currentGatewayListOptional;
     }
 
-    public void stopMonitoring() {
-        executor.shutdown();
+    public void reloadList() {
+        final Optional<List<Gateway>> newGatewayListOptional = Optional.of(loadList());
+        currentGatewayListOptional = newGatewayListOptional;
+        checkForChange(newGatewayListOptional);
+        EventBus.getDefault().post(new GatewayListUpdatedEvent());
+        Log.i(this.getClass().getSimpleName(), "Gateway list reloaded");
     }
 
-    public List<Gateway> fetchList() {
-        return currentGatewayListOptional.or(loadList());
+    private void checkForChange(Optional<List<Gateway>> newGatewayListOptional) {
+        //TODO: Implement comparison
     }
 
     private List<Gateway> loadList() {

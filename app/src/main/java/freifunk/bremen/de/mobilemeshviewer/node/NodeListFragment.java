@@ -36,15 +36,12 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
 
     @Inject
     private NodeListLoader nodeListLoader;
-    @Inject
-    private NodeController nodeController;
     private ArrayAdapter<Node> adapter;
 
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        nodeController.startNodeAlarm();
     }
 
     @Override
@@ -136,7 +133,7 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNodeListUpdatedMain(NodeListUpdatedEvent ignored) {
-        Snackbar.make(getListView(), "List was reloaded in background", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getListView(), "List reloaded", Snackbar.LENGTH_SHORT).show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -1,4 +1,4 @@
-package freifunk.bremen.de.mobilemeshviewer;
+package freifunk.bremen.de.mobilemeshviewer.alarm;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,7 +14,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
+import freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity;
+import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.NodeActivity;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
@@ -46,6 +48,7 @@ public class NotificationService extends RoboService {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeStatusChanged(NodeStatusChangedEvent event) {
+        //TODO: Add GatewayStatusChangedEvent
         final Node node = event.getNode();
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
@@ -71,7 +74,7 @@ public class NotificationService extends RoboService {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onNodeListUpdated(NodeListUpdatedEvent ignored) {
+    public void onNodeListUpdated(GatewayListUpdatedEvent ignored) {
         stopSelf();
     }
 }

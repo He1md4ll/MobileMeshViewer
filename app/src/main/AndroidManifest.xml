@@ -41,16 +41,16 @@
         </activity>
 
         <service
-            android:name=".node.NodeCheckerService"
+            android:name=".alarm.CheckerService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".NotificationService"
+            android:name=".alarm.NotificationService"
             android:enabled="true"
             android:exported="false" />
 
         <receiver
-            android:name=".node.NodeAlarmReceiver"
+            android:name=".alarm.AlarmReceiver"
             android:enabled="true"
             android:exported="false" />
 

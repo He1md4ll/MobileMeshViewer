@@ -1,17 +1,11 @@
 package freifunk.bremen.de.mobilemeshviewer.node;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
 import java.util.List;
 
-import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.NodeList;
 
@@ -19,12 +13,6 @@ public class NodeController {
 
     @Inject
     private NodeChecker nodeChecker;
-    @Inject
-    private AlarmManager alarmManager;
-    @Inject
-    private Context context;
-    @Inject
-    private PreferenceController preferenceController;
 
     public List<Node> getSimpleNodeList() {
         final Optional<NodeList> nodeListOpt = nodeChecker.fetchList();
@@ -33,25 +21,5 @@ public class NodeController {
         } else {
             return Lists.newArrayList();
         }
-    }
-
-    public void startNodeAlarm() {
-        final PendingIntent pendingIntent = getPendingIntent();
-        final long interval = preferenceController.getAlarmInterval();
-        context.sendBroadcast(getAlarmIntent());
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, interval, interval, pendingIntent);
-    }
-
-    public void stopNodeAlarm() {
-        alarmManager.cancel(getPendingIntent());
-    }
-
-    private PendingIntent getPendingIntent() {
-        final Intent alarmIntent = getAlarmIntent();
-        return PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-    }
-
-    private Intent getAlarmIntent() {
-        return new Intent(context, NodeAlarmReceiver.class);
     }
 }

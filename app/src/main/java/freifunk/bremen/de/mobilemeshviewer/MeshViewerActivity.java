@@ -15,6 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.inject.Inject;
+
+import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
 import freifunk.bremen.de.mobilemeshviewer.gateway.GatewayListFragment;
 import freifunk.bremen.de.mobilemeshviewer.node.MyNodesActivity;
 import freifunk.bremen.de.mobilemeshviewer.node.NodeListFragment;
@@ -36,6 +39,8 @@ public class MeshViewerActivity extends RoboAppCompatActivity
     private ViewPager viewPager;
     @InjectView(R.id.tabs)
     private TabLayout tabLayout;
+    @Inject
+    private AlarmController alarmController;
     private SectionsPagerAdapter sectionsPagerAdapter;
 
     @Override
@@ -57,6 +62,7 @@ public class MeshViewerActivity extends RoboAppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
+        alarmController.startNodeAlarm();
     }
 
     @Override

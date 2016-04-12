@@ -3,6 +3,7 @@ package freifunk.bremen.de.mobilemeshviewer.gateway;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -90,8 +91,13 @@ public class GatewayListFragment extends RoboListFragment implements LoaderManag
         adapter.clear();
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    @Subscribe(threadMode = ThreadMode.POSTING)
     public void onGatewayListUpdated(GatewayListUpdatedEvent event) {
         gatewayListLoader.onContentChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGatewayListUpdatedMain(GatewayListUpdatedEvent event) {
+        Snackbar.make(getListView(), "List reloaded", Snackbar.LENGTH_SHORT).show();
     }
 }
