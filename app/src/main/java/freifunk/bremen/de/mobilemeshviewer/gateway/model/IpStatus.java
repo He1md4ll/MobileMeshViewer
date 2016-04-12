@@ -1,10 +1,24 @@
 package freifunk.bremen.de.mobilemeshviewer.gateway.model;
 
-public enum IpStatus {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public enum IpStatus implements Parcelable {
     IPv4,
     IPv6,
     BOTH,
     NONE;
+
+    public static final Parcelable.Creator CREATOR =
+            new Parcelable.Creator() {
+                public IpStatus createFromParcel(Parcel in) {
+                    return values()[in.readInt()];
+                }
+
+                public IpStatus[] newArray(int size) {
+                    return new IpStatus[size];
+                }
+            };
 
     public static IpStatus determineStatus(int ipv4, int ipv6, int breakpoint) {
         IpStatus status;
@@ -18,5 +32,15 @@ public enum IpStatus {
             status = NONE;
         }
         return status;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(ordinal());
     }
 }

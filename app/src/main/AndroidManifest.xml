@@ -63,6 +63,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity" />
         </activity>
+        <activity
+            android:name=".gateway.GatewayActivity"
+            android:label="@string/title_activity_gateway"
+            android:parentActivityName=".MeshViewerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -94,8 +94,10 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
 
     @Override
     public void onLoadFinished(Loader<List<Node>> loader, List<Node> data) {
+        final int index = getListView().getFirstVisiblePosition();
         adapter.clear();
         adapter.addAll(data);
+        getListView().setSelection(index);
 
         if (isResumed()) {
             setListShown(true);

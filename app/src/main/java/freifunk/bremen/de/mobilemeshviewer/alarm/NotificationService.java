@@ -17,7 +17,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity;
 import freifunk.bremen.de.mobilemeshviewer.R;
 import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
+import freifunk.bremen.de.mobilemeshviewer.event.GatewayStatusChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChangedEvent;
+import freifunk.bremen.de.mobilemeshviewer.gateway.GatewayActivity;
+import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import freifunk.bremen.de.mobilemeshviewer.node.NodeActivity;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import roboguice.service.RoboService;
@@ -50,31 +53,53 @@ public class NotificationService extends RoboService {
     public void onNodeStatusChanged(NodeStatusChangedEvent event) {
         //TODO: Add GatewayStatusChangedEvent
         final Node node = event.getNode();
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("State of observed node changed")
-                        .setContentText("State of node " + node.getName() + " changed to " + node.getStatus())
-                        .setAutoCancel(true);
-
+        final String notificationTitle = "State of observed node changed";
+        final String notificationText = "State of node " + node.getName() + " changed to " + node.getStatus();
         Intent resultIntent = new Intent(this, NodeActivity.class);
         resultIntent.putExtra(NodeActivity.BUNDLE_NODE, node);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(NodeActivity.class);
-        stackBuilder.addParentStack(MeshViewerActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        notificationManager.notify(0, mBuilder.build());
+        PendingIntent resultPendingIntent = getPendingIntent(resultIntent);
+        buildNotification(notificationTitle, notificationText, resultPendingIntent);
         Log.d(this.getClass().getSimpleName(), "Build notification to inform about node change");
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onNodeStatusChanged(GatewayStatusChangedEvent event) {
+        //TODO: Add GatewayStatusChangedEvent
+        final Gateway gateway = event.getGateway();
+        final String notificationTitle = "State of gateway changed";
+        final String notificationText = "State of gateway " + gateway.getName() + " changed";
+        Intent resultIntent = new Intent(this, GatewayActivity.class);
+        resultIntent.putExtra(GatewayActivity.BUNDLE_GATEWAY, gateway);
+        PendingIntent resultPendingIntent = getPendingIntent(resultIntent);
+        buildNotification(notificationTitle, notificationText, resultPendingIntent);
+        Log.d(this.getClass().getSimpleName(), "Build notification to inform about gateway change");
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeListUpdated(GatewayListUpdatedEvent ignored) {
         stopSelf();
+    }
+
+    private void buildNotification(String title, String text, PendingIntent resultPendingIntent) {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle(title)
+                        .setContentText(text)
+                        .setAutoCancel(true);
+
+        mBuilder.setContentIntent(resultPendingIntent);
+        notificationManager.notify(0, mBuilder.build());
+    }
+
+    private PendingIntent getPendingIntent(Intent resultIntent) {
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(NodeActivity.class);
+        stackBuilder.addParentStack(MeshViewerActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        return stackBuilder.getPendingIntent(
+                0,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
     }
 }

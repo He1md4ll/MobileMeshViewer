@@ -10,6 +10,7 @@ import com.google.inject.Singleton;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
@@ -38,6 +39,7 @@ public class NodeChecker {
     public void reloadList() {
         final Optional<NodeList> newNodeListOptional = loadList();
         currentNodeListOptional = newNodeListOptional;
+        Collections.sort(currentNodeListOptional.get().getNodes());
         checkForChange(newNodeListOptional);
         EventBus.getDefault().post(new NodeListUpdatedEvent());
         Log.i(this.getClass().getSimpleName(), "Node list reloaded");

@@ -1,13 +1,30 @@
 package freifunk.bremen.de.mobilemeshviewer.gateway.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.common.base.Objects;
 
-public class Gateway {
+public class Gateway implements Parcelable {
+    public static final Parcelable.Creator CREATOR =
+            new Parcelable.Creator() {
+                public Gateway createFromParcel(Parcel in) {
+                    return new Gateway(in);
+                }
+
+                public Gateway[] newArray(int size) {
+                    return new Gateway[size];
+                }
+            };
     private String name;
     private IpStatus ntp;
     private IpStatus addresses;
     private IpStatus dns;
     private IpStatus uplink;
+
+    public Gateway(Parcel in) {
+        readFromParcel(in);
+    }
 
     public Gateway(String name, IpStatus ntp, IpStatus addresses, IpStatus dns, IpStatus uplink) {
         this.name = name;
@@ -43,6 +60,28 @@ public class Gateway {
 
     public IpStatus getUplink() {
         return uplink;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeParcelable(ntp, flags);
+        dest.writeParcelable(addresses, flags);
+        dest.writeParcelable(dns, flags);
+        dest.writeParcelable(uplink, flags);
+    }
+
+    private void readFromParcel(Parcel in) {
+        name = in.readString();
+        ntp = in.readParcelable(IpStatus.class.getClassLoader());
+        addresses = in.readParcelable(IpStatus.class.getClassLoader());
+        dns = in.readParcelable(IpStatus.class.getClassLoader());
+        uplink = in.readParcelable(IpStatus.class.getClassLoader());
     }
 
     @Override
