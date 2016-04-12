@@ -43,11 +43,12 @@ public class GatewayChecker {
         currentGatewayListOptional = Optional.<List<Gateway>>of(Lists.newArrayList(newGatewayList));
         checkForChange(newGatewayList);
         EventBus.getDefault().post(new GatewayListUpdatedEvent());
-        Log.i(this.getClass().getSimpleName(), "CheckServer list reloaded");
+        Log.i(this.getClass().getSimpleName(), "Gateway list list reloaded");
     }
 
     private void checkForChange(List<Gateway> newGatewayList) {
         if (currentGatewayListOptional.isPresent()) {
+            Log.d(this.getClass().getSimpleName(), "Comparing gateway status");
             List<Gateway> currentGatewayList = Lists.newArrayList(currentGatewayListOptional.get());
             currentGatewayList.retainAll(newGatewayList);
             if (currentGatewayList.size() == newGatewayList.size()) {

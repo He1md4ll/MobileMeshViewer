@@ -24,13 +24,13 @@ public class PreferenceController {
     private SharedPreferences sharedPreferences;
 
     public void addNodeToObservedNodeList(Node node) {
-        Log.d(this.getClass().getSimpleName(), "Adding observed node to shared preferences");
         final List<Node> observedNodeList = getObservedNodeList();
         observedNodeList.remove(node);
         observedNodeList.add(node);
         final String jsonString = new Gson().toJson(observedNodeList, new TypeToken<List<Node>>() {
         }.getType());
         sharedPreferences.edit().remove(PREF_NODE_LIST_KEY).putString(PREF_NODE_LIST_KEY, jsonString).apply();
+        Log.d(this.getClass().getSimpleName(), "Added observed node to shared preferences");
     }
 
     public List<Node> getObservedNodeList() {

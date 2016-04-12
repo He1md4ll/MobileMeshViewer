@@ -23,7 +23,7 @@ public class CheckerService extends RoboIntentService {
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
-        Log.i(this.getClass().getSimpleName(), "Executing service to reload node list");
+        Log.i(this.getClass().getSimpleName(), "Executing service to reload data");
         nodeChecker.reloadList();
         gatewayChecker.reloadList();
     }
