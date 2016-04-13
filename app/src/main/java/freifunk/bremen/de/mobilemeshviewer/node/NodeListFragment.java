@@ -95,9 +95,11 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
     @Override
     public void onLoadFinished(Loader<List<Node>> loader, List<Node> data) {
         final int index = getListView().getFirstVisiblePosition();
+        final View v = getListView().getChildAt(0);
+        final int top = (v == null) ? 0 : (v.getTop() - getListView().getPaddingTop());
         adapter.clear();
         adapter.addAll(data);
-        getListView().setSelection(index);
+        getListView().setSelectionFromTop(index, top);
 
         if (isResumed()) {
             setListShown(true);
@@ -131,11 +133,6 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeListUpdated(NodeListUpdatedEvent ignored) {
         nodeListLoader.onContentChanged();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onNodeListUpdatedMain(NodeListUpdatedEvent ignored) {
-        Snackbar.make(getListView(), "List reloaded", Snackbar.LENGTH_SHORT).show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

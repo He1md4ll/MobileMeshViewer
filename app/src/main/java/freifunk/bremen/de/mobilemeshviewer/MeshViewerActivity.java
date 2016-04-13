@@ -41,14 +41,13 @@ public class MeshViewerActivity extends RoboAppCompatActivity
     private TabLayout tabLayout;
     @Inject
     private AlarmController alarmController;
-    private SectionsPagerAdapter sectionsPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSupportActionBar(toolbar);
 
-        sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -57,11 +56,6 @@ public class MeshViewerActivity extends RoboAppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         alarmController.startNodeAlarm();
     }
 
@@ -81,19 +75,6 @@ public class MeshViewerActivity extends RoboAppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            final Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -106,8 +87,6 @@ public class MeshViewerActivity extends RoboAppCompatActivity
             final Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_debug) {
-
-        } else if (id == R.id.nav_calender) {
 
         } else if (id == R.id.nav_about) {
 
