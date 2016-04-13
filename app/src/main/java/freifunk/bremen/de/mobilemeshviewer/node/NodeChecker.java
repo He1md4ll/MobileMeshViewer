@@ -20,8 +20,8 @@ import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.NodeList;
-import retrofit.Call;
-import retrofit.Response;
+import retrofit2.Call;
+import retrofit2.Response;
 
 @Singleton
 public class NodeChecker {
@@ -73,7 +73,7 @@ public class NodeChecker {
             freifunkService = retrofitServiceManager.getFreifunkService();
             Call<NodeList> call = freifunkService.getNodeList();
             Response<NodeList> response = call.execute();
-            if (response.isSuccess()) {
+            if (response.isSuccessful()) {
                 nodeListOpt = Optional.fromNullable(response.body());
                 Log.d(this.getClass().getSimpleName(), "Checked for new node list from server");
             } else {

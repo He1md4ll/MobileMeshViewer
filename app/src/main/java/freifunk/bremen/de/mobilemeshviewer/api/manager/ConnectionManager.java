@@ -10,9 +10,9 @@ import com.google.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 @Singleton
 public class ConnectionManager {

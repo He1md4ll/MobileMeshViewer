@@ -2,8 +2,8 @@ package freifunk.bremen.de.mobilemeshviewer.api;
 
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetailList;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.NodeList;
-import retrofit.Call;
-import retrofit.http.GET;
+import retrofit2.Call;
+import retrofit2.http.GET;
 
 public interface FreifunkRestConsumer {
 
