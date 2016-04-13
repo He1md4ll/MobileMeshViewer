@@ -3,9 +3,12 @@ package freifunk.bremen.de.mobilemeshviewer.alarm;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.inject.Inject;
@@ -79,9 +82,12 @@ public class NotificationService extends RoboService {
     }
 
     private void buildNotification(String title, String text, PendingIntent resultPendingIntent) {
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+                        .setLargeIcon(bm)
                         .setContentTitle(title)
                         .setContentText(text)
                         .setAutoCancel(true);

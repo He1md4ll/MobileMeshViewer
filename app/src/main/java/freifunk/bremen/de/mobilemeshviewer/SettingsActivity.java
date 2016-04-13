@@ -15,7 +15,11 @@ import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+import com.google.inject.Inject;
+
 import java.util.Map;
+
+import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -30,12 +34,15 @@ import java.util.Map;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    @Inject
+    private AlarmController alarmController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_general);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        PreferenceManager.getDefaultSharedPreferences(this);
         setupDescription();
     }
 
@@ -108,6 +115,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             ? listPreference.getEntries()[index]
                             : null);
 
+            if (PreferenceController.PREF_ALARM_INTERVAL.equals(key)) {
+                alarmController.startNodeAlarm();
+            }
         } else if (preference instanceof RingtonePreference) {
             // For ringtone preferences, look up the correct display value
             // using RingtoneManager.
