@@ -6,6 +6,8 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
+import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetail;
+import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetailList;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.NodeList;
 
@@ -20,6 +22,15 @@ public class NodeController {
             return nodeListOpt.get().getNodes();
         } else {
             return Lists.newArrayList();
+        }
+    }
+
+    public NodeDetail getDetailNodeById() {
+        final Optional<NodeDetailList> nodeListOpt = nodeChecker.loadDetailList();
+        if (nodeListOpt.isPresent()) {
+            return null;
+        } else {
+            return null;
         }
     }
 }

@@ -1,5 +1,7 @@
 package freifunk.bremen.de.mobilemeshviewer.api;
 
+import com.squareup.okhttp.ResponseBody;
+
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetailList;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.NodeList;
 import retrofit.Call;
@@ -11,5 +13,5 @@ public interface FreifunkRestConsumer {
     Call<NodeList> getNodeList();
 
     @GET("data/nodes.json")
-    Call<NodeDetailList> getNodeDetailList();
+    Call<ResponseBody> getNodeDetailList();
 }
