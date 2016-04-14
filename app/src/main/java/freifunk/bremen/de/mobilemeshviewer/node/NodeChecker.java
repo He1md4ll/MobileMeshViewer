@@ -1,11 +1,12 @@
 package freifunk.bremen.de.mobilemeshviewer.node;
 
-import android.util.JsonReader;
 import android.util.Log;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.squareup.okhttp.ResponseBody;
@@ -26,7 +27,6 @@ import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetail;
-import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetailList;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.NodeList;
 import retrofit.Call;
@@ -96,9 +96,9 @@ public class NodeChecker {
         return nodeListOpt;
     }
 
-    public Optional<NodeDetailList> loadDetailList() {
+    public NodeDetail getDetailNodeById(String id) {
         final FreifunkRestConsumer freifunkService;
-        Optional<NodeDetailList> nodeListOpt = Optional.absent();
+        NodeDetail node = new NodeDetail();
         try {
             freifunkService = retrofitServiceManager.getFreifunkService();
             Call<ResponseBody> call = freifunkService.getNodeDetailList();
@@ -112,14 +112,15 @@ public class NodeChecker {
                     String name = reader.nextName();
                     if (name.equals("nodes")){
                         reader.beginObject();
+                    }else if (name.equals(id)) {
+                        node = gson.<NodeDetail>fromJson(reader, new TypeToken<NodeDetail>(){}.getType());
+                        //TODO: Parse object to node
                     }else {
                         reader.skipValue();
                     }
                 }
                 reader.endObject();
                 reader.close();
-
-                //nodeListOpt = Optional.fromNullable(response.body());
                 Log.d(this.getClass().getSimpleName(), "Checked for new node list from server");
             } else {
                 Log.w(this.getClass().getSimpleName(), "Response no success, error code: " + response.code());
@@ -127,6 +128,6 @@ public class NodeChecker {
         } catch (IOException e) {
             Log.w(this.getClass().getSimpleName(), "Unable to fetch NodeList");
         }
-        return nodeListOpt;
+        return node;
     }
 }

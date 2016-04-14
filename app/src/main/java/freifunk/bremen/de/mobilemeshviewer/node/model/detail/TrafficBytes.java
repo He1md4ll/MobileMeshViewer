@@ -23,10 +23,10 @@ public class TrafficBytes implements Parcelable {
             };
     @SerializedName("packets")
     @Expose
-    private int packets;
+    private long packets;
     @SerializedName("bytes")
     @Expose
-    private int bytes;
+    private long bytes;
 
     public TrafficBytes() {
     }
@@ -35,19 +35,19 @@ public class TrafficBytes implements Parcelable {
         readFromParcel(in);
     }
 
-    public int getPackets() {
+    public long getPackets() {
         return packets;
     }
 
-    public void setPackets(int packets) {
+    public void setPackets(long packets) {
         this.packets = packets;
     }
 
-    public int getBytes() {
+    public long getBytes() {
         return bytes;
     }
 
-    public void setBytes(int bytes) {
+    public void setBytes(long bytes) {
         this.bytes = bytes;
     }
 
@@ -63,12 +63,12 @@ public class TrafficBytes implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(bytes);
-        dest.writeInt(packets);
+        dest.writeLong(bytes);
+        dest.writeLong(packets);
     }
 
     private void readFromParcel(Parcel in) {
-        bytes = in.readInt();
-        packets = in.readInt();
+        bytes = in.readLong();
+        packets = in.readLong();
     }
 }

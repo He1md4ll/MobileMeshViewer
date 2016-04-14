@@ -1,8 +1,6 @@
 package freifunk.bremen.de.mobilemeshviewer.node;
 
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.content.Loader;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,11 +13,13 @@ import android.widget.TextView;
 
 import com.google.inject.Inject;
 
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.R;
-import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetail;
+import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailFoundEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import roboguice.activity.RoboAppCompatActivity;
 import roboguice.inject.ContentView;
@@ -27,7 +27,7 @@ import roboguice.inject.InjectExtra;
 import roboguice.inject.InjectView;
 
 @ContentView(R.layout.activity_node)
-public class NodeActivity extends RoboAppCompatActivity implements LoaderManager.LoaderCallbacks<NodeDetail> {
+public class NodeActivity extends RoboAppCompatActivity {
 
     public static final String BUNDLE_NODE = "node";
 
@@ -56,7 +56,7 @@ public class NodeActivity extends RoboAppCompatActivity implements LoaderManager
         nodeName.setText(node.getName());
         nodeId.setText(node.getId());
 
-        getLoaderManager().initLoader(0, null, this);
+        nodeDetailLoader.execute("30b5c26e99d5");
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +66,18 @@ public class NodeActivity extends RoboAppCompatActivity implements LoaderManager
                         .show();
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -85,18 +97,8 @@ public class NodeActivity extends RoboAppCompatActivity implements LoaderManager
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public Loader<NodeDetail> onCreateLoader(int id, Bundle args) {
-        return nodeDetailLoader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<NodeDetail> loader, NodeDetail data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<NodeDetail> loader) {
-
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onNodeDetailFound(NodeDetailFoundEvent event){
+        Snackbar.make(nodeName, event.getNode().getNodeinfo().getNodeId(),Snackbar.LENGTH_SHORT).show();
     }
 }
