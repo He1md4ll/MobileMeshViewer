@@ -3,8 +3,8 @@ package freifunk.bremen.de.mobilemeshviewer.api;
 import java.util.List;
 
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.CheckServer;
-import retrofit.Call;
-import retrofit.http.GET;
+import retrofit2.Call;
+import retrofit2.http.GET;
 
 public interface MortzuRestConsumer {
 

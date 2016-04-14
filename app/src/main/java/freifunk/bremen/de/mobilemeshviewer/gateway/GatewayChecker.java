@@ -24,8 +24,8 @@ import freifunk.bremen.de.mobilemeshviewer.gateway.model.CheckServer;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.GatewayBO;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.VpnServer;
-import retrofit.Call;
-import retrofit.Response;
+import retrofit2.Call;
+import retrofit2.Response;
 
 @Singleton
 public class GatewayChecker {
@@ -73,7 +73,7 @@ public class GatewayChecker {
             mortzuService = retrofitServiceManager.getMortzuService();
             Call<List<CheckServer>> call = mortzuService.getGatewayList();
             Response<List<CheckServer>> response = call.execute();
-            if (response.isSuccess()) {
+            if (response.isSuccessful()) {
                 Log.d(this.getClass().getSimpleName(), "Checked for new GatewayList from server");
                 gatewayList = transformCheckServerToGateway(response.body());
             } else {
