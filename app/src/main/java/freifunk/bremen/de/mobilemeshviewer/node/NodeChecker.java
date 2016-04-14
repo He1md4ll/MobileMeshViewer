@@ -9,7 +9,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.squareup.okhttp.ResponseBody;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,6 +28,7 @@ import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetail;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.NodeList;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -103,7 +103,7 @@ public class NodeChecker {
             freifunkService = retrofitServiceManager.getFreifunkService();
             Call<ResponseBody> call = freifunkService.getNodeDetailList();
             Response<ResponseBody> response = call.execute();
-            if (response.isSuccess()) {
+            if (response.isSuccessful()) {
                 InputStream is = response.body().byteStream();
                 JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
                 Map<String, NodeDetail> map = new HashMap<String, NodeDetail>();
