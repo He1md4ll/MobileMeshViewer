@@ -24,7 +24,7 @@ public class NodeDetail implements Parcelable {
     @SerializedName("nodeinfo")
     @Expose
     private Nodeinfo nodeinfo;
-    @SerializedName("flagsNode")
+    @SerializedName("flags")
     @Expose
     private Flags flagsNode;
     @SerializedName("firstseen")

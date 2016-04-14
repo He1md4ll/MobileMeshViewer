@@ -75,4 +75,30 @@
     <string name="title_activity_my_nodes">MyNodesActivity</string>
     <string name="title_activity_gateway">GatewayActivity</string>
 
+    <!--  Node Detail Page-->
+    <string name="weight_label">0.8</string>
+    <string name="weight_value">1.2</string>
+    <string name="node_status_label">Status</string>
+    <string name="node_hardware_label">Hardware</string>
+    <string name="node_mac_label">Primäre MAC</string>
+    <string name="node_node_id_label">Node ID</string>
+    <string name="node_firmware_label">Firmware</string>
+    <string name="node_uptime_label">Uptime</string>
+    <string name="node_addresses_label">IP Adressen</string>
+    <string name="node_autoupdate_label">Autom. Updates</string>
+    <string name="node_clients_label">Clients</string>
+    <string name="node_loadavg_label">Systemlast</string>
+    <string name="node_traffic_label">Traffic</string>
+    <string name="node_owner_label">Kontakt</string>
+
+
+    <string name="minute">Minute</string>
+    <string name="hour">Stunde</string>
+    <string name="day">Tag</string>
+    <string name="minutes">Minuten</string>
+    <string name="hours">Stunden</string>
+    <string name="days">Tage</string>
+    <string name="autoupdate_enabled">aktiviert</string>
+    <string name="autoupdate_disabled">deaktiviert</string>
+
 </resources>
