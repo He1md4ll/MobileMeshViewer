@@ -23,13 +23,13 @@ public class TrafficBytesDropped implements Parcelable {
             };
     @SerializedName("packets")
     @Expose
-    private int packets;
+    private long packets;
     @SerializedName("bytes")
     @Expose
-    private int bytes;
+    private long bytes;
     @SerializedName("dropped")
     @Expose
-    private int dropped;
+    private long dropped;
 
     public TrafficBytesDropped() {
     }
@@ -38,27 +38,27 @@ public class TrafficBytesDropped implements Parcelable {
         readFromParcel(in);
     }
 
-    public int getPackets() {
+    public long getPackets() {
         return packets;
     }
 
-    public void setPackets(int packets) {
+    public void setPackets(long packets) {
         this.packets = packets;
     }
 
-    public int getBytes() {
+    public long getBytes() {
         return bytes;
     }
 
-    public void setBytes(int bytes) {
+    public void setBytes(long bytes) {
         this.bytes = bytes;
     }
 
-    public int getDropped() {
+    public long getDropped() {
         return dropped;
     }
 
-    public void setDropped(int dropped) {
+    public void setDropped(long dropped) {
         this.dropped = dropped;
     }
 
@@ -74,14 +74,14 @@ public class TrafficBytesDropped implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(bytes);
-        dest.writeInt(packets);
-        dest.writeInt(dropped);
+        dest.writeLong(bytes);
+        dest.writeLong(packets);
+        dest.writeLong(dropped);
     }
 
     private void readFromParcel(Parcel in) {
-        bytes = in.readInt();
-        packets = in.readInt();
-        dropped = in.readInt();
+        bytes = in.readLong();
+        packets = in.readLong();
+        dropped = in.readLong();
     }
 }

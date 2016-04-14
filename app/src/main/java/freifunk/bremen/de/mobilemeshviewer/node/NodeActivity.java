@@ -13,8 +13,13 @@ import android.widget.TextView;
 
 import com.google.inject.Inject;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailFoundEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import roboguice.activity.RoboAppCompatActivity;
 import roboguice.inject.ContentView;
@@ -38,6 +43,8 @@ public class NodeActivity extends RoboAppCompatActivity {
     private FloatingActionButton fab;
     @Inject
     private PreferenceController preferenceController;
+    @Inject
+    private NodeDetailLoader nodeDetailLoader;
 
 
     @Override
@@ -49,6 +56,8 @@ public class NodeActivity extends RoboAppCompatActivity {
         nodeName.setText(node.getName());
         nodeId.setText(node.getId());
 
+        nodeDetailLoader.execute("30b5c26e99d5");
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,6 +66,18 @@ public class NodeActivity extends RoboAppCompatActivity {
                         .show();
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -74,5 +95,10 @@ public class NodeActivity extends RoboAppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onNodeDetailFound(NodeDetailFoundEvent event){
+        Snackbar.make(nodeName, event.getNode().getNodeinfo().getNodeId(),Snackbar.LENGTH_SHORT).show();
     }
 }

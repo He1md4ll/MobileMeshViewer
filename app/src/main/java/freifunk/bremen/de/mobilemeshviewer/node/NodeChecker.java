@@ -4,20 +4,29 @@ import android.util.Log;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.squareup.okhttp.ResponseBody;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChangedEvent;
+import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetail;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.NodeList;
 import retrofit2.Call;
@@ -31,6 +40,8 @@ public class NodeChecker {
     @Inject
     private RetrofitServiceManager retrofitServiceManager;
     private Optional<NodeList> currentNodeListOptional = Optional.absent();
+    @Inject
+    private Gson gson;
 
     public Optional<NodeList> fetchList() {
         return currentNodeListOptional;
@@ -83,5 +94,40 @@ public class NodeChecker {
             Log.w(this.getClass().getSimpleName(), "Unable to fetch NodeList");
         }
         return nodeListOpt;
+    }
+
+    public NodeDetail getDetailNodeById(String id) {
+        final FreifunkRestConsumer freifunkService;
+        NodeDetail node = new NodeDetail();
+        try {
+            freifunkService = retrofitServiceManager.getFreifunkService();
+            Call<ResponseBody> call = freifunkService.getNodeDetailList();
+            Response<ResponseBody> response = call.execute();
+            if (response.isSuccess()) {
+                InputStream is = response.body().byteStream();
+                JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
+                Map<String, NodeDetail> map = new HashMap<String, NodeDetail>();
+                reader.beginObject();
+                while (reader.hasNext()) {
+                    String name = reader.nextName();
+                    if (name.equals("nodes")){
+                        reader.beginObject();
+                    }else if (name.equals(id)) {
+                        node = gson.<NodeDetail>fromJson(reader, new TypeToken<NodeDetail>(){}.getType());
+                        //TODO: Parse object to node
+                    }else {
+                        reader.skipValue();
+                    }
+                }
+                reader.endObject();
+                reader.close();
+                Log.d(this.getClass().getSimpleName(), "Checked for new node list from server");
+            } else {
+                Log.w(this.getClass().getSimpleName(), "Response no success, error code: " + response.code());
+            }
+        } catch (IOException e) {
+            Log.w(this.getClass().getSimpleName(), "Unable to fetch NodeList");
+        }
+        return node;
     }
 }
