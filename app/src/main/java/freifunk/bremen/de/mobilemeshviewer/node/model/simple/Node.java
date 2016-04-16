@@ -5,10 +5,11 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Node implements Parcelable, Comparable {
+public class Node implements Parcelable, Comparable<Node> {
 
     public static final Parcelable.Creator CREATOR =
             new Parcelable.Creator() {
@@ -111,11 +112,10 @@ public class Node implements Parcelable, Comparable {
     }
 
     @Override
-    public int compareTo(@NonNull Object another) {
-        if (another instanceof Node) {
-            return this.getName().compareTo(((Node) another).getName());
-        } else {
-            return 0;
-        }
+    public int compareTo(@NonNull Node that) {
+        return ComparisonChain.start()
+                .compare(this.getName(), that.getName())
+                .compare(this.getId(), that.getId())
+                .result();
     }
 }

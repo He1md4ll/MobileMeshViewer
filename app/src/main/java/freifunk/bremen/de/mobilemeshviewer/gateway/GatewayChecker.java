@@ -5,6 +5,8 @@ import android.util.Log;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -16,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.api.MortzuRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
 import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
@@ -31,6 +34,8 @@ import retrofit2.Response;
 public class GatewayChecker {
 
     @Inject
+    private PreferenceController preferenceController;
+    @Inject
     private RetrofitServiceManager retrofitServiceManager;
     private Optional<List<Gateway>> currentGatewayListOptional = Optional.absent();
 
@@ -40,29 +45,36 @@ public class GatewayChecker {
 
     public void reloadList() {
         List<Gateway> newGatewayList = loadList();
-        checkForChange(newGatewayList);
         currentGatewayListOptional = Optional.of(newGatewayList);
+        Collections.sort(currentGatewayListOptional.get());
+        checkForChange(newGatewayList);
         EventBus.getDefault().post(new GatewayListUpdatedEvent());
         Log.i(this.getClass().getSimpleName(), "Gateway list list reloaded");
     }
 
-    private void checkForChange(List<Gateway> newGatewayList) {
-        if (currentGatewayListOptional.isPresent()) {
-            Log.d(this.getClass().getSimpleName(), "Comparing gateway status");
-            List<Gateway> currentGatewayList = Lists.newArrayList(currentGatewayListOptional.get());
-            currentGatewayList.retainAll(newGatewayList);
-            if (currentGatewayList.size() == newGatewayList.size()) {
-                for (int i = 0; i < currentGatewayList.size(); i++) {
-                    compareState(currentGatewayList.get(i), newGatewayList.get(i));
-                }
-            }
+    private void checkForChange(List<Gateway> newGatewayListImut) {
+        Log.d(this.getClass().getSimpleName(), "Comparing gateway status");
+        List<Gateway> currentGatewayList = preferenceController.getGatewayList();
+        List<Gateway> newGatewayList = Lists.newArrayList(newGatewayListImut);
 
+        for (final Gateway newGateway : newGatewayList) {
+            Optional<Gateway> currentGatewayOptional = Iterables.tryFind(currentGatewayList, new Predicate<Gateway>() {
+                @Override
+                public boolean apply(Gateway input) {
+                    return input.equals(newGateway);
+                }
+            });
+            if (currentGatewayOptional.isPresent()) {
+                compareState(currentGatewayOptional.get(), newGateway);
+            } else {
+                preferenceController.addGatewayToGatewayList(newGateway);
+            }
         }
     }
 
     private void compareState(Gateway currentGateway, Gateway newGateway) {
         if (currentGateway.getUplink() != newGateway.getUplink() || currentGateway.getAddresses() != newGateway.getAddresses()) {
-            new GatewayStatusChangedEvent(newGateway);
+            EventBus.getDefault().post(new GatewayStatusChangedEvent(newGateway));
         }
     }
 
@@ -86,7 +98,7 @@ public class GatewayChecker {
     }
 
     private List<Gateway> transformCheckServerToGateway(List<CheckServer> checkServerList) {
-        Preconditions.checkArgument(checkServerList.size() > 0);
+        Preconditions.checkArgument(!Iterables.isEmpty(checkServerList));
         Log.d(this.getClass().getSimpleName(), "Transforming GatewayList");
         final int vpnServerCount = checkServerList.get(0).getVpnServers().size();
         final int breakEven = vpnServerCount / 2;
@@ -108,6 +120,6 @@ public class GatewayChecker {
                     }
                 };
 
-        return Lists.transform(Arrays.asList(gatewayBOArray), gatewayBoToGateway);
+        return Lists.newArrayList(Lists.transform(Arrays.asList(gatewayBOArray), gatewayBoToGateway));
     }
 }

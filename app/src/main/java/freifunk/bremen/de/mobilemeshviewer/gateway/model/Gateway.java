@@ -2,10 +2,12 @@ package freifunk.bremen.de.mobilemeshviewer.gateway.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
 
-public class Gateway implements Parcelable {
+public class Gateway implements Parcelable, Comparable<Gateway> {
     public static final Parcelable.Creator CREATOR =
             new Parcelable.Creator() {
                 public Gateway createFromParcel(Parcel in) {
@@ -100,5 +102,12 @@ public class Gateway implements Parcelable {
     @Override
     public int hashCode() {
         return Objects.hashCode(name);
+    }
+
+    @Override
+    public int compareTo(@NonNull Gateway that) {
+        return ComparisonChain.start()
+                .compare(this.getName(), that.getName())
+                .result();
     }
 }
