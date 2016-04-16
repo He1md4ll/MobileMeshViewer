@@ -44,6 +44,7 @@ public class PreferenceController {
 
     public void addGatewayToGatewayList(Gateway gateway) {
         List<Gateway> gatewayList = getGatewayList();
+        gatewayList.remove(gateway);
         gatewayList.add(gateway);
         updateGatewayList(gatewayList);
     }
