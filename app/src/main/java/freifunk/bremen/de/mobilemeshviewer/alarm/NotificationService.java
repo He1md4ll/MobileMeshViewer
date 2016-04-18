@@ -68,7 +68,7 @@ public class NotificationService extends RoboService {
     public void onNodeStatusChanged(GatewayStatusChangedEvent event) {
         final Gateway gateway = event.getGateway();
         final String notificationTitle = "State of gateway changed";
-        final String notificationText = "Gateway " + gateway.getName() + " changed its state to " + gateway.getUplink();
+        final String notificationText = gateway.getName() + " changed to " + gateway.getUplink();
         Intent resultIntent = new Intent(this, GatewayActivity.class);
         resultIntent.putExtra(GatewayActivity.BUNDLE_GATEWAY, gateway);
         PendingIntent resultPendingIntent = getPendingIntent(resultIntent);
