@@ -114,7 +114,7 @@ public class Node implements Parcelable, Comparable<Node> {
     @Override
     public int compareTo(@NonNull Node that) {
         return ComparisonChain.start()
-                .compare(this.getName(), that.getName())
+                .compare(this.getName().toLowerCase(), that.getName().toLowerCase())
                 .compare(this.getId(), that.getId())
                 .result();
     }

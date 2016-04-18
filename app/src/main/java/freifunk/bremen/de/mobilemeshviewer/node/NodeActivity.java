@@ -1,6 +1,7 @@
 package freifunk.bremen.de.mobilemeshviewer.node;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,7 +17,6 @@ import com.google.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.R;
@@ -37,8 +37,6 @@ public class NodeActivity extends RoboAppCompatActivity {
 
     @InjectExtra(value = BUNDLE_NODE)
     private Node node;
-    @InjectView(R.id.node_status)
-    private TextView nodeStatus;
     @InjectView(R.id.node_hardware)
     private TextView nodeHardware;
     @InjectView(R.id.toolbar)
@@ -124,28 +122,31 @@ public class NodeActivity extends RoboAppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeDetailFound(NodeDetailFoundEvent event){
-
         NodeDetail node = event.getNode();
-
-        Snackbar.make(toolbar, node.getNodeinfo().getNodeId() + " loaded",Snackbar.LENGTH_SHORT).show();
         toolbar.setTitle(node.getNodeinfo().getHostname());
-        nodeStatus.setText(node.getFlagsNode().getOnline() ? "Online" : "Offline");
         nodeHardware.setText(node.getNodeinfo().getHardware().getModel());
         nodeMac.setText(node.getNodeinfo().getNetwork().getMac());
         nodeId.setText(node.getNodeinfo().getNodeId());
         nodeFirmware.setText(node.getNodeinfo().getSoftware().getFirmware().getRelease()
                 + " \\ " + node.getNodeinfo().getSoftware().getFirmware().getBase() );
-        nodeUptime.setText(convertUptime(node.getStatistics().getUptime()));
         nodeAddresses1.setText(node.getNodeinfo().getNetwork().getAddresses().get(0));
         nodeAddresses2.setText(node.getNodeinfo().getNetwork().getAddresses().get(1));
         nodeAddresses3.setText(node.getNodeinfo().getNetwork().getAddresses().get(2));
         nodeAutoupdate.setText(convertAutoUpdate(node.getNodeinfo().getSoftware().getAutoupdater()));
-        nodeClients.setText(node.getStatistics().getClients() + "");
-        nodeLoadavg.setText(node.getStatistics().getLoadavg().toString());
-        nodeTraffic.setText(convertTraffic(node.getStatistics().getTraffic()));
 
-        if (!node.getNodeinfo().getOwner().equals(null)){
+        if (node.getNodeinfo().getOwner() != null){
             nodeOwner.setText(node.getNodeinfo().getOwner().getContact());
+        }
+
+        if(node.getFlagsNode().getOnline()){
+            nodeUptime.setText(convertUptime(node.getStatistics().getUptime()));
+            nodeLoadavg.setText(node.getStatistics().getLoadavg().toString()
+                            + " / " +  Math.round(node.getStatistics().getMemoryUsage()*100)+"%");
+            nodeClients.setText(node.getStatistics().getClients() + "");
+            nodeTraffic.setText(convertTraffic(node.getStatistics().getTraffic()));
+            toolbar.setTitleTextColor(Color.GREEN);
+        }else {
+            toolbar.setTitleTextColor(Color.RED);
         }
     }
 
@@ -153,11 +154,23 @@ public class NodeActivity extends RoboAppCompatActivity {
         String uptime_human;
 
         if (uptime < 60*60){ // unter 1h -> Minuten
-            uptime_human = Math.round(uptime/60) + " Minuten";
+            if (uptime > 60 && uptime < 60*2){
+                uptime_human = (int)Math.floor(uptime / 60) + " " + getString(R.string.minute); //Singular
+            }else {
+                uptime_human = (int)Math.floor(uptime / 60) + " " + getString(R.string.minutes); //Plural
+            }
         }else if (uptime < 60*60*24) { // unter 1 Tag -> Stunden
-            uptime_human = Math.round(uptime/60/60) +  " Stunden";
+            if (uptime > 60*60 && uptime < 60*60*2){
+                uptime_human = (int)Math.floor(uptime / 60 / 60) + " " + getString(R.string.hour); //Singular
+            } else {
+                uptime_human = (int)Math.floor(uptime / 60 / 60) + " " + getString(R.string.hours); //Plural
+            }
         } else { // über 1 Tag
-            uptime_human = Math.round(uptime/60/60/24) + " Tage";
+            if (uptime < 60*60*24*2) {
+                uptime_human = (int)Math.floor(uptime / 60 / 60 / 24) + " " + getString(R.string.day); //Singular
+            } else {
+                uptime_human = (int)Math.floor(uptime / 60 / 60 / 24) + " " + getString(R.string.days); //Plural
+            }
         }
 
         return uptime_human;

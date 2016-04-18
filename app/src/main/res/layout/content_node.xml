@@ -12,35 +12,13 @@
     tools:context=".node.NodeActivity"
     tools:showIn="@layout/activity_node">
 
-    <LinearLayout
-        android:id="@+id/line_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="4dp">
-        <TextView
-            android:id="@+id/node_status_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/node_status_label"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_weight="@string/weight_label"/>
-        <TextView
-            android:id="@+id/node_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="right"
-            android:layout_weight="@string/weight_value"/>
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/line_hardware"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="18dp"
-        android:layout_below="@id/line_status">
+        android:layout_marginTop="4dp">
         <TextView
             android:id="@+id/node_hardware_label"
             android:layout_width="wrap_content"
@@ -237,26 +215,26 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/line_loadavg"
-        android:layout_width="match_parent"
+    android:id="@+id/line_loadavg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="18dp"
+    android:layout_below="@id/line_clients">
+    <TextView
+        android:id="@+id/node_loadavg_label"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="18dp"
-        android:layout_below="@id/line_clients">
-        <TextView
-            android:id="@+id/node_loadavg_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/node_loadavg_label"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_weight="@string/weight_label"/>
-        <TextView
-            android:id="@+id/node_loadavg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="right"
-            android:layout_weight="@string/weight_value"/>
+        android:text="@string/node_loadavg_label"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_weight="@string/weight_label"/>
+    <TextView
+        android:id="@+id/node_loadavg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="right"
+        android:layout_weight="@string/weight_value"/>
     </LinearLayout>
 
     <LinearLayout
@@ -282,6 +260,8 @@
             android:layout_weight="@string/weight_value"/>
     </LinearLayout>
 
+
+
     <LinearLayout
         android:id="@+id/line_traffic"
         android:layout_width="match_parent"
@@ -301,8 +281,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="center"
-            android:layout_marginRight="35dp"
+            android:gravity="right"
             android:layout_weight="@string/weight_value"/>
     </LinearLayout>
 

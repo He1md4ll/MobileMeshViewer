@@ -78,7 +78,6 @@
     <!--  Node Detail Page-->
     <string name="weight_label">0.8</string>
     <string name="weight_value">1.2</string>
-    <string name="node_status_label">Status</string>
     <string name="node_hardware_label">Hardware</string>
     <string name="node_mac_label">Primäre MAC</string>
     <string name="node_node_id_label">Node ID</string>
@@ -87,7 +86,7 @@
     <string name="node_addresses_label">IP Adressen</string>
     <string name="node_autoupdate_label">Autom. Updates</string>
     <string name="node_clients_label">Clients</string>
-    <string name="node_loadavg_label">Systemlast</string>
+    <string name="node_loadavg_label">Systemlast (CPU/Mem)</string>
     <string name="node_traffic_label">Traffic</string>
     <string name="node_owner_label">Kontakt</string>
 
