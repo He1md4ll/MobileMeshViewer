@@ -9,10 +9,3 @@
 /local.properties
 *.iml
 *.log
-.idea/vcs.xml
-.idea/runConfigurations.xml
-.idea/gradle.xml
-.idea/vcs.xml
-.idea/encodings.xml
-app/app.iml
-MobileMeshViewer.iml
