@@ -1,9 +1,15 @@
 package freifunk.bremen.de.mobilemeshviewer.node;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import com.google.common.io.CharStreams;
+import com.google.common.io.Closeables;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -12,15 +18,18 @@ import com.google.inject.Singleton;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
+import freifunk.bremen.de.mobilemeshviewer.R;
 import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
@@ -42,6 +51,8 @@ public class NodeChecker {
     private Optional<NodeList> currentNodeListOptional = Optional.absent();
     @Inject
     private Gson gson;
+    @Inject
+    Context context;
 
     public Optional<NodeList> fetchList() {
         return currentNodeListOptional;
@@ -97,15 +108,10 @@ public class NodeChecker {
     }
 
     public NodeDetail getDetailNodeById(String id) {
-        final FreifunkRestConsumer freifunkService;
         NodeDetail node = new NodeDetail();
         try {
-            freifunkService = retrofitServiceManager.getFreifunkService();
-            Call<ResponseBody> call = freifunkService.getNodeDetailList();
-            Response<ResponseBody> response = call.execute();
-            if (response.isSuccessful()) {
-                InputStream is = response.body().byteStream();
-                JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
+                JsonReader reader = getDetailNodeList();
+
                 Map<String, NodeDetail> map = new HashMap<String, NodeDetail>();
                 reader.beginObject();
                 while (reader.hasNext()) {
@@ -114,20 +120,49 @@ public class NodeChecker {
                         reader.beginObject();
                     }else if (name.equals(id)) {
                         node = gson.<NodeDetail>fromJson(reader, new TypeToken<NodeDetail>(){}.getType());
-                        //TODO: Parse object to node
                     }else {
                         reader.skipValue();
                     }
                 }
                 reader.endObject();
                 reader.close();
-                Log.d(this.getClass().getSimpleName(), "Checked for new node list from server");
-            } else {
-                Log.w(this.getClass().getSimpleName(), "Response no success, error code: " + response.code());
-            }
+                Log.d(this.getClass().getSimpleName(), "Loading node details successful");
         } catch (IOException e) {
-            Log.w(this.getClass().getSimpleName(), "Unable to fetch NodeList");
+            Log.w(this.getClass().getSimpleName(), "Unable to load node details");
         }
         return node;
+    }
+
+    private JsonReader getDetailNodeList() {
+        final FreifunkRestConsumer freifunkService;
+        JsonReader reader = null;
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        long currentTime = new Date().getTime();
+        long lastUpdate = Long.parseLong(sp.getString(context.getString(R.string.nodes_json_last_update), "0"));
+        int updateIntervall = Integer.parseInt(sp.getString("pref_sync_frequency", "0")) * 1000 * 60;  // TODO: in R Datei...
+        try {
+                if (currentTime - lastUpdate > updateIntervall) { // reload from server
+                    freifunkService = retrofitServiceManager.getFreifunkService();
+                    Call<ResponseBody> call = freifunkService.getNodeDetailList();
+                    Response<ResponseBody> response = call.execute();
+                    if (response.isSuccessful()) {
+                        InputStream is = response.body().byteStream();
+                        reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
+                        String content = CharStreams.toString(new InputStreamReader(is, Charsets.UTF_8));
+                        sp.edit().putString(context.getString(R.string.nodes_json), content).commit();
+                        sp.edit().putString(context.getString(R.string.nodes_json_last_update), String.valueOf(new Date().getTime())).commit();
+                        Closeables.closeQuietly(is);
+                        Log.d(this.getClass().getSimpleName(), "Reloaded nodes.json from Server");
+                    } else {
+                        Log.w(this.getClass().getSimpleName(), "Response no success, error code: " + response.code());
+                    }
+                }
+                // load from shared prefs (cache)
+                String content = sp.getString(context.getString(R.string.nodes_json), "");
+                reader = new JsonReader(new InputStreamReader(new ByteArrayInputStream(content.getBytes(Charsets.UTF_8))));
+        } catch (IOException e) {
+            Log.w(this.getClass().getSimpleName(), "Unable to fetch NodeDetailList");
+        }
+        return reader;
     }
 }

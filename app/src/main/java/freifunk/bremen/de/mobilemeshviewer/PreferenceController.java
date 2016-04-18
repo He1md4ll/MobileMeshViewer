@@ -22,6 +22,7 @@ public class PreferenceController {
     public static final String PREF_ALARM_INTERVAL = "pref_sync_frequency";
     private static final long MINUTE_MULTIPLIER = 60 * 1000;
     private static final String DEFAULT_ALARM_INTERVAL = "5";
+    //TODO: Auslagern in R.string...
     @Inject
     private SharedPreferences sharedPreferences;
 
