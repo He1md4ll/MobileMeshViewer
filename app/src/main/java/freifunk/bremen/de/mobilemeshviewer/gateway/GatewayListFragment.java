@@ -38,6 +38,7 @@ public class GatewayListFragment extends RoboListFragment implements LoaderManag
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        gatewayListLoader.onContentChanged();
     }
 
     @Override

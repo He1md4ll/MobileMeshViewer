@@ -3,6 +3,8 @@ package freifunk.bremen.de.mobilemeshviewer.node;
 import android.util.Log;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -16,9 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
@@ -60,13 +60,19 @@ public class NodeChecker {
         final List<Node> observedNodeList = preferenceController.getObservedNodeList();
         final List<Node> newNodeList = Lists.newArrayList(newNodeListOptional.get().getNodes());
 
-        newNodeList.retainAll(observedNodeList);
-
         Log.d(this.getClass().getSimpleName(), "Determining node status of observed nodes");
-        for (Node observedNode : observedNodeList) {
-            final int newNodeIndex = newNodeList.indexOf(observedNode);
-            final Node newNode = newNodeList.get(newNodeIndex);
-            determineStatus(observedNode, newNode);
+        for (final Node observedNode : observedNodeList) {
+            Optional<Node> newNodeOptional = Iterables.tryFind(newNodeList, new Predicate<Node>() {
+                @Override
+                public boolean apply(Node input) {
+                    return input.equals(observedNode);
+                }
+            });
+            if (newNodeOptional.isPresent()) {
+                determineStatus(observedNode, newNodeOptional.get());
+            } else {
+                Log.w(this.getClass().getSimpleName(), "Observed node " + observedNode.getName() + " could not be found new list. Preserving old state.");
+            }
         }
     }
 
@@ -106,15 +112,15 @@ public class NodeChecker {
             if (response.isSuccessful()) {
                 InputStream is = response.body().byteStream();
                 JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
-                Map<String, NodeDetail> map = new HashMap<String, NodeDetail>();
                 reader.beginObject();
                 while (reader.hasNext()) {
                     String name = reader.nextName();
                     if (name.equals("nodes")){
                         reader.beginObject();
                     }else if (name.equals(id)) {
-                        node = gson.<NodeDetail>fromJson(reader, new TypeToken<NodeDetail>(){}.getType());
-                        //TODO: Parse object to node
+                        node = gson.fromJson(reader, new TypeToken<NodeDetail>() {
+                        }.getType());
+                        reader.endObject();
                     }else {
                         reader.skipValue();
                     }
