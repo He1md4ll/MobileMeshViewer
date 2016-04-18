@@ -120,12 +120,11 @@ public class NodeChecker {
                     }else if (name.equals(id)) {
                         node = gson.fromJson(reader, new TypeToken<NodeDetail>() {
                         }.getType());
-                        reader.endObject();
+                        break;
                     }else {
                         reader.skipValue();
                     }
                 }
-                reader.endObject();
                 reader.close();
                 Log.d(this.getClass().getSimpleName(), "Checked for new node list from server");
             } else {

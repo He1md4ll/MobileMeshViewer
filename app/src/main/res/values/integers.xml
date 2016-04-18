@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="weight_label">4</integer>
+    <integer name="weight_value">6</integer>
+</resources>
+
