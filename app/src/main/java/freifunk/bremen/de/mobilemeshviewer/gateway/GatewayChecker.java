@@ -73,7 +73,7 @@ public class GatewayChecker {
     }
 
     private void compareState(Gateway currentGateway, Gateway newGateway) {
-        if (currentGateway.getUplink() != newGateway.getUplink() || currentGateway.getAddresses() != newGateway.getAddresses()) {
+        if (currentGateway.getUplink() != newGateway.getUplink()) {
             preferenceController.addGatewayToGatewayList(newGateway);
             EventBus.getDefault().post(new GatewayStatusChangedEvent(newGateway));
         }

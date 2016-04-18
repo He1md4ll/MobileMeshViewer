@@ -110,23 +110,23 @@ public class NodeChecker {
     public NodeDetail getDetailNodeById(String id) {
         NodeDetail node = new NodeDetail();
         try {
-                JsonReader reader = getDetailNodeList();
+            JsonReader reader = getDetailNodeList();
 
-                Map<String, NodeDetail> map = new HashMap<String, NodeDetail>();
-                reader.beginObject();
-                while (reader.hasNext()) {
-                    String name = reader.nextName();
-                    if (name.equals("nodes")){
-                        reader.beginObject();
-                    }else if (name.equals(id)) {
-                        node = gson.<NodeDetail>fromJson(reader, new TypeToken<NodeDetail>(){}.getType());
-                    }else {
-                        reader.skipValue();
-                    }
+            Map<String, NodeDetail> map = new HashMap<String, NodeDetail>();
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                if (name.equals("nodes")){
+                    reader.beginObject();
+                }else if (name.equals(id)) {
+                    node = gson.<NodeDetail>fromJson(reader, new TypeToken<NodeDetail>(){}.getType());
+                    break;
+                }else {
+                    reader.skipValue();
                 }
-                reader.endObject();
-                reader.close();
-                Log.d(this.getClass().getSimpleName(), "Loading node details successful");
+            }
+            reader.close();
+            Log.d(this.getClass().getSimpleName(), "Loading node details successful");
         } catch (IOException e) {
             Log.w(this.getClass().getSimpleName(), "Unable to load node details");
         }
@@ -141,25 +141,25 @@ public class NodeChecker {
         long lastUpdate = Long.parseLong(sp.getString(context.getString(R.string.nodes_json_last_update), "0"));
         int updateIntervall = Integer.parseInt(sp.getString("pref_sync_frequency", "0")) * 1000 * 60;  // TODO: in R Datei...
         try {
-                if (currentTime - lastUpdate > updateIntervall) { // reload from server
-                    freifunkService = retrofitServiceManager.getFreifunkService();
-                    Call<ResponseBody> call = freifunkService.getNodeDetailList();
-                    Response<ResponseBody> response = call.execute();
-                    if (response.isSuccessful()) {
-                        InputStream is = response.body().byteStream();
-                        reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
-                        String content = CharStreams.toString(new InputStreamReader(is, Charsets.UTF_8));
-                        sp.edit().putString(context.getString(R.string.nodes_json), content).commit();
-                        sp.edit().putString(context.getString(R.string.nodes_json_last_update), String.valueOf(new Date().getTime())).commit();
-                        Closeables.closeQuietly(is);
-                        Log.d(this.getClass().getSimpleName(), "Reloaded nodes.json from Server");
-                    } else {
-                        Log.w(this.getClass().getSimpleName(), "Response no success, error code: " + response.code());
-                    }
+            if (currentTime - lastUpdate > updateIntervall) { // reload from server
+                freifunkService = retrofitServiceManager.getFreifunkService();
+                Call<ResponseBody> call = freifunkService.getNodeDetailList();
+                Response<ResponseBody> response = call.execute();
+                if (response.isSuccessful()) {
+                    InputStream is = response.body().byteStream();
+                    reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
+                    String content = CharStreams.toString(new InputStreamReader(is, Charsets.UTF_8));
+                    sp.edit().putString(context.getString(R.string.nodes_json), content).commit();
+                    sp.edit().putString(context.getString(R.string.nodes_json_last_update), String.valueOf(new Date().getTime())).commit();
+                    Closeables.closeQuietly(is);
+                    Log.d(this.getClass().getSimpleName(), "Reloaded nodes.json from Server");
+                } else {
+                    Log.w(this.getClass().getSimpleName(), "Response no success, error code: " + response.code());
                 }
-                // load from shared prefs (cache)
-                String content = sp.getString(context.getString(R.string.nodes_json), "");
-                reader = new JsonReader(new InputStreamReader(new ByteArrayInputStream(content.getBytes(Charsets.UTF_8))));
+            }
+            // load from shared prefs (cache)
+            String content = sp.getString(context.getString(R.string.nodes_json), "");
+            reader = new JsonReader(new InputStreamReader(new ByteArrayInputStream(content.getBytes(Charsets.UTF_8))));
         } catch (IOException e) {
             Log.w(this.getClass().getSimpleName(), "Unable to fetch NodeDetailList");
         }

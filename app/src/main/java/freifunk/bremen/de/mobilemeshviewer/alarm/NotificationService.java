@@ -68,7 +68,7 @@ public class NotificationService extends RoboService {
     public void onNodeStatusChanged(GatewayStatusChangedEvent event) {
         final Gateway gateway = event.getGateway();
         final String notificationTitle = "State of gateway changed";
-        final String notificationText = "State of gateway " + gateway.getName() + " changed";
+        final String notificationText = gateway.getName() + " changed to " + gateway.getUplink();
         Intent resultIntent = new Intent(this, GatewayActivity.class);
         resultIntent.putExtra(GatewayActivity.BUNDLE_GATEWAY, gateway);
         PendingIntent resultPendingIntent = getPendingIntent(resultIntent);
@@ -82,23 +82,24 @@ public class NotificationService extends RoboService {
     }
 
     private void buildNotification(String title, String text, PendingIntent resultPendingIntent) {
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        final Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        final int color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
+                        .setContentIntent(resultPendingIntent)
                         .setSmallIcon(R.drawable.ic_notification)
-                        .setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
+                        .setColor(color)
+                        .setLights(color, 2000, 3000)
                         .setLargeIcon(bm)
                         .setContentTitle(title)
                         .setContentText(text)
-                        .setAutoCancel(true);
-
-        mBuilder.setContentIntent(resultPendingIntent);
+                        .setAutoCancel(true)
+                        .setOnlyAlertOnce(true);
         notificationManager.notify(0, mBuilder.build());
     }
 
     private PendingIntent getPendingIntent(Intent resultIntent) {
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(NodeActivity.class);
         stackBuilder.addParentStack(MeshViewerActivity.class);
         stackBuilder.addNextIntent(resultIntent);
         return stackBuilder.getPendingIntent(

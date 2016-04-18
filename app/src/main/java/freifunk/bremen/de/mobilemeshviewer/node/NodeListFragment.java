@@ -42,6 +42,7 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        nodeListLoader.onContentChanged();
     }
 
     @Override

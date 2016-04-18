@@ -76,8 +76,6 @@
     <string name="title_activity_gateway">GatewayActivity</string>
 
     <!--  Node Detail Page-->
-    <string name="weight_label">0.8</string>
-    <string name="weight_value">1.2</string>
     <string name="node_hardware_label">Hardware</string>
     <string name="node_mac_label">Primäre MAC</string>
     <string name="node_node_id_label">Node ID</string>
