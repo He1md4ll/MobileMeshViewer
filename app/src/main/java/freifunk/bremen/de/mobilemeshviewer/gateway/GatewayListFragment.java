@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
@@ -33,6 +34,8 @@ public class GatewayListFragment extends RoboListFragment implements LoaderManag
     @Inject
     private GatewayListLoader gatewayListLoader;
     private ArrayAdapter<Gateway> adapter;
+    private boolean visible;
+    private Optional<Snackbar> snackbarOptional = Optional.absent();
 
     @Override
     public void onStart() {
@@ -69,6 +72,12 @@ public class GatewayListFragment extends RoboListFragment implements LoaderManag
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.removeItem(R.id.action_search);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        visible = isVisibleToUser;
     }
 
     @Override
@@ -109,6 +118,22 @@ public class GatewayListFragment extends RoboListFragment implements LoaderManag
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGatewayListUpdatedMain(GatewayListUpdatedEvent event) {
-        Snackbar.make(getListView(), "List reloaded", Snackbar.LENGTH_SHORT).show();
+        if (visible && (!snackbarOptional.isPresent() || !snackbarOptional.get().isShown())) {
+            final Snackbar snackbar;
+            if (event.isSuccess()) {
+                snackbar = Snackbar.make(getListView(), R.string.snackbar_gateway_success, Snackbar.LENGTH_SHORT);
+            } else {
+                snackbar = Snackbar.make(getListView(), R.string.snackbar_gateway_fail, Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction(R.string.snackbar_button_OK, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                    }
+                });
+                snackbar.show();
+            }
+            snackbar.show();
+            snackbarOptional = Optional.of(snackbar);
+        }
     }
 }

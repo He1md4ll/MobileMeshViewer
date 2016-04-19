@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,6 +38,8 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
     @Inject
     private NodeListLoader nodeListLoader;
     private ArrayAdapter<Node> adapter;
+    private boolean visible;
+    private Optional<Snackbar> snackbarOptional = Optional.absent();
 
     @Override
     public void onStart() {
@@ -76,6 +79,12 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
         searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(this);
         searchView.setOnCloseListener(this);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        visible = isVisibleToUser;
     }
 
     @Override
@@ -134,6 +143,26 @@ public class NodeListFragment extends RoboListFragment implements SearchView.OnQ
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeListUpdated(NodeListUpdatedEvent ignored) {
         nodeListLoader.onContentChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNodeListUpdatedMain(NodeListUpdatedEvent event) {
+        if (visible && (!snackbarOptional.isPresent() || !snackbarOptional.get().isShown())) {
+            final Snackbar snackbar;
+            if (event.isSuccess()) {
+                snackbar = Snackbar.make(getListView(), R.string.snackbar_node_success, Snackbar.LENGTH_SHORT);
+            } else {
+                snackbar = Snackbar.make(getListView(), R.string.snackbar_node_fail, Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction(R.string.snackbar_button_OK, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                    }
+                });
+            }
+            snackbar.show();
+            snackbarOptional = Optional.of(snackbar);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

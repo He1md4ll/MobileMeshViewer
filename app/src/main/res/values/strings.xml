@@ -7,6 +7,12 @@
     <string name="action_settings">Settings</string>
     <string name="toolbarText">MeshViewer</string>
 
+    <string name="snackbar_button_OK">OK</string>
+    <string name="snackbar_node_success">Node list reloaded</string>
+    <string name="snackbar_gateway_success">Node list reloaded</string>
+    <string name="snackbar_node_fail">Node list reload failed. Drag list to try again.</string>
+    <string name="snackbar_gateway_fail">Gateway list reload failed. Drag list to try again.</string>
+
     <!-- Menu entries-->
     <string name="nav_myNodes">Meine Knoten</string>
     <string name="nav_nodeFinder">Knoten-Finder</string>
@@ -88,10 +94,6 @@
     <string name="node_traffic_label">Traffic</string>
     <string name="node_owner_label">Kontakt</string>
 
-    <string name="nodes_json">nodes_json</string>
-    <string name="nodes_json_last_update"></string>
-
-
     <string name="minute">Minute</string>
     <string name="hour">Stunde</string>
     <string name="day">Tag</string>
@@ -100,5 +102,4 @@
     <string name="days">Tage</string>
     <string name="autoupdate_enabled">aktiviert</string>
     <string name="autoupdate_disabled">deaktiviert</string>
-
 </resources>
