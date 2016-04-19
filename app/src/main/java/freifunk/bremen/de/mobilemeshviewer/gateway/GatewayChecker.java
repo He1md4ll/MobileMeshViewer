@@ -39,8 +39,8 @@ public class GatewayChecker {
     private RetrofitServiceManager retrofitServiceManager;
     private Optional<List<Gateway>> currentGatewayListOptional = Optional.absent();
 
-    public Optional<List<Gateway>> fetchList() {
-        return currentGatewayListOptional;
+    public List<Gateway> fetchList() {
+        return currentGatewayListOptional.or(Lists.<Gateway>newArrayList());
     }
 
     public void reloadList() {

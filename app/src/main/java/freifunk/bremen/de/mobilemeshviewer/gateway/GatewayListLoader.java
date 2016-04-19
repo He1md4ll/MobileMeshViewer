@@ -12,7 +12,7 @@ import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 public class GatewayListLoader extends AsyncTaskLoader<List<Gateway>> {
 
     @Inject
-    private GatewayController gatewayController;
+    private GatewayChecker gatewayChecker;
     private List<Gateway> gatewayList;
 
     @Inject
@@ -22,7 +22,7 @@ public class GatewayListLoader extends AsyncTaskLoader<List<Gateway>> {
 
     @Override
     public List<Gateway> loadInBackground() {
-        return gatewayController.getGatewayList();
+        return gatewayChecker.fetchList();
     }
 
     @Override

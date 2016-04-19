@@ -11,13 +11,13 @@ import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetail;
 
 public class NodeDetailLoader extends AsyncTask<String, Void, NodeDetail> {
 
-    @Inject
-    private NodeController nodeController;
     NodeDetail node;
+    @Inject
+    private NodeChecker nodeChecker;
 
     @Override
     protected NodeDetail doInBackground(String... params) {
-        return nodeController.getDetailNodeById(params[0]);
+        return nodeChecker.getDetailNodeById(params[0]);
     }
 
     @Override

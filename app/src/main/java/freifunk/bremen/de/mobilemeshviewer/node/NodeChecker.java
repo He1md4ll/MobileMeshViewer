@@ -45,8 +45,8 @@ public class NodeChecker {
     @Inject
     private Gson gson;
 
-    public Optional<List<Node>> fetchList() {
-        return currentNodeListOptional;
+    public List<Node> fetchList() {
+        return currentNodeListOptional.or(Lists.<Node>newArrayList());
     }
 
     public void reloadList() {
