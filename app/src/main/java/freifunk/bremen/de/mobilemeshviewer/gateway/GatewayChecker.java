@@ -45,11 +45,16 @@ public class GatewayChecker {
 
     public void reloadList() {
         List<Gateway> newGatewayList = loadList();
-        currentGatewayListOptional = Optional.of(newGatewayList);
-        Collections.sort(currentGatewayListOptional.get());
-        checkForChange(newGatewayList);
-        EventBus.getDefault().post(new GatewayListUpdatedEvent());
-        Log.i(this.getClass().getSimpleName(), "Gateway list list reloaded");
+        if (!newGatewayList.isEmpty()) {
+            currentGatewayListOptional = Optional.of(newGatewayList);
+            Collections.sort(currentGatewayListOptional.get());
+            checkForChange(newGatewayList);
+            EventBus.getDefault().post(new GatewayListUpdatedEvent(Boolean.TRUE));
+            Log.i(this.getClass().getSimpleName(), "Gateway list reloaded");
+        } else {
+            EventBus.getDefault().post(new GatewayListUpdatedEvent(Boolean.FALSE));
+            Log.w(this.getClass().getSimpleName(), "Gateway list reload failed. Keeping old data");
+        }
     }
 
     private void checkForChange(List<Gateway> newGatewayListImut) {
@@ -81,7 +86,7 @@ public class GatewayChecker {
 
     private List<Gateway> loadList() {
         final MortzuRestConsumer mortzuService;
-        List<Gateway> gatewayList = Lists.newArrayList();
+        List<Gateway> gatewayList = Collections.emptyList();
         try {
             mortzuService = retrofitServiceManager.getMortzuService();
             Call<List<CheckServer>> call = mortzuService.getGatewayList();
@@ -93,7 +98,7 @@ public class GatewayChecker {
                 Log.w(this.getClass().getSimpleName(), "Response no success, error code: " + response.code());
             }
         } catch (IOException | IllegalArgumentException e) {
-            Log.w(this.getClass().getSimpleName(), "Unable to fetch GatewayList");
+            Log.w(this.getClass().getSimpleName(), "Unable to fetch GatewayList", e);
         }
         return gatewayList;
     }

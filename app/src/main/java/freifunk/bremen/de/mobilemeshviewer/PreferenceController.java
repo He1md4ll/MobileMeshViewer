@@ -3,12 +3,19 @@ package freifunk.bremen.de.mobilemeshviewer;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import com.google.common.io.CharStreams;
+import com.google.common.io.Closeables;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Date;
 import java.util.List;
 
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
@@ -19,10 +26,12 @@ public class PreferenceController {
 
     public static final String PREF_NODE_LIST_KEY = "pref_nodeList";
     public static final String PREF_GATEWAY_LIST_KEY = "pref_gatewayList";
+    public static final String PREF_NODE_DETAIL_LIST_KEY = "pref_nodeDetailList";
     public static final String PREF_ALARM_INTERVAL = "pref_sync_frequency";
+    public static final String PREF_NODE_DETAIL_LAST_UPDATE = "pref_node_detail_last_update";
     private static final long MINUTE_MULTIPLIER = 60 * 1000;
     private static final String DEFAULT_ALARM_INTERVAL = "5";
-    //TODO: Auslagern in R.string...
+
     @Inject
     private SharedPreferences sharedPreferences;
 
@@ -67,5 +76,24 @@ public class PreferenceController {
     public long getAlarmInterval() {
         final String alarmInterval = sharedPreferences.getString(PREF_ALARM_INTERVAL, DEFAULT_ALARM_INTERVAL);
         return Long.valueOf(alarmInterval) * MINUTE_MULTIPLIER;
+    }
+
+    public long getLastNodeDetailUpdate() {
+        return sharedPreferences.getLong(PREF_NODE_DETAIL_LAST_UPDATE, 0);
+    }
+
+    public void saveNodeDetailInputStream(final InputStream stream) {
+        try {
+            String content = CharStreams.toString(new InputStreamReader(stream, Charsets.UTF_8));
+            sharedPreferences.edit().putString(PREF_NODE_DETAIL_LIST_KEY, content).apply();
+            sharedPreferences.edit().putLong(PREF_NODE_DETAIL_LAST_UPDATE, new Date().getTime()).apply();
+            Closeables.closeQuietly(stream);
+        } catch (IOException e) {
+            Log.w(this.getClass().getSimpleName(), "Error while parsing InputStream of NodeDetail list", e);
+        }
+    }
+
+    public String getNodeDetailString() {
+        return sharedPreferences.getString(PREF_NODE_DETAIL_LIST_KEY, "");
     }
 }

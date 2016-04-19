@@ -29,7 +29,7 @@ public class NodeListLoader extends AsyncTaskLoader<List<Node>> {
     public void deliverResult(List<Node> nodeList) {
         this.nodeList = nodeList;
 
-        if (isStarted() && !this.nodeList.isEmpty()) {
+        if (isStarted()) {
             super.deliverResult(nodeList);
         }
     }

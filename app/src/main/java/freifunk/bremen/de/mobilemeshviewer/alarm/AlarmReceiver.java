@@ -20,10 +20,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (!alarmProcessing) {
             alarmProcessing = true;
             EventBus.getDefault().register(this);
-            final Intent nodeServiceIntent = new Intent(context, CheckerService.class);
-            context.startService(nodeServiceIntent);
             final Intent notificationServiceIntent = new Intent(context, NotificationService.class);
             context.startService(notificationServiceIntent);
+            final Intent nodeServiceIntent = new Intent(context, CheckerService.class);
+            context.startService(nodeServiceIntent);
             Log.i(this.getClass().getSimpleName(), "Received NodeAlarm from manager");
         } else {
             Log.w(this.getClass().getSimpleName(), "Last update still running: Skipping alarm");

@@ -29,7 +29,7 @@ public class GatewayListLoader extends AsyncTaskLoader<List<Gateway>> {
     public void deliverResult(List<Gateway> gatewayList) {
         this.gatewayList = gatewayList;
 
-        if (isStarted() && !this.gatewayList.isEmpty()) {
+        if (isStarted()) {
             super.deliverResult(gatewayList);
         }
     }

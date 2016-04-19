@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
@@ -129,26 +130,30 @@ public class NodeActivity extends RoboAppCompatActivity {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeDetailFound(NodeDetailFoundEvent event){
         final NodeDetail nodeDetail = event.getNode();
-        nodeHardware.setText(nodeDetail.getNodeinfo().getHardware().getModel());
-        nodeMac.setText(nodeDetail.getNodeinfo().getNetwork().getMac());
-        nodeId.setText(nodeDetail.getNodeinfo().getNodeId());
-        nodeFirmware.setText(nodeDetail.getNodeinfo().getSoftware().getFirmware().getRelease()
-                + " \\ " + nodeDetail.getNodeinfo().getSoftware().getFirmware().getBase());
-        nodeAddresses1.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(0));
-        nodeAddresses2.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(1));
-        nodeAddresses3.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(2));
-        nodeAutoupdate.setText(convertAutoUpdate(nodeDetail.getNodeinfo().getSoftware().getAutoupdater()));
+        if (Optional.fromNullable(nodeDetail.getNodeinfo()).isPresent()) {
+            nodeHardware.setText(nodeDetail.getNodeinfo().getHardware().getModel());
+            nodeMac.setText(nodeDetail.getNodeinfo().getNetwork().getMac());
+            nodeId.setText(nodeDetail.getNodeinfo().getNodeId());
+            nodeFirmware.setText(nodeDetail.getNodeinfo().getSoftware().getFirmware().getRelease()
+                    + " \\ " + nodeDetail.getNodeinfo().getSoftware().getFirmware().getBase());
+            nodeAddresses1.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(0));
+            nodeAddresses2.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(1));
+            nodeAddresses3.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(2));
+            nodeAutoupdate.setText(convertAutoUpdate(nodeDetail.getNodeinfo().getSoftware().getAutoupdater()));
 
-        if (nodeDetail.getNodeinfo().getOwner() != null) {
-            nodeOwner.setText(nodeDetail.getNodeinfo().getOwner().getContact());
-        }
+            if (nodeDetail.getNodeinfo().getOwner() != null) {
+                nodeOwner.setText(nodeDetail.getNodeinfo().getOwner().getContact());
+            }
 
-        if (nodeDetail.getFlagsNode().getOnline()) {
-            nodeUptime.setText(convertUptime(nodeDetail.getStatistics().getUptime()));
-            nodeLoadavg.setText(nodeDetail.getStatistics().getLoadavg().toString()
-                    + " / " + Math.round(nodeDetail.getStatistics().getMemoryUsage() * 100) + "%");
-            nodeClients.setText(nodeDetail.getStatistics().getClients() + "");
-            nodeTraffic.setText(convertTraffic(nodeDetail.getStatistics().getTraffic()));
+            if (nodeDetail.getFlagsNode().getOnline()) {
+                nodeUptime.setText(convertUptime(nodeDetail.getStatistics().getUptime()));
+                nodeLoadavg.setText(nodeDetail.getStatistics().getLoadavg().toString()
+                        + " / " + Math.round(nodeDetail.getStatistics().getMemoryUsage() * 100) + "%");
+                nodeClients.setText(nodeDetail.getStatistics().getClients() + "");
+                nodeTraffic.setText(convertTraffic(nodeDetail.getStatistics().getTraffic()));
+            }
+        } else {
+            Snackbar.make(fab, "Couldn't load details for " + node.getName(), Snackbar.LENGTH_LONG).show();
         }
     }
 
