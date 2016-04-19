@@ -12,7 +12,7 @@ import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 public class NodeListLoader extends AsyncTaskLoader<List<Node>> {
 
     @Inject
-    private NodeController nodeController;
+    private NodeChecker nodeChecker;
     private List<Node> nodeList;
 
     @Inject
@@ -22,7 +22,7 @@ public class NodeListLoader extends AsyncTaskLoader<List<Node>> {
 
     @Override
     public List<Node> loadInBackground() {
-        return nodeController.getSimpleNodeList();
+        return nodeChecker.fetchList();
     }
 
     @Override
