@@ -21,12 +21,16 @@ public class AlarmController {
     public void startNodeAlarm() {
         final PendingIntent pendingIntent = getPendingIntent();
         final long interval = preferenceController.getAlarmInterval();
-        context.sendBroadcast(getAlarmIntent());
+        sendAlarmImmediately();
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, interval, interval, pendingIntent);
     }
 
     public void stopNodeAlarm() {
         alarmManager.cancel(getPendingIntent());
+    }
+
+    public void sendAlarmImmediately() {
+        context.sendBroadcast(getAlarmIntent());
     }
 
     private PendingIntent getPendingIntent() {

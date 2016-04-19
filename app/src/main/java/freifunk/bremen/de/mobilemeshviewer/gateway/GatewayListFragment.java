@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.view.LayoutInflater;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -24,15 +23,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.SwipeRefreshListRoboFragment;
+import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
 import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
-import roboguice.fragment.provided.RoboListFragment;
 
 
-public class GatewayListFragment extends RoboListFragment implements LoaderManager.LoaderCallbacks<List<Gateway>> {
+public class GatewayListFragment extends SwipeRefreshListRoboFragment implements LoaderManager.LoaderCallbacks<List<Gateway>> {
 
     @Inject
     private GatewayListLoader gatewayListLoader;
+    @Inject
+    private AlarmController alarmController;
     private ArrayAdapter<Gateway> adapter;
     private boolean visible;
     private Optional<Snackbar> snackbarOptional = Optional.absent();
@@ -51,12 +53,6 @@ public class GatewayListFragment extends RoboListFragment implements LoaderManag
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(android.R.layout.list_content, container, false);
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -65,6 +61,13 @@ public class GatewayListFragment extends RoboListFragment implements LoaderManag
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<Gateway>());
         setListAdapter(adapter);
         setListShown(false);
+
+        setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                alarmController.sendAlarmImmediately();
+            }
+        });
 
         getLoaderManager().initLoader(1, null, this);
     }
@@ -118,6 +121,9 @@ public class GatewayListFragment extends RoboListFragment implements LoaderManag
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGatewayListUpdatedMain(GatewayListUpdatedEvent event) {
+        if (isRefreshing()) {
+            setRefreshing(false);
+        }
         if (visible && (!snackbarOptional.isPresent() || !snackbarOptional.get().isShown())) {
             final Snackbar snackbar;
             if (event.isSuccess()) {
