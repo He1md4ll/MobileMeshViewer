@@ -99,7 +99,7 @@ public class NotificationService extends RoboService {
 
     private PendingIntent getPendingIntent(Intent resultIntent) {
         final Intent[] intents = new Intent[]{getParentIntent(), resultIntent};
-        return PendingIntent.getActivities(this, 0, intents, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivities(this, 0, intents, PendingIntent.FLAG_ONE_SHOT);
     }
 
     private Intent getParentIntent() {

@@ -33,6 +33,7 @@
         <activity
             android:name=".node.NodeActivity"
             android:label="@string/title_activity_node"
+            android:launchMode="standard"
             android:parentActivityName=".MeshViewerActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -66,6 +67,7 @@
         <activity
             android:name=".gateway.GatewayActivity"
             android:label="@string/title_activity_gateway"
+            android:launchMode="standard"
             android:parentActivityName=".MeshViewerActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
