@@ -101,12 +101,6 @@ public class GatewayListFragment extends SwipeRefreshListRoboFragment implements
     public void onLoadFinished(Loader<List<Gateway>> loader, List<Gateway> data) {
         adapter.clear();
         adapter.addAll(data);
-
-        if (isResumed()) {
-            setListShown(true);
-        } else {
-            setListShownNoAnimation(true);
-        }
     }
 
     @Override
@@ -121,9 +115,19 @@ public class GatewayListFragment extends SwipeRefreshListRoboFragment implements
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGatewayListUpdatedMain(GatewayListUpdatedEvent event) {
+        // Hide refresh progress indicator from SwipeRefreshLayout
         if (isRefreshing()) {
             setRefreshing(false);
         }
+
+        // Hide refresh progress indicator from ListView
+        if (isResumed()) {
+            setListShown(true);
+        } else {
+            setListShownNoAnimation(true);
+        }
+
+        // Inform user with SnackBar
         if (visible && (!snackbarOptional.isPresent() || !snackbarOptional.get().isShown())) {
             final Snackbar snackbar;
             if (event.isSuccess()) {

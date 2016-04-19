@@ -114,12 +114,6 @@ public class NodeListFragment extends SwipeRefreshListRoboFragment implements Se
         adapter.clear();
         adapter.addAll(data);
         getListView().setSelectionFromTop(index, top);
-
-        if (isResumed()) {
-            setListShown(true);
-        } else {
-            setListShownNoAnimation(true);
-        }
     }
 
     @Override
@@ -151,9 +145,19 @@ public class NodeListFragment extends SwipeRefreshListRoboFragment implements Se
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNodeListUpdatedMain(NodeListUpdatedEvent event) {
+        // Hide refresh progress indicator from SwipeRefreshLayout
         if (isRefreshing()) {
             setRefreshing(false);
         }
+
+        // Hide refresh progress indicator from ListView
+        if (isResumed()) {
+            setListShown(true);
+        } else {
+            setListShownNoAnimation(true);
+        }
+
+        // Inform user with SnackBar
         if (visible && (!snackbarOptional.isPresent() || !snackbarOptional.get().isShown())) {
             final Snackbar snackbar;
             if (event.isSuccess()) {

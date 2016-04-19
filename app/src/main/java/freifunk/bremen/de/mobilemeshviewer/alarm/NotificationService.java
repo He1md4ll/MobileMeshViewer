@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -99,12 +98,11 @@ public class NotificationService extends RoboService {
     }
 
     private PendingIntent getPendingIntent(Intent resultIntent) {
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MeshViewerActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        return stackBuilder.getPendingIntent(
-                0,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
+        final Intent[] intents = new Intent[]{getParentIntent(), resultIntent};
+        return PendingIntent.getActivities(this, 0, intents, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private Intent getParentIntent() {
+        return new Intent(this, MeshViewerActivity.class);
     }
 }
