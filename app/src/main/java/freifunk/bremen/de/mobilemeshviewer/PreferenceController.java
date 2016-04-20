@@ -21,9 +21,10 @@ import java.util.List;
 
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
+import roboguice.inject.ContextSingleton;
 
+@ContextSingleton
 public class PreferenceController {
-
 
     public static final String PREF_NODE_LIST_KEY = "pref_nodeList";
     public static final String PREF_GATEWAY_LIST_KEY = "pref_gatewayList";
@@ -34,11 +35,13 @@ public class PreferenceController {
     public static final String PREF_NODE_DETAIL_LAST_UPDATE = "pref_node_detail_last_update";
     public static final String PREF_NOTIFICATION_SOUND = "pref_ringtone";
     public static final String PREF_VIBRATION = "pref_vibrate";
+    public static final String PREF_AUTOSTART = "pref_autostart";
     private static final long MINUTE_MULTIPLIER = 60 * 1000;
     private static final String DEFAULT_ALARM_INTERVAL = "5";
     private static final Boolean DEFAULT_NODE_MONITORING = Boolean.FALSE;
     private static final Boolean DEFAULT_GATEWAY_MONITORING = Boolean.FALSE;
     private static final Boolean DEFAULT_VIBRATION = Boolean.FALSE;
+    private static final Boolean DEFAULT_AUTOSTART = Boolean.FALSE;
 
     @Inject
     private SharedPreferences sharedPreferences;
@@ -119,5 +122,9 @@ public class PreferenceController {
 
     public boolean isNotificationVibrationEnabled() {
         return sharedPreferences.getBoolean(PREF_VIBRATION, DEFAULT_VIBRATION);
+    }
+
+    public boolean isAutostartEnabled() {
+        return sharedPreferences.getBoolean(PREF_AUTOSTART, DEFAULT_AUTOSTART);
     }
 }

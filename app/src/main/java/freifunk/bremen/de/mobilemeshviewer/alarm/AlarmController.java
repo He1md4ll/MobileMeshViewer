@@ -9,7 +9,9 @@ import android.util.Log;
 import com.google.inject.Inject;
 
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
+import roboguice.inject.ContextSingleton;
 
+@ContextSingleton
 public class AlarmController {
 
     @Inject
