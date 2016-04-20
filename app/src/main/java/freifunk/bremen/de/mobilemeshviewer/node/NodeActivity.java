@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.converter.NodeDetailConverter;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailFoundEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Autoupdater;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetail;
@@ -72,6 +73,8 @@ public class NodeActivity extends RoboAppCompatActivity {
     private PreferenceController preferenceController;
     @Inject
     private NodeDetailLoader nodeDetailLoader;
+    @Inject
+    private NodeDetailConverter nodeDetailConverter;
 
 
     @Override
@@ -139,71 +142,22 @@ public class NodeActivity extends RoboAppCompatActivity {
             nodeAddresses1.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(0));
             nodeAddresses2.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(1));
             nodeAddresses3.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(2));
-            nodeAutoupdate.setText(convertAutoUpdate(nodeDetail.getNodeinfo().getSoftware().getAutoupdater()));
+            nodeAutoupdate.setText(nodeDetailConverter.convertAutoUpdate(nodeDetail.getNodeinfo().getSoftware().getAutoupdater()));
 
             if (nodeDetail.getNodeinfo().getOwner() != null) {
                 nodeOwner.setText(nodeDetail.getNodeinfo().getOwner().getContact());
             }
 
             if (nodeDetail.getFlagsNode().getOnline()) {
-                nodeUptime.setText(convertUptime(nodeDetail.getStatistics().getUptime()));
+                nodeUptime.setText(nodeDetailConverter.convertUptime(nodeDetail.getStatistics().getUptime()));
                 nodeLoadavg.setText(nodeDetail.getStatistics().getLoadavg().toString()
                         + " / " + Math.round(nodeDetail.getStatistics().getMemoryUsage() * 100) + "%");
                 nodeClients.setText(nodeDetail.getStatistics().getClients() + "");
-                nodeTraffic.setText(convertTraffic(nodeDetail.getStatistics().getTraffic()));
+                nodeTraffic.setText(nodeDetailConverter.convertTraffic(nodeDetail.getStatistics().getTraffic()));
             }
         } else {
             Snackbar.make(fab, "Couldn't load details for " + node.getName(), Snackbar.LENGTH_LONG).show();
         }
-    }
-
-    private String convertUptime(double uptime){
-        String uptime_human;
-
-        if (uptime < 60*60){ // unter 1h -> Minuten
-            if (uptime > 60 && uptime < 60*2){
-                uptime_human = (int)Math.floor(uptime / 60) + " " + getString(R.string.minute); //Singular
-            }else {
-                uptime_human = (int)Math.floor(uptime / 60) + " " + getString(R.string.minutes); //Plural
-            }
-        }else if (uptime < 60*60*24) { // unter 1 Tag -> Stunden
-            if (uptime > 60*60 && uptime < 60*60*2){
-                uptime_human = (int)Math.floor(uptime / 60 / 60) + " " + getString(R.string.hour); //Singular
-            } else {
-                uptime_human = (int)Math.floor(uptime / 60 / 60) + " " + getString(R.string.hours); //Plural
-            }
-        } else { // über 1 Tag
-            if (uptime < 60*60*24*2) {
-                uptime_human = (int)Math.floor(uptime / 60 / 60 / 24) + " " + getString(R.string.day); //Singular
-            } else {
-                uptime_human = (int)Math.floor(uptime / 60 / 60 / 24) + " " + getString(R.string.days); //Plural
-            }
-        }
-
-        return uptime_human;
-    }
-
-    private String convertAutoUpdate(Autoupdater auto){
-        String autoupdate;
-
-        if (auto.isEnabled()) {
-            autoupdate = getString(R.string.autoupdate_enabled);
-        } else {
-            autoupdate = getString(R.string.autoupdate_disabled);
-        }
-
-        autoupdate = autoupdate + " (" + auto.getBranch() + ")";
-
-        return autoupdate;
-    }
-
-    private String convertTraffic(Traffic traffic){
-        String trafficString;
-
-        trafficString = Math.round(traffic.getTx().getBytes()/1024/1024) + "GB / "
-                      + Math.round(traffic.getRx().getBytes()/1024/1024) + "GB (in/out)";
-
-        return trafficString;
     }
 
 }

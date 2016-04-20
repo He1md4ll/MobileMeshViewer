@@ -70,6 +70,9 @@ public class NodeListFragment extends SwipeRefreshListRoboFragment implements Se
             @Override
             public void onRefresh() {
                 alarmController.sendAlarmImmediately();
+                if (snackbarOptional.isPresent()){
+                    snackbarOptional.get().dismiss();
+                }
             }
         });
 

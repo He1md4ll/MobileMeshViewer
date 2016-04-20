@@ -66,6 +66,9 @@ public class GatewayListFragment extends SwipeRefreshListRoboFragment implements
             @Override
             public void onRefresh() {
                 alarmController.sendAlarmImmediately();
+                if (snackbarOptional.isPresent()){
+                    snackbarOptional.get().dismiss();
+                }
             }
         });
 
