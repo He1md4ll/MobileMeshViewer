@@ -2,6 +2,7 @@ package freifunk.bremen.de.mobilemeshviewer.converter;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.inject.Inject;
 
@@ -77,7 +78,9 @@ public class NodeDetailConverter {
         DateFormat df = new SimpleDateFormat("yyyy-mm-dd'T'kk:mm:ss", Locale.GERMAN);
         try {
             installed = df.parse(dateString);
+            Log.i(this.getClass().getSimpleName(), "Converted date successful");
         } catch (ParseException e){
+            Log.e(this.getClass().getSimpleName(),"could not convert date of node detail");
         }
 
         long difference = TimeUnit.DAYS.convert(now.getTime() - installed.getTime(), TimeUnit.MILLISECONDS);
