@@ -116,14 +116,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                             : null);
 
             if (PreferenceController.PREF_ALARM_INTERVAL.equals(key)) {
-                alarmController.startNodeAlarm();
+                alarmController.changeNodeAlarm();
             }
         } else if (preference instanceof RingtonePreference) {
             // For ringtone preferences, look up the correct display value
             // using RingtoneManager.
             if (TextUtils.isEmpty(key)) {
                 // Empty values correspond to 'silent' (no ringtone).
-
             } else {
                 Ringtone ringtone = RingtoneManager.getRingtone(
                         preference.getContext(), Uri.parse(preference.getSharedPreferences().getString(key, key)));
@@ -138,12 +137,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                     preference.setSummary(name);
                 }
             }
-
         } else {
-            // For all other preferences, set the summary to the value's
-            // simple string representation.
-            //preference.setSummary(stringValue);
-            //TODO: Maybe change description of SwitchPreferences ...
+
         }
     }
 }

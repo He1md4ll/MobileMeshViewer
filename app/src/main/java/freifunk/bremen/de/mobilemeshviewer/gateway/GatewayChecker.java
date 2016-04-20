@@ -58,22 +58,26 @@ public class GatewayChecker {
     }
 
     private void checkForChange(List<Gateway> newGatewayListImut) {
-        Log.d(this.getClass().getSimpleName(), "Comparing gateway status");
-        List<Gateway> currentGatewayList = preferenceController.getGatewayList();
-        List<Gateway> newGatewayList = Lists.newArrayList(newGatewayListImut);
+        if (preferenceController.isGatewayMonitoringEnabled()) {
+            Log.d(this.getClass().getSimpleName(), "Comparing gateway status");
+            List<Gateway> currentGatewayList = preferenceController.getGatewayList();
+            List<Gateway> newGatewayList = Lists.newArrayList(newGatewayListImut);
 
-        for (final Gateway newGateway : newGatewayList) {
-            Optional<Gateway> currentGatewayOptional = Iterables.tryFind(currentGatewayList, new Predicate<Gateway>() {
-                @Override
-                public boolean apply(Gateway input) {
-                    return input.equals(newGateway);
+            for (final Gateway newGateway : newGatewayList) {
+                Optional<Gateway> currentGatewayOptional = Iterables.tryFind(currentGatewayList, new Predicate<Gateway>() {
+                    @Override
+                    public boolean apply(Gateway input) {
+                        return input.equals(newGateway);
+                    }
+                });
+                if (currentGatewayOptional.isPresent()) {
+                    compareState(currentGatewayOptional.get(), newGateway);
+                } else {
+                    preferenceController.addGatewayToGatewayList(newGateway);
                 }
-            });
-            if (currentGatewayOptional.isPresent()) {
-                compareState(currentGatewayOptional.get(), newGateway);
-            } else {
-                preferenceController.addGatewayToGatewayList(newGateway);
             }
+        } else {
+            Log.i(this.getClass().getSimpleName(), "Gateway monitoring disabled");
         }
     }
 

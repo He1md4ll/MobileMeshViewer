@@ -64,22 +64,26 @@ public class NodeChecker {
     }
 
     private void checkForChange(List<Node> newNodeListImut) {
-        final List<Node> observedNodeList = preferenceController.getObservedNodeList();
-        final List<Node> newNodeList = Lists.newArrayList(newNodeListImut);
+        if (preferenceController.isNodeMonitoringEnabled()) {
+            final List<Node> observedNodeList = preferenceController.getObservedNodeList();
+            final List<Node> newNodeList = Lists.newArrayList(newNodeListImut);
 
-        Log.d(this.getClass().getSimpleName(), "Determining node status of observed nodes");
-        for (final Node observedNode : observedNodeList) {
-            Optional<Node> newNodeOptional = Iterables.tryFind(newNodeList, new Predicate<Node>() {
-                @Override
-                public boolean apply(Node input) {
-                    return input.equals(observedNode);
+            Log.d(this.getClass().getSimpleName(), "Determining node status of observed nodes");
+            for (final Node observedNode : observedNodeList) {
+                Optional<Node> newNodeOptional = Iterables.tryFind(newNodeList, new Predicate<Node>() {
+                    @Override
+                    public boolean apply(Node input) {
+                        return input.equals(observedNode);
+                    }
+                });
+                if (newNodeOptional.isPresent()) {
+                    determineStatus(observedNode, newNodeOptional.get());
+                } else {
+                    Log.w(this.getClass().getSimpleName(), "Observed node " + observedNode.getName() + " could not be found new list. Preserving old state.");
                 }
-            });
-            if (newNodeOptional.isPresent()) {
-                determineStatus(observedNode, newNodeOptional.get());
-            } else {
-                Log.w(this.getClass().getSimpleName(), "Observed node " + observedNode.getName() + " could not be found new list. Preserving old state.");
             }
+        } else {
+            Log.i(this.getClass().getSimpleName(), "Node monitoring disabled");
         }
     }
 

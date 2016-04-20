@@ -58,6 +58,7 @@
         <item>5 Minuten</item>
         <item>2 Minuten</item>
         <item>1 Minuten</item>
+        <item>Manuell</item>
     </string-array>
     <string-array name="pref_sync_frequency_values">
         <item>1440</item>
@@ -68,6 +69,7 @@
         <item>5</item>
         <item>2</item>
         <item>1</item>
+        <item>-1</item>
     </string-array>
     <string name="pref_default_sync_frequency">5</string>
 

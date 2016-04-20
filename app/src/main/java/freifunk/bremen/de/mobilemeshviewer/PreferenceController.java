@@ -28,9 +28,13 @@ public class PreferenceController {
     public static final String PREF_GATEWAY_LIST_KEY = "pref_gatewayList";
     public static final String PREF_NODE_DETAIL_LIST_KEY = "pref_nodeDetailList";
     public static final String PREF_ALARM_INTERVAL = "pref_sync_frequency";
+    public static final String PREF_NODE_MONITROING = "pref_node_mon";
+    public static final String PREF_GATEWAY_MONITROING = "pref_gate_mon";
     public static final String PREF_NODE_DETAIL_LAST_UPDATE = "pref_node_detail_last_update";
     private static final long MINUTE_MULTIPLIER = 60 * 1000;
     private static final String DEFAULT_ALARM_INTERVAL = "5";
+    private static final Boolean DEFAULT_NODE_MONITROING = Boolean.FALSE;
+    private static final Boolean DEFAULT_GATEWAY_MONITROING = Boolean.FALSE;
 
     @Inject
     private SharedPreferences sharedPreferences;
@@ -95,5 +99,13 @@ public class PreferenceController {
 
     public String getNodeDetailString() {
         return sharedPreferences.getString(PREF_NODE_DETAIL_LIST_KEY, "");
+    }
+
+    public boolean isNodeMonitoringEnabled() {
+        return sharedPreferences.getBoolean(PREF_NODE_MONITROING, DEFAULT_NODE_MONITROING);
+    }
+
+    public boolean isGatewayMonitoringEnabled() {
+        return sharedPreferences.getBoolean(PREF_GATEWAY_MONITROING, DEFAULT_GATEWAY_MONITROING);
     }
 }

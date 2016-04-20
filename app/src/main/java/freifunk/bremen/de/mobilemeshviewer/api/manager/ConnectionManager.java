@@ -5,7 +5,6 @@ import android.net.NetworkInfo;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +12,9 @@ import java.util.Map;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import roboguice.inject.ContextSingleton;
 
-@Singleton
+@ContextSingleton
 public class ConnectionManager {
 
     public static final String URL_FREIFUNK = "http://downloads.bremen.freifunk.net/";
