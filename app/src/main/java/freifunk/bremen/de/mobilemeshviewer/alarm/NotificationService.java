@@ -1,13 +1,17 @@
 package freifunk.bremen.de.mobilemeshviewer.alarm;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.inject.Inject;
@@ -17,6 +21,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity;
+import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.R;
 import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.GatewayStatusChangedEvent;
@@ -31,6 +36,8 @@ public class NotificationService extends RoboService {
 
     @Inject
     private NotificationManager notificationManager;
+    @Inject
+    private PreferenceController preferenceController;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -83,17 +90,25 @@ public class NotificationService extends RoboService {
     private void buildNotification(String title, String text, PendingIntent resultPendingIntent) {
         final Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         final int color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
+        final Uri sound = preferenceController.getNotificationSound();
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setContentIntent(resultPendingIntent)
-                        .setSmallIcon(R.drawable.ic_notification)
-                        .setColor(color)
-                        .setLights(color, 2000, 3000)
-                        .setLargeIcon(bm)
                         .setContentTitle(title)
                         .setContentText(text)
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setLargeIcon(bm)
+                        .setColor(color)
+                        .setLights(color, 2000, 3000)
                         .setAutoCancel(true)
                         .setOnlyAlertOnce(true);
+
+        if (!TextUtils.isEmpty(sound.getPath())) {
+            mBuilder.setSound(sound, AudioManager.STREAM_NOTIFICATION);
+        }
+        if (preferenceController.isNotificationVibrationEnabled()) {
+            mBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
+        }
         notificationManager.notify(0, mBuilder.build());
     }
 
