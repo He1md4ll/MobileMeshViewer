@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".node.NodeActivity"
-    tools:showIn="@layout/activity_node">
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".node.NodeActivity"
+        tools:showIn="@layout/activity_node">
 
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/line_hardware"
@@ -40,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/line_hardware"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/node_mac_label"
@@ -63,7 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/line_mac"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/node_node_id_label"
@@ -86,7 +91,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/line_node_id"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/node_firmware_label"
@@ -105,11 +110,34 @@
     </LinearLayout>
 
     <LinearLayout
+            android:id="@+id/line_autoupdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line_firmware"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/node_autoupdate_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/weight_label"
+                android:text="@string/node_autoupdate_label"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/node_autoupdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/weight_value"
+                android:gravity="end"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/line_uptime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line_firmware"
-        android:layout_marginTop="18dp"
+        android:layout_below="@id/line_autoupdate"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/node_uptime_label"
@@ -128,11 +156,35 @@
     </LinearLayout>
 
     <LinearLayout
+            android:id="@+id/line_loadavg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/line_uptime"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/node_loadavg_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/weight_label"
+                android:text="@string/node_loadavg_label"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/node_loadavg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/weight_value"
+                android:gravity="end"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
+
+
+        <LinearLayout
         android:id="@+id/line_addresses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line_uptime"
-        android:layout_marginTop="18dp"
+        android:layout_below="@id/line_loadavg"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/node_addresses_label"
@@ -169,34 +221,34 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/line_autoupdate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/line_addresses"
-        android:layout_marginTop="18dp"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/node_autoupdate_label"
-            android:layout_width="wrap_content"
+            android:id="@+id/line_traffic"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="@integer/weight_label"
-            android:text="@string/node_autoupdate_label"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        <TextView
-            android:id="@+id/node_autoupdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="@integer/weight_value"
-            android:gravity="end"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
+            android:layout_below="@id/line_addresses"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/node_traffic_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/weight_label"
+                android:text="@string/node_traffic_label"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/node_traffic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/weight_value"
+                android:gravity="end"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
 
     <LinearLayout
         android:id="@+id/line_clients"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line_autoupdate"
-        android:layout_marginTop="18dp"
+        android:layout_below="@id/line_traffic"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/node_clients_label"
@@ -215,34 +267,11 @@
     </LinearLayout>
 
     <LinearLayout
-    android:id="@+id/line_loadavg"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-        android:layout_below="@id/line_clients"
-    android:layout_marginTop="18dp"
-        android:orientation="horizontal">
-    <TextView
-        android:id="@+id/node_loadavg_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="@integer/weight_label"
-        android:text="@string/node_loadavg_label"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-    <TextView
-        android:id="@+id/node_loadavg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="@integer/weight_value"
-        android:gravity="end"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/line_owner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line_loadavg"
-        android:layout_marginTop="18dp"
+        android:layout_below="@id/line_clients"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/node_owner_label"
@@ -260,29 +289,31 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
-
-
-    <LinearLayout
-        android:id="@+id/line_traffic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/line_owner"
-        android:layout_marginTop="18dp"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/node_traffic_label"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/line_install_date"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="@integer/weight_label"
-            android:text="@string/node_traffic_label"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        <TextView
-            android:id="@+id/node_traffic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="@integer/weight_value"
-            android:gravity="end"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
+            android:layout_below="@id/line_owner"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/node_install_date_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/weight_label"
+                android:text="@string/node_install_date_label"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/node_install_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/weight_value"
+                android:gravity="end"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </LinearLayout>
 
-</RelativeLayout>
+    
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>
+

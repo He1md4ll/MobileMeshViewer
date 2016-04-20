@@ -69,6 +69,8 @@ public class NodeActivity extends RoboAppCompatActivity {
     private TextView nodeOwner;
     @InjectView(R.id.node_traffic)
     private  TextView nodeTraffic;
+    @InjectView(R.id.node_install_date)
+    private TextView nodeInstallDate;
     @Inject
     private PreferenceController preferenceController;
     @Inject
@@ -143,6 +145,7 @@ public class NodeActivity extends RoboAppCompatActivity {
             nodeAddresses2.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(1));
             nodeAddresses3.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(2));
             nodeAutoupdate.setText(nodeDetailConverter.convertAutoUpdate(nodeDetail.getNodeinfo().getSoftware().getAutoupdater()));
+            nodeInstallDate.setText(nodeDetailConverter.convertDate(nodeDetail.getFirstseen()));
 
             if (nodeDetail.getNodeinfo().getOwner() != null) {
                 nodeOwner.setText(nodeDetail.getNodeinfo().getOwner().getContact());

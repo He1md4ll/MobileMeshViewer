@@ -93,6 +93,7 @@
     <string name="node_loadavg_label">Systemlast (CPU/Mem)</string>
     <string name="node_traffic_label">Traffic</string>
     <string name="node_owner_label">Kontakt</string>
+    <string name="node_install_date_label">Teil des Netzes</string>
 
     <string name="minute">Minute</string>
     <string name="hour">Stunde</string>

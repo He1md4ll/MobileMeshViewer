@@ -5,6 +5,13 @@ import android.content.Context;
 
 import com.google.inject.Inject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 import freifunk.bremen.de.mobilemeshviewer.R;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Autoupdater;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Traffic;
@@ -62,6 +69,25 @@ public class NodeDetailConverter {
                 + Math.round(traffic.getRx().getBytes()/1024/1024/1024) + "GB (out/in)";
 
         return trafficString;
+    }
+
+    public String convertDate(String dateString){
+        Date installed = new Date();
+        Date now = new Date();
+        DateFormat df = new SimpleDateFormat("yyyy-mm-dd'T'kk:mm:ss", Locale.GERMAN);
+        try {
+            installed = df.parse(dateString);
+        } catch (ParseException e){
+        }
+
+        long difference = TimeUnit.DAYS.convert(now.getTime() - installed.getTime(), TimeUnit.MILLISECONDS);
+
+        if (difference < 2) {
+            return difference + " " + context.getString(R.string.day);
+        } else {
+            return difference + " " + context.getString(R.string.days);
+        }
+
     }
 
 }
