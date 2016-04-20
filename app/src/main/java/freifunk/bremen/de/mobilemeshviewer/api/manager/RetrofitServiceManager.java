@@ -2,14 +2,14 @@ package freifunk.bremen.de.mobilemeshviewer.api.manager;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import java.io.IOException;
 
 import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.MortzuRestConsumer;
+import roboguice.inject.ContextSingleton;
 
-@Singleton
+@ContextSingleton
 public class RetrofitServiceManager {
 
     private Optional<FreifunkRestConsumer> freifunkServiceOptional = Optional.absent();
