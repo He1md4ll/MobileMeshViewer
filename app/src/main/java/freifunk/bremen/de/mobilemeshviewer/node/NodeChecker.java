@@ -49,22 +49,6 @@ public class NodeChecker {
         return currentNodeListOptional.or(Lists.<Node>newArrayList());
     }
 
-    public Node getGatewayByName (String name){
-        List<Node> nodeList = fetchList();
-        Node returnNode = null;
-
-        if (name.contains("vpn")){
-            name = name.substring(0, 5);
-            for (Node node:nodeList){
-                if (node.getName().contains(name)){
-                    returnNode = node;
-                    break;
-                }
-            }
-        }
-        return returnNode;
-    }
-
     public void reloadList() {
         final List<Node> newNodeList = loadList();
         if (!newNodeList.isEmpty()) {
@@ -77,6 +61,40 @@ public class NodeChecker {
             EventBus.getDefault().post(new NodeListUpdatedEvent(Boolean.FALSE));
             Log.w(this.getClass().getSimpleName(), "Node list reload failed. Keeping old data");
         }
+    }
+
+    public Optional<Node> getGatewayByName(final String name) {
+        return Iterables.tryFind(fetchList(), new Predicate<Node>() {
+            @Override
+            public boolean apply(Node input) {
+                return input.getName().contains(name.substring(0, 5));
+            }
+        });
+    }
+
+    public Optional<NodeDetail> getDetailNodeById(String id) {
+        Optional<NodeDetail> nodeDetailOptional = Optional.absent();
+        try {
+            JsonReader reader = getDetailNodeList();
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                if (name.equals("nodes")) {
+                    reader.beginObject();
+                } else if (name.equals(id)) {
+                    nodeDetailOptional = Optional.of((NodeDetail) gson.fromJson(reader, new TypeToken<NodeDetail>() {
+                    }.getType()));
+                    break;
+                } else {
+                    reader.skipValue();
+                }
+            }
+            reader.close();
+            Log.d(this.getClass().getSimpleName(), "Reading node detail list successful");
+        } catch (IOException e) {
+            Log.w(this.getClass().getSimpleName(), "Unable to read node detail list", e);
+        }
+        return nodeDetailOptional;
     }
 
     private void checkForChange(List<Node> newNodeListImut) {
@@ -127,31 +145,6 @@ public class NodeChecker {
             Log.w(this.getClass().getSimpleName(), "Unable to fetch NodeList", e);
         }
         return nodeList;
-    }
-
-    public NodeDetail getDetailNodeById(String id) {
-        NodeDetail node = new NodeDetail();
-        try {
-            JsonReader reader = getDetailNodeList();
-            reader.beginObject();
-            while (reader.hasNext()) {
-                String name = reader.nextName();
-                if (name.equals("nodes")){
-                    reader.beginObject();
-                }else if (name.equals(id)) {
-                    node = gson.fromJson(reader, new TypeToken<NodeDetail>() {
-                    }.getType());
-                    break;
-                }else {
-                    reader.skipValue();
-                }
-            }
-            reader.close();
-            Log.d(this.getClass().getSimpleName(), "Reading node detail list successful");
-        } catch (IOException e) {
-            Log.w(this.getClass().getSimpleName(), "Unable to read node detail list", e);
-        }
-        return node;
     }
 
     private JsonReader getDetailNodeList() {

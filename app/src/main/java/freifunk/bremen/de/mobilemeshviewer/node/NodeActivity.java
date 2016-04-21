@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,9 +22,8 @@ import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.R;
 import freifunk.bremen.de.mobilemeshviewer.converter.NodeDetailConverter;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailFoundEvent;
-import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Autoupdater;
+import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailNotFoundEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetail;
-import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Traffic;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import roboguice.activity.RoboAppCompatActivity;
 import roboguice.inject.ContentView;
@@ -135,32 +133,32 @@ public class NodeActivity extends RoboAppCompatActivity {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeDetailFound(NodeDetailFoundEvent event){
         final NodeDetail nodeDetail = event.getNode();
-        if (Optional.fromNullable(nodeDetail.getNodeinfo()).isPresent()) {
-            nodeHardware.setText(nodeDetail.getNodeinfo().getHardware().getModel());
-            nodeMac.setText(nodeDetail.getNodeinfo().getNetwork().getMac());
-            nodeId.setText(nodeDetail.getNodeinfo().getNodeId());
-            nodeFirmware.setText(nodeDetail.getNodeinfo().getSoftware().getFirmware().getRelease()
-                    + " \\ " + nodeDetail.getNodeinfo().getSoftware().getFirmware().getBase());
-            nodeAddresses1.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(0));
-            nodeAddresses2.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(1));
-            nodeAddresses3.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(2));
-            nodeAutoupdate.setText(nodeDetailConverter.convertAutoUpdate(nodeDetail.getNodeinfo().getSoftware().getAutoupdater()));
-            nodeInstallDate.setText(nodeDetailConverter.convertDate(nodeDetail.getFirstseen()));
+        nodeHardware.setText(nodeDetail.getNodeinfo().getHardware().getModel());
+        nodeMac.setText(nodeDetail.getNodeinfo().getNetwork().getMac());
+        nodeId.setText(nodeDetail.getNodeinfo().getNodeId());
+        nodeFirmware.setText(nodeDetail.getNodeinfo().getSoftware().getFirmware().getRelease()
+                + " \\ " + nodeDetail.getNodeinfo().getSoftware().getFirmware().getBase());
+        nodeAddresses1.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(0));
+        nodeAddresses2.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(1));
+        nodeAddresses3.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(2));
+        nodeAutoupdate.setText(nodeDetailConverter.convertAutoUpdate(nodeDetail.getNodeinfo().getSoftware().getAutoupdater()));
+        nodeInstallDate.setText(nodeDetailConverter.convertDate(nodeDetail.getFirstseen()));
 
-            if (nodeDetail.getNodeinfo().getOwner() != null) {
-                nodeOwner.setText(nodeDetail.getNodeinfo().getOwner().getContact());
-            }
+        if (nodeDetail.getNodeinfo().getOwner() != null) {
+            nodeOwner.setText(nodeDetail.getNodeinfo().getOwner().getContact());
+        }
 
-            if (nodeDetail.getFlagsNode().getOnline()) {
-                nodeUptime.setText(nodeDetailConverter.convertUptime(nodeDetail.getStatistics().getUptime()));
-                nodeLoadavg.setText(nodeDetail.getStatistics().getLoadavg().toString()
-                        + " / " + Math.round(nodeDetail.getStatistics().getMemoryUsage() * 100) + "%");
-                nodeClients.setText(nodeDetail.getStatistics().getClients() + "");
-                nodeTraffic.setText(nodeDetailConverter.convertTraffic(nodeDetail.getStatistics().getTraffic()));
-            }
-        } else {
-            Snackbar.make(fab, "Couldn't load details for " + node.getName(), Snackbar.LENGTH_LONG).show();
+        if (nodeDetail.getFlagsNode().getOnline()) {
+            nodeUptime.setText(nodeDetailConverter.convertUptime(nodeDetail.getStatistics().getUptime()));
+            nodeLoadavg.setText(String.valueOf(nodeDetail.getStatistics().getLoadavg())
+                    + " / " + Math.round(nodeDetail.getStatistics().getMemoryUsage() * 100) + "%");
+            nodeClients.setText(nodeDetail.getStatistics().getClients() + "");
+            nodeTraffic.setText(nodeDetailConverter.convertTraffic(nodeDetail.getStatistics().getTraffic()));
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onNodeDetailFound(NodeDetailNotFoundEvent ignored) {
+        Snackbar.make(fab, "Couldn't load details for " + node.getName(), Snackbar.LENGTH_LONG).show();
+    }
 }

@@ -1,29 +1,24 @@
 package freifunk.bremen.de.mobilemeshviewer.gateway;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
 import freifunk.bremen.de.mobilemeshviewer.R;
 import freifunk.bremen.de.mobilemeshviewer.converter.NodeDetailConverter;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailFoundEvent;
+import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailNotFoundEvent;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.IpStatus;
-import freifunk.bremen.de.mobilemeshviewer.node.NodeChecker;
-import freifunk.bremen.de.mobilemeshviewer.node.NodeDetailLoader;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetail;
-import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 import roboguice.activity.RoboAppCompatActivity;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectExtra;
@@ -65,9 +60,7 @@ public class GatewayActivity extends RoboAppCompatActivity {
     @InjectView(R.id.gateway_install_date)
     private TextView gatewayInstallDate;
     @Inject
-    private NodeDetailLoader nodeDetailLoader;
-    @Inject
-    private NodeChecker nodeChecker;
+    private GatewayNodeDetailLoader gatewayNodeDetailLoader;
     @Inject
     private NodeDetailConverter nodeDetailConverter;
 
@@ -83,10 +76,7 @@ public class GatewayActivity extends RoboAppCompatActivity {
         showStatus(gateway.getDns(), gatewayDns4, gatewayDns6);
         showStatus(gateway.getNtp(), gatewayNtp4, gatewayNtp6);
 
-        Node gatewayNode = nodeChecker.getGatewayByName(gateway.getName());
-        if (gatewayNode != null) {
-            nodeDetailLoader.execute(gatewayNode.getId());
-        }
+        gatewayNodeDetailLoader.execute(gateway.getName());
     }
 
     @Override
@@ -102,22 +92,22 @@ public class GatewayActivity extends RoboAppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onNodeDetailFound(NodeDetailFoundEvent event) {
+    public void onGatewayNodeDetailFound(NodeDetailFoundEvent event) {
         final NodeDetail gatewayDetail = event.getNode();
-        if (Optional.fromNullable(gatewayDetail.getNodeinfo()).isPresent()) {
-            gatewayFirmware.setText(gatewayDetail.getNodeinfo().getSoftware().getFirmware().getRelease()
-                    + " \\ " + gatewayDetail.getNodeinfo().getSoftware().getFirmware().getBase());
-            gatewayInstallDate.setText(nodeDetailConverter.convertDate(gatewayDetail.getFirstseen()));
-            if (gatewayDetail.getFlagsNode().getOnline()){
-                gatewayTraffic.setText(nodeDetailConverter.convertTraffic(gatewayDetail.getStatistics().getTraffic()));
-                gatewayUptime.setText(nodeDetailConverter.convertUptime(gatewayDetail.getStatistics().getUptime()));
-                gatewayLoadavg.setText(gatewayDetail.getStatistics().getLoadavg().toString()
-                        + " / " + Math.round(gatewayDetail.getStatistics().getMemoryUsage() * 100) + "%");
-            }
-
-        } else {
-            Snackbar.make(toolbar, "Couldn't load details for " + gateway.getName(), Snackbar.LENGTH_LONG).show();
+        gatewayFirmware.setText(gatewayDetail.getNodeinfo().getSoftware().getFirmware().getRelease()
+                + " \\ " + gatewayDetail.getNodeinfo().getSoftware().getFirmware().getBase());
+        gatewayInstallDate.setText(nodeDetailConverter.convertDate(gatewayDetail.getFirstseen()));
+        if (gatewayDetail.getFlagsNode().getOnline()) {
+            gatewayTraffic.setText(nodeDetailConverter.convertTraffic(gatewayDetail.getStatistics().getTraffic()));
+            gatewayUptime.setText(nodeDetailConverter.convertUptime(gatewayDetail.getStatistics().getUptime()));
+            gatewayLoadavg.setText(String.valueOf(gatewayDetail.getStatistics().getLoadavg().toString())
+                    + " / " + Math.round(gatewayDetail.getStatistics().getMemoryUsage() * 100) + "%");
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onGatewayNodeDetailFound(NodeDetailNotFoundEvent ignored) {
+        Snackbar.make(gatewayUplink4, "Couldn't load details for " + gateway.getName(), Snackbar.LENGTH_LONG).show();
     }
 
     private void showStatus(IpStatus status, TextView textViewv4, TextView textViewv6){
