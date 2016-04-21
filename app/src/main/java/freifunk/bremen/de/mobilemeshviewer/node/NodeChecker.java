@@ -49,6 +49,22 @@ public class NodeChecker {
         return currentNodeListOptional.or(Lists.<Node>newArrayList());
     }
 
+    public Node getGatewayByName (String name){
+        List<Node> nodeList = fetchList();
+        Node returnNode = null;
+
+        if (name.contains("vpn")){
+            name = name.substring(0, 5);
+            for (Node node:nodeList){
+                if (node.getName().contains(name)){
+                    returnNode = node;
+                    break;
+                }
+            }
+        }
+        return returnNode;
+    }
+
     public void reloadList() {
         final List<Node> newNodeList = loadList();
         if (!newNodeList.isEmpty()) {

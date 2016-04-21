@@ -96,6 +96,13 @@
     <string name="node_traffic_label">Traffic</string>
     <string name="node_owner_label">Kontakt</string>
     <string name="node_install_date_label">Teil des Netzes</string>
+    
+    <string name="gateway_uplink_label">Uplink</string>
+    <string name="gateway_address_label">Adresse</string>
+    <string name="gateway_ntp_label">NTP</string>
+    <string name="gateway_dns_label">DNS</string>
+    <string name="gateway_ipv4_label">IPv4</string>
+    <string name="gateway_ipv6_label">IPv6</string>
 
     <string name="minute">Minute</string>
     <string name="hour">Stunde</string>

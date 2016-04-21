@@ -12,12 +12,288 @@
     tools:context="freifunk.bremen.de.mobilemeshviewer.gateway.GatewayActivity"
     tools:showIn="@layout/activity_gateway">
 
-    <TextView
-        android:id="@+id/gateway_name"
+    <LinearLayout
+        android:id="@+id/column_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical"
+        android:minWidth="100dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/gateway_uplink_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/gateway_uplink_label"
+            android:layout_marginTop="20dp"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/gateway_address_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/gateway_address_label"
+            android:layout_marginTop="20dp"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/gateway_dns_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/gateway_dns_label"
+            android:layout_marginTop="20dp"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/gateway_ntp_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/gateway_ntp_label"
+            android:layout_marginTop="20dp"
+            android:gravity="left"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/column_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:minWidth="100dp"
+        android:layout_toRightOf="@id/column_left">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/gateway_ipv4_label"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/gateway_uplink_ipv4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/gateway_address_ipv4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/gateway_dns_ipv4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/gateway_ntp_ipv4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/column_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:minWidth="100dp"
+        android:layout_toRightOf="@id/column_center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/gateway_ipv6_label"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/gateway_uplink_ipv6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/gateway_address_ipv6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/gateway_dns_ipv6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/gateway_ntp_ipv6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line_traffic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/column_left"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/gateway_traffic_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/weight_label"
+            android:text="@string/node_traffic_label"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/gateway_traffic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/weight_value"
+            android:gravity="end"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line_firmware"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line_traffic"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/node_firmware_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/weight_label"
+            android:text="@string/node_firmware_label"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/gateway_firmware"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/weight_value"
+            android:gravity="end"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line_uptime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line_firmware"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/node_uptime_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/weight_label"
+            android:text="@string/node_uptime_label"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/gateway_uptime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/weight_value"
+            android:gravity="end"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line_loadavg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line_uptime"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/node_loadavg_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/weight_label"
+            android:text="@string/node_loadavg_label"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/gateway_loadavg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/weight_value"
+            android:gravity="end"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line_install_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line_loadavg"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/node_install_date_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/weight_label"
+            android:text="@string/node_install_date_label"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/gateway_install_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/weight_value"
+            android:gravity="end"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+
+
+
 </RelativeLayout>
