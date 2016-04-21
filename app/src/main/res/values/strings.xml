@@ -103,6 +103,13 @@
     <string name="gateway_dns_label">DNS</string>
     <string name="gateway_ipv4_label">IPv4</string>
     <string name="gateway_ipv6_label">IPv6</string>
+    <string name="gateway_traffic_label">Traffic</string>
+    <string name="gateway_firmware_label">Firmware</string>
+    <string name="gateway_uptime_label">Uptime</string>
+    <string name="gateway_loadavg_label">Systemlast (CPU/Mem)</string>
+    <string name="gateway_install_date_label">Teil des Netzes</string>
+
+
 
     <string name="minute">Minute</string>
     <string name="hour">Stunde</string>

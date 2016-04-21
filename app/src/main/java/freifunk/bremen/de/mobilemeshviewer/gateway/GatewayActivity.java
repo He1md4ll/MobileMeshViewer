@@ -55,7 +55,7 @@ public class GatewayActivity extends RoboAppCompatActivity {
     @InjectView(R.id.gateway_ntp_ipv6)
     private TextView gatewayNtp6;
     @InjectView(R.id.gateway_traffic)
-    private  TextView gatewayTraffic;
+    private TextView gatewayTraffic;
     @InjectView(R.id.gateway_firmware)
     private TextView gatewayFirmware;
     @InjectView(R.id.gateway_uptime)
@@ -103,16 +103,16 @@ public class GatewayActivity extends RoboAppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeDetailFound(NodeDetailFoundEvent event) {
-        final NodeDetail nodeDetail = event.getNode();
-        if (Optional.fromNullable(nodeDetail.getNodeinfo()).isPresent()) {
-            gatewayFirmware.setText(nodeDetail.getNodeinfo().getSoftware().getFirmware().getRelease()
-                    + " \\ " + nodeDetail.getNodeinfo().getSoftware().getFirmware().getBase());
-            gatewayInstallDate.setText(nodeDetailConverter.convertDate(nodeDetail.getFirstseen()));
-            if (nodeDetail.getFlagsNode().getOnline()){
-                gatewayTraffic.setText(nodeDetailConverter.convertTraffic(nodeDetail.getStatistics().getTraffic()));
-                gatewayUptime.setText(nodeDetailConverter.convertUptime(nodeDetail.getStatistics().getUptime()));
-                gatewayLoadavg.setText(nodeDetail.getStatistics().getLoadavg().toString()
-                        + " / " + Math.round(nodeDetail.getStatistics().getMemoryUsage() * 100) + "%");
+        final NodeDetail gatewayDetail = event.getNode();
+        if (Optional.fromNullable(gatewayDetail.getNodeinfo()).isPresent()) {
+            gatewayFirmware.setText(gatewayDetail.getNodeinfo().getSoftware().getFirmware().getRelease()
+                    + " \\ " + gatewayDetail.getNodeinfo().getSoftware().getFirmware().getBase());
+            gatewayInstallDate.setText(nodeDetailConverter.convertDate(gatewayDetail.getFirstseen()));
+            if (gatewayDetail.getFlagsNode().getOnline()){
+                gatewayTraffic.setText(nodeDetailConverter.convertTraffic(gatewayDetail.getStatistics().getTraffic()));
+                gatewayUptime.setText(nodeDetailConverter.convertUptime(gatewayDetail.getStatistics().getUptime()));
+                gatewayLoadavg.setText(gatewayDetail.getStatistics().getLoadavg().toString()
+                        + " / " + Math.round(gatewayDetail.getStatistics().getMemoryUsage() * 100) + "%");
             }
 
         } else {

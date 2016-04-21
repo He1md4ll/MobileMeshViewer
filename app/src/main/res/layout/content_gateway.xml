@@ -190,7 +190,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="@integer/weight_label"
-            android:text="@string/node_traffic_label"
+            android:text="@string/gateway_traffic_label"
             android:textAppearance="?android:attr/textAppearanceLarge" />
         <TextView
             android:id="@+id/gateway_traffic"
@@ -209,11 +209,11 @@
         android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <TextView
-            android:id="@+id/node_firmware_label"
+            android:id="@+id/gateway_firmware_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="@integer/weight_label"
-            android:text="@string/node_firmware_label"
+            android:text="@string/gateway_firmware_label"
             android:textAppearance="?android:attr/textAppearanceLarge" />
         <TextView
             android:id="@+id/gateway_firmware"
@@ -232,11 +232,11 @@
         android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <TextView
-            android:id="@+id/node_uptime_label"
+            android:id="@+id/gateway_uptime_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="@integer/weight_label"
-            android:text="@string/node_uptime_label"
+            android:text="@string/gateway_uptime_label"
             android:textAppearance="?android:attr/textAppearanceLarge" />
         <TextView
             android:id="@+id/gateway_uptime"
@@ -255,11 +255,11 @@
         android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <TextView
-            android:id="@+id/node_loadavg_label"
+            android:id="@+id/gateway_loadavg_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="@integer/weight_label"
-            android:text="@string/node_loadavg_label"
+            android:text="@string/gateway_loadavg_label"
             android:textAppearance="?android:attr/textAppearanceLarge" />
         <TextView
             android:id="@+id/gateway_loadavg"
@@ -278,11 +278,11 @@
         android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <TextView
-            android:id="@+id/node_install_date_label"
+            android:id="@+id/gateway_install_date_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="@integer/weight_label"
-            android:text="@string/node_install_date_label"
+            android:text="@string/gateway_install_date_label"
             android:textAppearance="?android:attr/textAppearanceLarge" />
         <TextView
             android:id="@+id/gateway_install_date"
