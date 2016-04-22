@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import freifunk.bremen.de.mobilemeshviewer.Checkable;
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.api.MortzuRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
@@ -31,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 @Singleton
-public class GatewayChecker {
+public class GatewayChecker implements Checkable<Gateway> {
 
     @Inject
     private PreferenceController preferenceController;
@@ -39,10 +40,12 @@ public class GatewayChecker {
     private RetrofitServiceManager retrofitServiceManager;
     private Optional<List<Gateway>> currentGatewayListOptional = Optional.absent();
 
+    @Override
     public List<Gateway> fetchList() {
         return currentGatewayListOptional.or(Lists.<Gateway>newArrayList());
     }
 
+    @Override
     public void reloadList() {
         List<Gateway> newGatewayList = loadList();
         if (!newGatewayList.isEmpty()) {

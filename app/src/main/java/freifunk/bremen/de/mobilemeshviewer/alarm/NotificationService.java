@@ -71,7 +71,7 @@ public class NotificationService extends RoboService {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onNodeStatusChanged(GatewayStatusChangedEvent event) {
+    public void onGatewayStatusChanged(GatewayStatusChangedEvent event) {
         final Gateway gateway = event.getGateway();
         final String notificationTitle = "State of gateway changed";
         final String notificationText = gateway.getName() + " changed to " + gateway.getUplink();
@@ -83,7 +83,7 @@ public class NotificationService extends RoboService {
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onNodeListUpdated(GatewayListUpdatedEvent ignored) {
+    public void onGatewayListUpdated(GatewayListUpdatedEvent ignored) {
         stopSelf();
     }
 

@@ -8,10 +8,8 @@
     <string name="toolbarText">MeshViewer</string>
 
     <string name="snackbar_button_OK">OK</string>
-    <string name="snackbar_node_success">Node list reloaded</string>
-    <string name="snackbar_gateway_success">Gateway list reloaded</string>
-    <string name="snackbar_node_fail">Node list reload failed. Pull list to try again.</string>
-    <string name="snackbar_gateway_fail">Gateway list reload failed. Pull list to try again.</string>
+    <string name="snackbar_success">List reloaded</string>
+    <string name="snackbar_fail">List reload failed. Pull list to try again.</string>
 
     <!-- Menu entries-->
     <string name="nav_myNodes">Meine Knoten</string>

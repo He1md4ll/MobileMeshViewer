@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import freifunk.bremen.de.mobilemeshviewer.Checkable;
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
@@ -35,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 @Singleton
-public class NodeChecker {
+public class NodeChecker implements Checkable<Node> {
 
     @Inject
     private PreferenceController preferenceController;
@@ -45,10 +46,12 @@ public class NodeChecker {
     @Inject
     private Gson gson;
 
+    @Override
     public List<Node> fetchList() {
         return currentNodeListOptional.or(Lists.<Node>newArrayList());
     }
 
+    @Override
     public void reloadList() {
         final List<Node> newNodeList = loadList();
         if (!newNodeList.isEmpty()) {

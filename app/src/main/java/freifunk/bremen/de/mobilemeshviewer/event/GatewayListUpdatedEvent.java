@@ -1,14 +1,8 @@
 package freifunk.bremen.de.mobilemeshviewer.event;
 
-public class GatewayListUpdatedEvent {
-
-    private boolean success;
+public class GatewayListUpdatedEvent extends ReloadFinishedEvent {
 
     public GatewayListUpdatedEvent(boolean success) {
-        this.success = success;
-    }
-
-    public boolean isSuccess() {
-        return success;
+        super(success);
     }
 }

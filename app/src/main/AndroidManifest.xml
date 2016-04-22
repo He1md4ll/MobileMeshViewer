@@ -12,6 +12,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="roboguice.modules"
+            android:value="freifunk.bremen.de.mobilemeshviewer.binding.MobileMeshViewerBindings" />
+
         <activity
             android:name=".MeshViewerActivity"
             android:label="@string/app_name"
@@ -83,7 +88,5 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
-
     </application>
 </manifest>
