@@ -126,7 +126,7 @@ public class NodeChecker implements Checkable<Node> {
 
     private void determineStatus(Node observedNode, Node newNode) {
         if (newNode != null && newNode.getStatus().getOnline() != observedNode.getStatus().getOnline()) {
-            preferenceController.addNodeToObservedNodeList(newNode);
+            preferenceController.addNodeToObservedList(newNode);
             EventBus.getDefault().post(new NodeStatusChangedEvent(newNode));
         }
     }

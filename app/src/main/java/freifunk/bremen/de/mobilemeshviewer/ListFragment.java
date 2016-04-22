@@ -21,7 +21,7 @@ import java.util.List;
 import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
 import freifunk.bremen.de.mobilemeshviewer.event.ReloadFinishedEvent;
 
-public class ListFragment<T> extends SwipeRefreshListRoboFragment implements LoaderManager.LoaderCallbacks<List<T>> {
+public abstract class ListFragment<T> extends SwipeRefreshListRoboFragment implements LoaderManager.LoaderCallbacks<List<T>> {
 
     @Inject
     private ListLoader<T> gatewayListLoader;

@@ -46,41 +46,27 @@ public class PreferenceController {
     @Inject
     private SharedPreferences sharedPreferences;
 
-    public void addNodeToObservedNodeList(Node node) {
-        final List<Node> observedNodeList = getObservedNodeList();
-        observedNodeList.remove(node);
-        observedNodeList.add(node);
-        final String jsonString = new Gson().toJson(observedNodeList, new TypeToken<List<Node>>() {
-        }.getType());
-        sharedPreferences.edit().remove(PREF_NODE_LIST_KEY).putString(PREF_NODE_LIST_KEY, jsonString).apply();
-        Log.d(this.getClass().getSimpleName(), "Added observed node to shared preferences");
+    public void addNodeToObservedList(Node item) {
+        final List<Node> observedList = getObservedNodeList();
+        updateObservedList(observedList, item, PREF_NODE_LIST_KEY);
+    }
+
+    public void addGatewayToObservedList(Gateway item) {
+        final List<Gateway> observedList = getObservedGatewayList();
+        updateObservedList(observedList, item, PREF_GATEWAY_LIST_KEY);
     }
 
     public List<Node> getObservedNodeList() {
-        Log.d(this.getClass().getSimpleName(), "Loading observed node list from shared preferences");
-        final String jsonNodeList = sharedPreferences.getString(PREF_NODE_LIST_KEY, "");
-        return Optional.fromNullable(new Gson().<List<Node>>fromJson(jsonNodeList, new TypeToken<List<Node>>() {
+        Log.d(this.getClass().getSimpleName(), "Loading observed list from shared preferences");
+        final String jsonList = sharedPreferences.getString(PREF_NODE_LIST_KEY, "");
+        return Optional.fromNullable(new Gson().<List<Node>>fromJson(jsonList, new TypeToken<List<Node>>() {
         }.getType())).or(Lists.<Node>newArrayList());
     }
 
-    public void addGatewayToGatewayList(Gateway gateway) {
-        List<Gateway> gatewayList = getGatewayList();
-        gatewayList.remove(gateway);
-        gatewayList.add(gateway);
-        updateGatewayList(gatewayList);
-    }
-
-    public void updateGatewayList(List<Gateway> gatewayList) {
-        final String jsonString = new Gson().toJson(gatewayList, new TypeToken<List<Gateway>>() {
-        }.getType());
-        sharedPreferences.edit().remove(PREF_GATEWAY_LIST_KEY).putString(PREF_GATEWAY_LIST_KEY, jsonString).apply();
-        Log.d(this.getClass().getSimpleName(), "Saved updated gateway list to shared preferences");
-    }
-
-    public List<Gateway> getGatewayList() {
-        Log.d(this.getClass().getSimpleName(), "Loading gateway list from shared preferences");
-        final String jsonNodeList = sharedPreferences.getString(PREF_GATEWAY_LIST_KEY, "");
-        return Optional.fromNullable(new Gson().<List<Gateway>>fromJson(jsonNodeList, new TypeToken<List<Gateway>>() {
+    public List<Gateway> getObservedGatewayList() {
+        Log.d(this.getClass().getSimpleName(), "Loading observed list from shared preferences");
+        final String jsonList = sharedPreferences.getString(PREF_NODE_LIST_KEY, "");
+        return Optional.fromNullable(new Gson().<List<Gateway>>fromJson(jsonList, new TypeToken<List<Gateway>>() {
         }.getType())).or(Lists.<Gateway>newArrayList());
     }
 
@@ -126,5 +112,14 @@ public class PreferenceController {
 
     public boolean isAutostartEnabled() {
         return sharedPreferences.getBoolean(PREF_AUTOSTART, DEFAULT_AUTOSTART);
+    }
+
+    private <T> void updateObservedList(List<T> observedList, T item, String pref) {
+        observedList.remove(item);
+        observedList.add(item);
+        final String jsonString = new Gson().toJson(observedList, new TypeToken<List<T>>() {
+        }.getType());
+        sharedPreferences.edit().remove(pref).putString(pref, jsonString).apply();
+        Log.d(this.getClass().getSimpleName(), "Added item to observed list in shared preferences");
     }
 }

@@ -63,7 +63,7 @@ public class GatewayChecker implements Checkable<Gateway> {
     private void checkForChange(List<Gateway> newGatewayListImut) {
         if (preferenceController.isGatewayMonitoringEnabled()) {
             Log.d(this.getClass().getSimpleName(), "Comparing gateway status");
-            List<Gateway> currentGatewayList = preferenceController.getGatewayList();
+            List<Gateway> currentGatewayList = preferenceController.getObservedGatewayList();
             List<Gateway> newGatewayList = Lists.newArrayList(newGatewayListImut);
 
             for (final Gateway newGateway : newGatewayList) {
@@ -76,7 +76,7 @@ public class GatewayChecker implements Checkable<Gateway> {
                 if (currentGatewayOptional.isPresent()) {
                     compareState(currentGatewayOptional.get(), newGateway);
                 } else {
-                    preferenceController.addGatewayToGatewayList(newGateway);
+                    preferenceController.addGatewayToObservedList(newGateway);
                 }
             }
         } else {
@@ -86,7 +86,7 @@ public class GatewayChecker implements Checkable<Gateway> {
 
     private void compareState(Gateway currentGateway, Gateway newGateway) {
         if (currentGateway.getUplink() != newGateway.getUplink()) {
-            preferenceController.addGatewayToGatewayList(newGateway);
+            preferenceController.addGatewayToObservedList(newGateway);
             EventBus.getDefault().post(new GatewayStatusChangedEvent(newGateway));
         }
     }

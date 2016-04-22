@@ -94,7 +94,7 @@ public class NodeActivity extends RoboAppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                preferenceController.addNodeToObservedNodeList(node);
+                preferenceController.addNodeToObservedList(node);
                 Snackbar.make(view, "Added Node to observed Nodes", Snackbar.LENGTH_LONG)
                         .show();
             }

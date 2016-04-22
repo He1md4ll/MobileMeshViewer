@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 import java.util.Map;
 
 import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
+import roboguice.activity.RoboAppCompatPreferenceActivity;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -32,7 +33,7 @@ import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsActivity extends RoboAppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Inject
     private AlarmController alarmController;
