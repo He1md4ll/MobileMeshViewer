@@ -8,7 +8,7 @@ import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
 import retrofit2.Call;
 
-import static org.junit.Assert.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MortzuRestConsumerTest extends RobolectricTest {
 
@@ -27,8 +27,8 @@ public class MortzuRestConsumerTest extends RobolectricTest {
         // When
         final Call<?> call = mortzuRestConsumer.getGatewayList();
         // Then
-        assertFalse(call.isExecuted());
-        assertFalse(call.isCanceled());
+        assertThat(call.isExecuted()).isFalse();
+        assertThat(call.isCanceled()).isFalse();
     }
 
 }
