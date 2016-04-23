@@ -22,7 +22,7 @@ public class RetrofitServiceManager {
     public FreifunkRestConsumer getFreifunkService() throws IOException {
         if (connectionManager.isNetworkAvailable()) {
             if (!freifunkServiceOptional.isPresent()) {
-                freifunkServiceOptional = Optional.fromNullable(connectionManager
+                freifunkServiceOptional = Optional.of(connectionManager
                         .getRetrofitFreifunkConnection().create(FreifunkRestConsumer.class));
             }
             return freifunkServiceOptional.get();
@@ -34,7 +34,7 @@ public class RetrofitServiceManager {
     public MortzuRestConsumer getMortzuService() throws IOException {
         if (connectionManager.isNetworkAvailable()) {
             if (!mortzuServiceOptional.isPresent()) {
-                mortzuServiceOptional = Optional.fromNullable(connectionManager
+                mortzuServiceOptional = Optional.of(connectionManager
                         .getRetrofitMortzuConnection().create(MortzuRestConsumer.class));
             }
             return mortzuServiceOptional.get();

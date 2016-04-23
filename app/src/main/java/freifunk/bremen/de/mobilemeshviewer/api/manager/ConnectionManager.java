@@ -17,8 +17,8 @@ import roboguice.inject.ContextSingleton;
 @ContextSingleton
 public class ConnectionManager {
 
-    public static final String URL_FREIFUNK = "http://downloads.bremen.freifunk.net/";
-    public static final String URL_MORTZU = "http://status.ffhb.mortzu.de/";
+    public static final String URL_FREIFUNK = "https://downloads.bremen.freifunk.net/";
+    public static final String URL_MORTZU = "https://status.ffhb.mortzu.de/";
 
     private Map<String, Retrofit> retrofitMap = new HashMap<>();
 
