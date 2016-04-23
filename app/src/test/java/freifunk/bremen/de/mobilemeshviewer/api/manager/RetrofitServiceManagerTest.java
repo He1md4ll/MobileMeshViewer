@@ -13,7 +13,7 @@ import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
 import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.MortzuRestConsumer;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RetrofitServiceManagerTest extends RobolectricTest {
 
@@ -46,7 +46,7 @@ public class RetrofitServiceManagerTest extends RobolectricTest {
         Optional<FreifunkRestConsumer> freifunkRestConsumerOptional = Optional.fromNullable(classUnderTest.getFreifunkService());
 
         // Then
-        assertTrue(freifunkRestConsumerOptional.isPresent());
+        assertThat(freifunkRestConsumerOptional.isPresent()).isTrue();
         Mockito.verify(connectionManager).isNetworkAvailable();
         Mockito.verify(connectionManager).getRetrofitConnection(ConnectionManager.URL_FREIFUNK);
     }
@@ -69,7 +69,7 @@ public class RetrofitServiceManagerTest extends RobolectricTest {
         Optional<MortzuRestConsumer> mortzuRestConsumerOptional = Optional.fromNullable(classUnderTest.getMortzuService());
 
         // Then
-        assertTrue(mortzuRestConsumerOptional.isPresent());
+        assertThat(mortzuRestConsumerOptional.isPresent()).isTrue();
         Mockito.verify(connectionManager).isNetworkAvailable();
         Mockito.verify(connectionManager).getRetrofitConnection(ConnectionManager.URL_MORTZU);
     }
