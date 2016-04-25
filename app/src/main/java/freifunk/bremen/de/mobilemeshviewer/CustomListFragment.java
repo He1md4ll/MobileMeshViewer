@@ -13,13 +13,12 @@ import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
 import freifunk.bremen.de.mobilemeshviewer.event.ReloadFinishedEvent;
 
-public abstract class ListFragment<T> extends SwipeRefreshListRoboFragment implements LoaderManager.LoaderCallbacks<List<T>> {
+public abstract class CustomListFragment<T> extends SwipeRefreshListRoboFragment implements LoaderManager.LoaderCallbacks<List<T>> {
 
     @Inject
     private ListLoader<T> gatewayListLoader;
@@ -31,6 +30,10 @@ public abstract class ListFragment<T> extends SwipeRefreshListRoboFragment imple
 
     public ArrayAdapter<T> getAdapter() {
         return adapter;
+    }
+
+    public void setAdapter(ArrayAdapter<T> adapter) {
+        this.adapter = adapter;
     }
 
     @Override
@@ -49,10 +52,8 @@ public abstract class ListFragment<T> extends SwipeRefreshListRoboFragment imple
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         setHasOptionsMenu(true);
         setEmptyText(getActivity().getString(R.string.list_empty));
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<T>());
         setListAdapter(adapter);
         setListShown(false);
 
@@ -83,8 +84,12 @@ public abstract class ListFragment<T> extends SwipeRefreshListRoboFragment imple
 
     @Override
     public void onLoadFinished(Loader<List<T>> loader, List<T> data) {
+        final int index = getListView().getFirstVisiblePosition();
+        final View v = getListView().getChildAt(0);
+        final int top = (v == null) ? 0 : (v.getTop() - getListView().getPaddingTop());
         adapter.clear();
         adapter.addAll(data);
+        getListView().setSelectionFromTop(index, top);
     }
 
     @Override
@@ -103,10 +108,12 @@ public abstract class ListFragment<T> extends SwipeRefreshListRoboFragment imple
         }
 
         // Hide refresh progress indicator from ListView
-        if (isResumed()) {
-            setListShown(true);
-        } else {
-            setListShownNoAnimation(true);
+        if (!getListView().isShown()) {
+            if (isResumed()) {
+                setListShown(true);
+            } else {
+                setListShownNoAnimation(true);
+            }
         }
 
         // Inform user with SnackBar

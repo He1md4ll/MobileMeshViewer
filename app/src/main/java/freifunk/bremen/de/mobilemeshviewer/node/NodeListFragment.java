@@ -1,6 +1,7 @@
 package freifunk.bremen.de.mobilemeshviewer.node;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -10,16 +11,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import com.google.common.collect.Lists;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import freifunk.bremen.de.mobilemeshviewer.ListFragment;
+import freifunk.bremen.de.mobilemeshviewer.CustomArrayAdapter;
+import freifunk.bremen.de.mobilemeshviewer.CustomListFragment;
 import freifunk.bremen.de.mobilemeshviewer.R;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 
-public class NodeListFragment extends ListFragment<Node> implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+public class NodeListFragment extends CustomListFragment<Node> implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getListView().setFastScrollAlwaysVisible(true);
+        getListView().setFastScrollEnabled(true);
+        final CustomArrayAdapter<Node> customArrayAdapter = new CustomArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, Lists.<Node>newArrayList());
+        setAdapter(customArrayAdapter);
+        super.onActivityCreated(savedInstanceState);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
