@@ -32,7 +32,7 @@ public class MyNodesFragment extends RoboListFragment {
         super.onActivityCreated(savedInstanceState);
 
         setHasOptionsMenu(false);
-        setEmptyText(getActivity().getString(R.string.list_no_nodes));
+        setEmptyText(getActivity().getString(R.string.list_empty));
         final List<Node> myNodeList = preferenceController.getObservedNodeList();
         ArrayAdapter<Node> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, myNodeList);
         setListAdapter(adapter);

@@ -65,7 +65,7 @@ public class PreferenceController {
 
     public List<Gateway> getObservedGatewayList() {
         Log.d(this.getClass().getSimpleName(), "Loading observed list from shared preferences");
-        final String jsonList = sharedPreferences.getString(PREF_NODE_LIST_KEY, "");
+        final String jsonList = sharedPreferences.getString(PREF_GATEWAY_LIST_KEY, "");
         return Optional.fromNullable(new Gson().<List<Gateway>>fromJson(jsonList, new TypeToken<List<Gateway>>() {
         }.getType())).or(Lists.<Gateway>newArrayList());
     }

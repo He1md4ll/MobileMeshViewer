@@ -15,6 +15,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import freifunk.bremen.de.mobilemeshviewer.ListFragment;
 import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 
@@ -27,6 +28,7 @@ public class NodeListFragment extends ListFragment<Node> implements SearchView.O
         searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(this);
         searchView.setOnCloseListener(this);
+        searchView.setMaxWidth(Integer.MAX_VALUE);
     }
 
     @Override
@@ -52,6 +54,16 @@ public class NodeListFragment extends ListFragment<Node> implements SearchView.O
         String currentFilter = !TextUtils.isEmpty(newText) ? newText : null;
         getAdapter().getFilter().filter(currentFilter);
         return true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onNodeListUpdated(NodeListUpdatedEvent ignored) {
+        onReloadFinished();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNodeListUpdatedMain(NodeListUpdatedEvent event) {
+        onReloadFinishedMain(event);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -12,8 +12,6 @@ import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +51,7 @@ public abstract class ListFragment<T> extends SwipeRefreshListRoboFragment imple
         super.onActivityCreated(savedInstanceState);
 
         setHasOptionsMenu(true);
-        setEmptyText(getActivity().getString(R.string.list_no_gateways));
+        setEmptyText(getActivity().getString(R.string.list_empty));
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, new ArrayList<T>());
         setListAdapter(adapter);
         setListShown(false);
@@ -94,12 +92,10 @@ public abstract class ListFragment<T> extends SwipeRefreshListRoboFragment imple
         adapter.clear();
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onReloadFinished(ReloadFinishedEvent event) {
+    public void onReloadFinished() {
         gatewayListLoader.onContentChanged();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onReloadFinishedMain(ReloadFinishedEvent event) {
         // Hide refresh progress indicator from SwipeRefreshLayout
         if (isRefreshing()) {
