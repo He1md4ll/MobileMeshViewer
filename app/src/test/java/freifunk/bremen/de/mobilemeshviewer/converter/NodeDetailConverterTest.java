@@ -1,10 +1,13 @@
-package freifunk.bremen.de.mobilemeshviewer.api;
+package freifunk.bremen.de.mobilemeshviewer.converter;
 
 import android.content.Context;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
@@ -26,22 +29,17 @@ public class NodeDetailConverterTest extends RobolectricTest {
         super.setUp();
     }
 
-    @Override
-    public AbstractModule getModuleForInjection() {
-        return new TestModule();
-    }
-
     @Test
     public void testConvertUptimeMinute() throws Exception {
         // Given
-        Mockito.when(context.getString(Mockitor.anyString())).thenReturn("");
-        final double uptime = "0";
+        Mockito.when(context.getString(Mockito.anyInt())).thenReturn("");
+        final double uptime = 0;
 
         // When
-        String uptimeString = classUnderTest.convertUptime(uptime)
+        String uptimeString = classUnderTest.convertUptime(uptime);
 
         // Then
-        assertEquals(uptimeString, "0 Minuten");
+        assertThat(uptimeString).isEqualTo("0 Minuten");
     }
 
 }
