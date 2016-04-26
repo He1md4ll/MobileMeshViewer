@@ -1,6 +1,7 @@
 package freifunk.bremen.de.mobilemeshviewer;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -64,44 +65,18 @@ public class SettingsActivity extends RoboAppCompatPreferenceActivity implements
         Map<String, ?> allPrefs = prefs.getAll();
 
         for (Map.Entry<String, ?> entry : allPrefs.entrySet()) {
-            Preference preference = findPreference(entry.getKey());
-
-            if (preference instanceof ListPreference) {
-                // For list preferences, look up the correct display value in
-                // the preference's 'entries' list.
-                ListPreference listPreference = (ListPreference) preference;
-                int index = listPreference.findIndexOfValue((String)entry.getValue());
-
-                // Set the summary to reflect the new value.
-                preference.setSummary(
-                        index >= 0
-                                ? listPreference.getEntries()[index]
-                                : null);
-            } else if (preference instanceof RingtonePreference) {
-                // For ringtone preferences, look up the correct display value
-                // using RingtoneManager.
-                if (TextUtils.isEmpty(entry.getKey())) {
-                    preference.setSummary(getResources().getString(R.string.pref_ringtone_silent));
-                } else {
-                    Ringtone ringtone = RingtoneManager.getRingtone(
-                            preference.getContext(), Uri.parse((String) entry.getValue()));
-                    if (ringtone == null) {
-                        // Clear the summary if there was a lookup error.
-                        preference.setSummary(getResources().getString(R.string.pref_ringtone_silent));
-                    } else {
-                        // Set the summary to reflect the new ringtone display
-                        // name.
-                        String name = ringtone.getTitle(preference.getContext());
-                        preference.setSummary(name);
-                    }
-                }
-            }
+            updateSettingsText(prefs, entry.getKey());
         }
 
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        updateSettingsText(sharedPreferences, key);
+    }
+
+
+    private void updateSettingsText(SharedPreferences preferences, String key){
         Preference preference = findPreference(key);
 
         if (preference instanceof ListPreference) {
@@ -122,24 +97,18 @@ public class SettingsActivity extends RoboAppCompatPreferenceActivity implements
         } else if (preference instanceof RingtonePreference) {
             // For ringtone preferences, look up the correct display value
             // using RingtoneManager.
-            if (TextUtils.isEmpty(key)) {
-                // Empty values correspond to 'silent' (no ringtone).
+            Ringtone ringtone = RingtoneManager.getRingtone(
+                preference.getContext(), Uri.parse(preference.getSharedPreferences().getString(key, key)));
+            if (ringtone == null || ringtone.getTitle(preference.getContext()).equals(preference.getContext().getString(R.string.pref_ringtone_unknown))) {
+                //TODO: geht das noch schöner? "Kein" Klingelton kann ich sonst nicht anders erkennen
+                // Clear the summary if there was a lookup error.
+                preference.setSummary(preference.getContext().getString(R.string.pref_ringtone_silent));
             } else {
-                Ringtone ringtone = RingtoneManager.getRingtone(
-                        preference.getContext(), Uri.parse(preference.getSharedPreferences().getString(key, key)));
-
-                if (ringtone == null) {
-                    // Clear the summary if there was a lookup error.
-                    preference.setSummary(null);
-                } else {
-                    // Set the summary to reflect the new ringtone display
-                    // name.
-                    String name = ringtone.getTitle(preference.getContext());
-                    preference.setSummary(name);
-                }
+                // Set the summary to reflect the new ringtone display
+                // name.
+                String name = ringtone.getTitle(preference.getContext());
+                preference.setSummary(name);
             }
-        } else {
-
         }
     }
 }
