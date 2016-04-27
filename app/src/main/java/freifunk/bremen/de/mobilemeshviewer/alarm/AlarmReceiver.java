@@ -15,6 +15,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private static boolean alarmProcessing = false;
 
+    public static boolean isAlarmProcessing() {
+        return alarmProcessing;
+    }
+
     @Override
     public synchronized void onReceive(Context context, Intent intent) {
         if (!alarmProcessing) {
