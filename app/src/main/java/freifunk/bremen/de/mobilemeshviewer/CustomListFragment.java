@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
-import android.widget.ArrayAdapter;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
@@ -24,15 +23,15 @@ public abstract class CustomListFragment<T> extends SwipeRefreshListRoboFragment
     private ListLoader<T> gatewayListLoader;
     @Inject
     private AlarmController alarmController;
-    private ArrayAdapter<T> adapter;
+    private CustomArrayAdapter<T> adapter;
     private boolean visible;
     private Optional<Snackbar> snackbarOptional = Optional.absent();
 
-    public ArrayAdapter<T> getAdapter() {
+    public CustomArrayAdapter<T> getAdapter() {
         return adapter;
     }
 
-    public void setAdapter(ArrayAdapter<T> adapter) {
+    public void setAdapter(CustomArrayAdapter<T> adapter) {
         this.adapter = adapter;
     }
 

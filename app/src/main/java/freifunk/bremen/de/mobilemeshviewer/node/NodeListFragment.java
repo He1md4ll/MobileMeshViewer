@@ -27,7 +27,7 @@ public class NodeListFragment extends CustomListFragment<Node> implements Search
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        getListView().setFastScrollAlwaysVisible(true);
+        getListView().setFastScrollAlwaysVisible(false);
         getListView().setFastScrollEnabled(true);
         final CustomArrayAdapter<Node> customArrayAdapter = new CustomArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, Lists.<Node>newArrayList());
         setAdapter(customArrayAdapter);

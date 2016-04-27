@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.common.collect.Lists;
@@ -13,6 +12,7 @@ import com.google.common.collect.Lists;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import freifunk.bremen.de.mobilemeshviewer.CustomArrayAdapter;
 import freifunk.bremen.de.mobilemeshviewer.CustomListFragment;
 import freifunk.bremen.de.mobilemeshviewer.R;
 import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
@@ -23,7 +23,7 @@ public class GatewayListFragment extends CustomListFragment<Gateway> {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        final ArrayAdapter<Gateway> arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, Lists.<Gateway>newArrayList());
+        final CustomArrayAdapter<Gateway> arrayAdapter = new CustomArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, Lists.<Gateway>newArrayList());
         setAdapter(arrayAdapter);
         super.onActivityCreated(savedInstanceState);
     }
