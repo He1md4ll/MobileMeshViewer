@@ -2,6 +2,7 @@ package freifunk.bremen.de.mobilemeshviewer.alarm;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.inject.Inject;
 
@@ -17,7 +18,9 @@ public class BootUpReceiver extends RoboBroadcastReceiver {
 
     @Override
     protected void handleReceive(Context context, Intent intent) {
-        if (preferenceController.isAutostartEnabled()) {
+        final boolean autoStart = preferenceController.isAutostartEnabled();
+        Log.i(this.getClass().getSimpleName(), "Got boot up intent. Auto start: " + autoStart);
+        if (autoStart) {
             alarmController.startNodeAlarm();
         }
     }
