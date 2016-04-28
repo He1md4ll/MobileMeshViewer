@@ -9,9 +9,16 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
 import freifunk.bremen.de.mobilemeshviewer.converter.NodeDetailConverter;
+import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Autoupdater;
+import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Traffic;
+import freifunk.bremen.de.mobilemeshviewer.node.model.detail.TrafficBytes;
+import freifunk.bremen.de.mobilemeshviewer.node.model.detail.TrafficBytesDropped;
 import retrofit2.Call;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +27,14 @@ public class NodeDetailConverterTest extends RobolectricTest {
 
     @Inject
     private NodeDetailConverter classUnderTest;
+    @Inject
+    Autoupdater autoupdater;
+    @Inject
+    Traffic traffic;
+    @Inject
+    TrafficBytes trafficBytes;
+    @Inject
+    TrafficBytesDropped trafficBytesDropped;
 
     @Mock
     Context context;
@@ -110,7 +125,6 @@ public class NodeDetailConverterTest extends RobolectricTest {
         // Then
         assertThat(uptimeString).isEqualTo("1 Tag");
         assertThat(uptimeString1).isEqualTo("1 Tag");
-
     }
 
     @Test
@@ -126,6 +140,119 @@ public class NodeDetailConverterTest extends RobolectricTest {
         // Then
         assertThat(uptimeString).isEqualTo("2 Tage");
         assertThat(uptimeString1).isEqualTo("4 Tage");
-
     }
+
+    @Test
+    public void testConvertAutoUpdateEnabled() throws Exception {
+        // Given
+        final String branch = "stable";
+        final boolean autoupdaterEnabled = true;
+        autoupdater = new Autoupdater();
+        autoupdater.setBranch(branch);
+        autoupdater.setEnabled(autoupdaterEnabled);
+
+        // When
+        String autoupdaterString = classUnderTest.convertAutoUpdate(autoupdater);
+
+        //Then
+        assertThat(autoupdaterString).isEqualTo("aktiviert " + "(" + branch + ")");
+    }
+
+    @Test
+    public void testConvertAutoUpdateDisabled() throws Exception {
+        // Given
+        final String branch = "stable";
+        final boolean autoupdaterEnabled = false;
+        autoupdater.setBranch(branch);
+        autoupdater.setEnabled(autoupdaterEnabled);
+
+        // When
+        String autoupdaterString = classUnderTest.convertAutoUpdate(autoupdater);
+
+        //Then
+        assertThat(autoupdaterString).isEqualTo("deaktiviert " + "(" + branch + ")");
+    }
+
+    @Test
+    public void testConvertTrafficZero() throws Exception {
+        //Given
+        TrafficBytes trafficBytes = new TrafficBytes();
+        trafficBytes.setBytes(0);
+        trafficBytesDropped.setBytes(0);
+        traffic.setRx(trafficBytes);
+        traffic.setTx(trafficBytesDropped);
+
+        //When
+        String trafficString = classUnderTest.convertTraffic(traffic);
+
+        //Then
+        assertThat(trafficString).isEqualTo("0GB / 0GB (out/in)");
+    }
+
+    @Test
+    public void testConvertTraffic() throws Exception {
+        //Given
+        final double einGB = 1073741824;
+        TrafficBytes trafficBytes = new TrafficBytes();
+        trafficBytes.setBytes(einGB);
+        trafficBytesDropped.setBytes(einGB);
+        traffic.setRx(trafficBytes);
+        traffic.setTx(trafficBytesDropped);
+
+        //When
+        String trafficString = classUnderTest.convertTraffic(traffic);
+
+        //Then
+        assertThat(trafficString).isEqualTo("1GB / 1GB (out/in)");
+    }
+    @Test
+    public void testConvertTraffic1() throws Exception {
+        //Given
+        final double einGB = 1073741824;
+        TrafficBytes trafficBytes = new TrafficBytes();
+        trafficBytes.setBytes(einGB*5);
+        trafficBytesDropped.setBytes(einGB*10);
+        traffic.setRx(trafficBytes);
+        traffic.setTx(trafficBytesDropped);
+
+        //When
+        String trafficString = classUnderTest.convertTraffic(traffic);
+
+        //Then
+        assertThat(trafficString).isEqualTo("10GB / 5GB (out/in)");
+    }
+
+    @Test
+    public void testConvertDate() throws Exception {
+        //Given
+        long oneDayInMS = 86400000;
+        Date now = new Date();
+        now.setTime(now.getTime() - oneDayInMS);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss");
+        final String date = "2016-04-27T12:00:00";
+
+        //When
+        String dateString = classUnderTest.convertDate(formatter.format(now));
+
+        //Then
+        assertThat(dateString).isEqualTo("1 Tag");
+    }
+
+    @Test
+    public void testConvertDate1() throws Exception {
+        //Given
+        long oneDayInMS = 86400000;
+        Date now = new Date();
+        now.setTime(now.getTime() - oneDayInMS * 5);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss");
+        final String date = "2016-04-27T12:00:00";
+
+        //When
+        String dateString = classUnderTest.convertDate(formatter.format(now));
+
+        //Then
+        assertThat(dateString).isEqualTo("5 Tage");
+    }
+
+
 }
