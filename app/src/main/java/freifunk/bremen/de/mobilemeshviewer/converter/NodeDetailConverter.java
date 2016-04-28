@@ -24,29 +24,7 @@ public class NodeDetailConverter {
     Context context;
 
     public String convertUptime(double uptime){
-        String uptime_human;
-
-        if (uptime < 60*60){ // unter 1h -> Minuten
-            if (uptime > 60 && uptime < 60*2){
-                uptime_human = (int)Math.floor(uptime / 60) + " " + context.getString(R.string.minute); //Singular
-            }else {
-                uptime_human = (int)Math.floor(uptime / 60) + " " + context.getString(R.string.minutes); //Plural
-            }
-        }else if (uptime < 60*60*24) { // unter 1 Tag -> Stunden
-            if (uptime > 60*60 && uptime < 60*60*2){
-                uptime_human = (int)Math.floor(uptime / 60 / 60) + " " + context.getString(R.string.hour); //Singular
-            } else {
-                uptime_human = (int)Math.floor(uptime / 60 / 60) + " " + context.getString(R.string.hours); //Plural
-            }
-        } else { // über 1 Tag
-            if (uptime < 60*60*24*2) {
-                uptime_human = (int)Math.floor(uptime / 60 / 60 / 24) + " " + context.getString(R.string.day); //Singular
-            } else {
-                uptime_human = (int)Math.floor(uptime / 60 / 60 / 24) + " " + context.getString(R.string.days); //Plural
-            }
-        }
-
-        return uptime_human;
+        return secondsToString(uptime, TimeUnit.SECONDS);
     }
 
     public String convertAutoUpdate(Autoupdater auto){
@@ -75,7 +53,7 @@ public class NodeDetailConverter {
     public String convertDate(String dateString){
         Date installed = new Date();
         Date now = new Date();
-        DateFormat df = new SimpleDateFormat("yyyy-mm-dd'T'kk:mm:ss", Locale.GERMAN);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss", Locale.GERMAN);
         try {
             installed = df.parse(dateString);
             Log.i(this.getClass().getSimpleName(), "Converted date successful");
@@ -83,14 +61,36 @@ public class NodeDetailConverter {
             Log.e(this.getClass().getSimpleName(),"could not convert date of node detail");
         }
 
-        long difference = TimeUnit.DAYS.convert(now.getTime() - installed.getTime(), TimeUnit.MILLISECONDS);
-
-        if (difference < 2) {
-            return difference + " " + context.getString(R.string.day);
-        } else {
-            return difference + " " + context.getString(R.string.days);
-        }
-
+        return secondsToString(now.getTime() - installed.getTime(), TimeUnit.MILLISECONDS);
     }
 
+    private String secondsToString(double uptime, TimeUnit timeUnit){
+
+        if (timeUnit.equals(TimeUnit.MILLISECONDS)) {
+            uptime = uptime / 1000;
+        }
+        String seconds_human;
+
+        if (uptime < 60*60){ // unter 1h -> Minuten
+            if (uptime >= 60 && uptime < 60*2){
+                seconds_human = (int)Math.floor(uptime / 60) + " " + context.getString(R.string.minute); //Singular
+            }else {
+                seconds_human = (int)Math.floor(uptime / 60) + " " + context.getString(R.string.minutes); //Plural
+            }
+        }else if (uptime < 60*60*24) { // unter 1 Tag -> Stunden
+            if (uptime >= 60*60 && uptime < 60*60*2){
+                seconds_human = (int)Math.floor(uptime / 60 / 60) + " " + context.getString(R.string.hour); //Singular
+            } else {
+                seconds_human = (int)Math.floor(uptime / 60 / 60) + " " + context.getString(R.string.hours); //Plural
+            }
+        } else { // über 1 Tag
+            if (uptime < 60*60*24*2) {
+                seconds_human = (int)Math.floor(uptime / 60 / 60 / 24) + " " + context.getString(R.string.day); //Singular
+            } else {
+                seconds_human = (int)Math.floor(uptime / 60 / 60 / 24) + " " + context.getString(R.string.days); //Plural
+            }
+        }
+
+        return seconds_human;
+    }
 }

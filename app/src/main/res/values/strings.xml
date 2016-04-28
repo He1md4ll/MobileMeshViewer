@@ -8,8 +8,8 @@
     <string name="toolbarText">MeshViewer</string>
 
     <string name="snackbar_button_OK">OK</string>
-    <string name="snackbar_success">List reloaded</string>
-    <string name="snackbar_fail">List reload failed. Pull list to try again.</string>
+    <string name="snackbar_success">Liste neu geladen</string>
+    <string name="snackbar_fail">Aktualisierung fehlgeschlagen. Probiere es erneut.</string>
 
     <!-- Menu entries-->
     <string name="nav_myNodes">Meine Knoten</string>
@@ -76,7 +76,7 @@
     <string name="pref_title_autostart">App in Autostart</string>
     <string name="pref_default_autostart">false</string>
 
-    <string name="list_empty">Sorry, we could\'t find any item.</string>
+    <string name="list_empty">Keinen Knoten gefunden.</string>
     <string name="title_activity_node">NodeActivity</string>
     <string name="title_activity_my_nodes">MyNodesActivity</string>
     <string name="title_activity_gateway">GatewayActivity</string>
