@@ -43,6 +43,10 @@ public class MeshViewerActivity extends RoboAppCompatActivity
     private TabLayout tabLayout;
     @Inject
     private AlarmController alarmController;
+    @Inject
+    private GatewayListFragment gatewayListFragment;
+    @Inject
+    private NodeListFragment nodeListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +126,9 @@ public class MeshViewerActivity extends RoboAppCompatActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return new NodeListFragment();
+                    return nodeListFragment;
                 case 1:
-                    return new GatewayListFragment();
+                    return gatewayListFragment;
             }
             return null;
         }

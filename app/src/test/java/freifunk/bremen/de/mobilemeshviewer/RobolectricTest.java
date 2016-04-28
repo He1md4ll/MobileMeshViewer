@@ -16,7 +16,7 @@ import roboguice.inject.RoboInjector;
 
 @Ignore
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, sdk = 22)
 public class RobolectricTest {
 
     @Before

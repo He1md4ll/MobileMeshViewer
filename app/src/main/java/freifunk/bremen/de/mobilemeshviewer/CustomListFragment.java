@@ -20,7 +20,7 @@ import freifunk.bremen.de.mobilemeshviewer.event.ReloadFinishedEvent;
 public abstract class CustomListFragment<T> extends SwipeRefreshListRoboFragment implements LoaderManager.LoaderCallbacks<List<T>> {
 
     @Inject
-    private ListLoader<T> gatewayListLoader;
+    private ListLoader<T> listLoader;
     @Inject
     private AlarmController alarmController;
     private CustomArrayAdapter<T> adapter;
@@ -39,7 +39,7 @@ public abstract class CustomListFragment<T> extends SwipeRefreshListRoboFragment
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        gatewayListLoader.onContentChanged();
+        listLoader.onContentChanged();
     }
 
     @Override
@@ -77,8 +77,8 @@ public abstract class CustomListFragment<T> extends SwipeRefreshListRoboFragment
 
     @Override
     public Loader<List<T>> onCreateLoader(int id, Bundle args) {
-        gatewayListLoader.reset();
-        return gatewayListLoader;
+        listLoader.reset();
+        return listLoader;
     }
 
     @Override
@@ -97,7 +97,7 @@ public abstract class CustomListFragment<T> extends SwipeRefreshListRoboFragment
     }
 
     public void onReloadFinished() {
-        gatewayListLoader.onContentChanged();
+        listLoader.onContentChanged();
     }
 
     public void onReloadFinishedMain(ReloadFinishedEvent event) {
