@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -29,6 +30,7 @@ import roboguice.inject.InjectView;
 public class MeshViewerActivity extends RoboAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final boolean DEVELOPER_MODE = Boolean.TRUE;
     @InjectView(R.id.toolbar)
     private Toolbar toolbar;
     @InjectView(R.id.drawer_layout)
@@ -45,6 +47,20 @@ public class MeshViewerActivity extends RoboAppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (DEVELOPER_MODE) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .permitDiskReads()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
+        }
+
+
         setSupportActionBar(toolbar);
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());

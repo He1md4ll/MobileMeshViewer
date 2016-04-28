@@ -76,7 +76,7 @@
     <string name="pref_title_autostart">App in Autostart</string>
     <string name="pref_default_autostart">false</string>
 
-    <string name="list_empty">Keinen Knoten gefunden.</string>
+    <string name="list_empty">Keinen Eintrag gefunden.</string>
     <string name="title_activity_node">NodeActivity</string>
     <string name="title_activity_my_nodes">MyNodesActivity</string>
     <string name="title_activity_gateway">GatewayActivity</string>
