@@ -87,7 +87,7 @@ public class NotificationService extends RoboService {
         stopSelf();
     }
 
-    private void buildNotification(String title, String text, PendingIntent resultPendingIntent) {
+    /* package */void buildNotification(String title, String text, PendingIntent resultPendingIntent) {
         final Bitmap bm = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
         final int color = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         final Uri sound = preferenceController.getNotificationSound();
@@ -112,7 +112,7 @@ public class NotificationService extends RoboService {
         notificationManager.notify(0, mBuilder.build());
     }
 
-    private PendingIntent getPendingIntent(Intent resultIntent) {
+    /* package */PendingIntent getPendingIntent(Intent resultIntent) {
         final Intent[] intents = new Intent[]{getParentIntent(), resultIntent};
         return PendingIntent.getActivities(this, 0, intents, PendingIntent.FLAG_ONE_SHOT);
     }
