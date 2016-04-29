@@ -50,6 +50,7 @@ public class MeshViewerActivity extends RoboAppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
         if (DEVELOPER_MODE) {
