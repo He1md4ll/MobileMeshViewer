@@ -1,5 +1,7 @@
 package freifunk.bremen.de.mobilemeshviewer;
 
+import android.support.design.widget.Snackbar;
+
 import com.google.common.collect.Lists;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -14,6 +16,7 @@ import org.robolectric.util.ActivityController;
 import java.util.List;
 
 import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
+import freifunk.bremen.de.mobilemeshviewer.event.ReloadFinishedEvent;
 import freifunk.bremen.de.mobilemeshviewer.gateway.GatewayListFragment;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.IpStatus;
@@ -96,6 +99,85 @@ public class CustomListFragmentTest extends RobolectricTest {
         assertThat(classUnderTest.getAdapter().getCount()).isZero();
     }
 
+    @Test
+    public void testOnReloadFinished() throws Exception {
+        // When
+        classUnderTest.onReloadFinished();
+
+        // Then
+        Mockito.verify(gatewayListLoader, Mockito.times(2)).onContentChanged();
+    }
+
+    @Test
+    public void testOnReloadFinishedMainRefreshing() throws Exception {
+        // Given
+        final ReloadFinishedEvent event = new ReloadFinishedEvent(Boolean.TRUE);
+        classUnderTest.setRefreshing(true);
+
+        // When
+        classUnderTest.onReloadFinishedMain(event);
+
+        // Then
+        assertThat(classUnderTest.isRefreshing()).isFalse();
+    }
+
+    @Test
+    public void testOnReloadFinishedMainListShown() throws Exception {
+        // Given
+        final ReloadFinishedEvent event = new ReloadFinishedEvent(Boolean.TRUE);
+        classUnderTest.setListShown(false);
+
+        // When
+        classUnderTest.onReloadFinishedMain(event);
+
+        // Then
+        assertThat(classUnderTest.isVisible()).isTrue();
+    }
+
+    @Test
+    public void testOnReloadFinishedMainSnackbarNotVisible() throws Exception {
+        // Given
+        final ReloadFinishedEvent event = new ReloadFinishedEvent(Boolean.TRUE);
+
+        // When
+        classUnderTest.onReloadFinishedMain(event);
+
+        // Then
+        assertThat(classUnderTest.getSnackbarOptional().isPresent()).isFalse();
+    }
+
+    @Test
+    public void testOnReloadFinishedMainSnackbarVisible() throws Exception {
+        // Given
+        final ReloadFinishedEvent event = new ReloadFinishedEvent(Boolean.TRUE);
+        classUnderTest.setUserVisibleHint(Boolean.TRUE);
+
+        // When
+        classUnderTest.onReloadFinishedMain(event);
+
+        // Then
+        assertThat(classUnderTest.getSnackbarOptional().isPresent()).isTrue();
+        final Snackbar snackbar = classUnderTest.getSnackbarOptional().get();
+        assertThat(snackbar.isShownOrQueued()).isTrue();
+        assertThat(snackbar.getDuration()).isEqualTo(Snackbar.LENGTH_SHORT);
+    }
+
+    @Test
+    public void testOnReloadFinishedMainSnackbarVisibleFalse() throws Exception {
+        // Given
+        final ReloadFinishedEvent event = new ReloadFinishedEvent(Boolean.FALSE);
+        classUnderTest.setUserVisibleHint(Boolean.TRUE);
+
+        // When
+        classUnderTest.onReloadFinishedMain(event);
+
+        // Then
+        assertThat(classUnderTest.getSnackbarOptional().isPresent()).isTrue();
+        final Snackbar snackbar = classUnderTest.getSnackbarOptional().get();
+        assertThat(snackbar.isShownOrQueued()).isTrue();
+        assertThat(snackbar.getDuration()).isEqualTo(Snackbar.LENGTH_INDEFINITE);
+    }
+
     @Override
     public AbstractModule getModuleForInjection() {
         return new TestModule();
@@ -113,6 +195,4 @@ public class CustomListFragmentTest extends RobolectricTest {
             return gatewayListLoader;
         }
     }
-
-    // TODO: Test onReloadFinished
 }

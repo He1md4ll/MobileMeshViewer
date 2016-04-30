@@ -113,6 +113,22 @@ public class CustomArrayAdapter<T> extends BaseAdapter implements Filterable, Se
     }
 
     /**
+     * Adds the specified object at the end of the array.
+     *
+     * @param object The object to add at the end of the array.
+     */
+    public void add(T object) {
+        synchronized (mLock) {
+            if (mOriginalValues != null) {
+                mOriginalValues.add(object);
+            } else {
+                mObjects.add(object);
+            }
+        }
+        if (mNotifyOnChange) notifyDataSetChanged();
+    }
+
+    /**
      * Adds the specified Collection at the end of the array.
      *
      * @param collection The Collection to add at the end of the array.

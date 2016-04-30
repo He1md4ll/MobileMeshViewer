@@ -35,6 +35,10 @@ public abstract class CustomListFragment<T> extends SwipeRefreshListRoboFragment
         this.adapter = adapter;
     }
 
+    public Optional<Snackbar> getSnackbarOptional() {
+        return snackbarOptional;
+    }
+
     @Override
     public void onStart() {
         super.onStart();
