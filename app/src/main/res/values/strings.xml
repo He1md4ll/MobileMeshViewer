@@ -117,4 +117,6 @@
     <string name="days">Tage</string>
     <string name="autoupdate_enabled">aktiviert</string>
     <string name="autoupdate_disabled">deaktiviert</string>
+    <string name="fab_delete_node">Deleted node from observed nodes</string>
+    <string name="fab_add_node">Added node to observed nodes</string>
 </resources>

@@ -90,13 +90,29 @@ public class NodeActivity extends RoboAppCompatActivity {
         }
 
         nodeDetailLoader.execute(node.getId());
+        initFab();
+    }
 
+    private void initFab() {
+        if (preferenceController.isNodeObserved(node)) {
+            fab.setImageResource(R.drawable.ic_clear_white_24dp);
+        } else {
+            fab.setImageResource(R.drawable.ic_add_white_24dp);
+        }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                preferenceController.addNodeToObservedList(node);
-                Snackbar.make(view, "Added Node to observed Nodes", Snackbar.LENGTH_LONG)
-                        .show();
+                String text;
+                if (preferenceController.isNodeObserved(node)) {
+                    preferenceController.deleteNodeFromObservedList(node);
+                    text = getString(R.string.fab_delete_node);
+                    fab.setImageResource(R.drawable.ic_add_white_24dp);
+                } else {
+                    preferenceController.addNodeToObservedList(node);
+                    text = getString(R.string.fab_add_node);
+                    fab.setImageResource(R.drawable.ic_clear_white_24dp);
+                }
+                Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
             }
         });
     }

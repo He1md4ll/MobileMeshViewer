@@ -48,12 +48,21 @@ public class PreferenceController {
 
     public void addNodeToObservedList(Node item) {
         final List<Node> observedList = getObservedNodeList();
-        updateObservedList(observedList, item, PREF_NODE_LIST_KEY);
+        updateObservedList(observedList, item, PREF_NODE_LIST_KEY, Boolean.TRUE);
+    }
+
+    public void deleteNodeFromObservedList(Node item) {
+        final List<Node> observedList = getObservedNodeList();
+        updateObservedList(observedList, item, PREF_NODE_LIST_KEY, Boolean.FALSE);
+    }
+
+    public boolean isNodeObserved(Node item) {
+        return getObservedNodeList().contains(item);
     }
 
     public void addGatewayToObservedList(Gateway item) {
         final List<Gateway> observedList = getObservedGatewayList();
-        updateObservedList(observedList, item, PREF_GATEWAY_LIST_KEY);
+        updateObservedList(observedList, item, PREF_GATEWAY_LIST_KEY, Boolean.TRUE);
     }
 
     public List<Node> getObservedNodeList() {
@@ -114,9 +123,11 @@ public class PreferenceController {
         return sharedPreferences.getBoolean(PREF_AUTOSTART, DEFAULT_AUTOSTART);
     }
 
-    private <T> void updateObservedList(List<T> observedList, T item, String pref) {
+    private <T> void updateObservedList(List<T> observedList, T item, String pref, boolean preserve) {
         observedList.remove(item);
-        observedList.add(item);
+        if (preserve) {
+            observedList.add(item);
+        }
         final String jsonString = new Gson().toJson(observedList, new TypeToken<List<T>>() {
         }.getType());
         sharedPreferences.edit().remove(pref).putString(pref, jsonString).apply();
