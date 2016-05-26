@@ -18,6 +18,8 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +45,7 @@ public class NodeChecker implements Checkable<Node> {
     @Inject
     private RetrofitServiceManager retrofitServiceManager;
     private Optional<List<Node>> currentNodeListOptional = Optional.absent();
+    private Optional<List<Node>> currentGWListOptional = Optional.absent();
     @Inject
     private Gson gson;
 
@@ -51,12 +54,18 @@ public class NodeChecker implements Checkable<Node> {
         return currentNodeListOptional.or(Lists.<Node>newArrayList());
     }
 
+    public List<Node> fetchGWList() {
+        return currentGWListOptional.or(Lists.<Node>newArrayList());
+    }
+
     @Override
     public void reloadList() {
         final List<Node> newNodeList = loadList();
         if (!newNodeList.isEmpty()) {
-            currentNodeListOptional = Optional.of(newNodeList);
+            currentNodeListOptional = Optional.of(justNodes(newNodeList));
+            currentGWListOptional = Optional.of(justVPNs(newNodeList));
             Collections.sort(currentNodeListOptional.get());
+            Collections.sort(currentGWListOptional.get());
             checkForChange(newNodeList);
             EventBus.getDefault().post(new NodeListUpdatedEvent(Boolean.TRUE));
             Log.i(this.getClass().getSimpleName(), "Node list reloaded");
@@ -67,7 +76,7 @@ public class NodeChecker implements Checkable<Node> {
     }
 
     public Optional<Node> getGatewayByName(final String name) {
-        return Iterables.tryFind(fetchList(), new Predicate<Node>() {
+        return Iterables.tryFind(fetchGWList(), new Predicate<Node>() {
             @Override
             public boolean apply(Node input) {
                 return input.getName().contains(name.substring(0, 5));
@@ -175,5 +184,30 @@ public class NodeChecker implements Checkable<Node> {
         } catch (IOException e) {
             Log.w(this.getClass().getSimpleName(), "Unable to fetch NodeDetailList", e);
         }
+    }
+
+    /**
+     * Method to remove VPNs from nodeList by regular expression "vpn\d\d"
+     * @param nodes
+     * @return
+     */
+    private List<Node> justVPNs(List<Node> nodes){
+        List<Node> filterNodes = new ArrayList<Node>();
+        for (Node node: nodes){
+            if (node.getName().matches("vpn\\d\\d")) {
+                filterNodes.add(node);
+            }
+        }
+        return filterNodes;
+    }
+
+    private List<Node> justNodes(List<Node> nodes){
+        List<Node> filterNodes = new ArrayList<Node>();
+        for (Node node: nodes){
+            if (!node.getName().matches("vpn\\d\\d")) {
+                filterNodes.add(node);
+            }
+        }
+        return filterNodes;
     }
 }
