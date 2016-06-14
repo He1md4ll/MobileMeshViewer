@@ -110,7 +110,8 @@ public class MeshViewerActivity extends RoboAppCompatActivity
         } else if (id == R.id.nav_debug) {
 
         } else if (id == R.id.nav_about) {
-
+            final Intent intent = new Intent(this, AboutFFHB.class);
+            startActivity(intent);
         }
 
         drawer.closeDrawer(GravityCompat.START);
