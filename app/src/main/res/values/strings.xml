@@ -94,7 +94,7 @@
     <string name="node_traffic_label">Traffic</string>
     <string name="node_owner_label">Kontakt</string>
     <string name="node_install_date_label">Teil des Netzes</string>
-    
+
     <string name="gateway_uplink_label">Uplink</string>
     <string name="gateway_address_label">Adresse</string>
     <string name="gateway_ntp_label">NTP</string>
@@ -108,7 +108,6 @@
     <string name="gateway_install_date_label">Teil des Netzes</string>
 
 
-
     <string name="minute">Minute</string>
     <string name="hour">Stunde</string>
     <string name="day">Tag</string>
@@ -119,4 +118,23 @@
     <string name="autoupdate_disabled">deaktiviert</string>
     <string name="fab_delete_node">Deleted node from observed nodes</string>
     <string name="fab_add_node">Added node to observed nodes</string>
+
+    <string name="title_activity_about_ffhb">Über uns</string>
+    <string name="contact_intro">Freifunk ist eine ehrenamtliche Initiative, die versucht ein freies Netzwerk auf Basis von WLAN-Routern aufzubauen. Jede(r) kann mitmachen und ist willkommen. Erreichen kannst du uns über:</string>
+    <string name="contact_e_mail_label">E-Mail</string>
+    <string name="contact_chat_label">IRC</string>
+    <string name="contact_chat">https://webirc.hackint.org/#ffhb</string>
+    <string name="contact_chat_message">Besuche uns im IRC</string>
+    <string name="contact_e_mail">Info@bremen.freifunk.net</string>
+    <string name="contact_e_mail_message">Schreib uns eine Mail!</string>
+    <string name="contact_twitter_label">Twitter</string>
+    <string name="contact_twitter">https://twitter.com/FreifunkHB</string>
+    <string name="contact_twitter_message">Schreibe uns auf Twitter</string>
+    <string name="contact_facebook_label">Facebook</string>
+    <string name="contact_facebook">https://www.facebook.com/FreifunkBremen</string>
+    <string name="contact_facebook_message">Schreibe uns auf Facebook</string>
+    <string name="contact_meetings">Außerdem treffen wir uns jeden 1. und 3. Freitag im Monat im Hackerspace Bremen</string>
+    <string name="contact_website">https://bremen.freifunk.net</string>
+    <string name="contact_website_message">Besuche unsere Website</string>
+    <string name="contact_website_label">Website</string>
 </resources>

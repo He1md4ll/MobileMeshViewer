@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="freifunk.bremen.de.mobilemeshviewer.AboutFFHB"
+    tools:showIn="@layout/activity_about_ffhb">
+
+    <LinearLayout
+        android:id="@+id/line_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/contact_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_intro"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lines_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line_intro"
+        android:layout_marginTop="25dp"
+        android:orientation="vertical">
+
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/contact_button_mail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_e_mail_label"
+            android:layout_gravity="center"
+            android:gravity="center"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/ffhb_pink"/>
+
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/contact_button_irc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_chat_label"
+            android:layout_gravity="center"
+            android:gravity="center"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/ffhb_pink"/>
+
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/contact_button_twitter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_twitter_label"
+            android:layout_gravity="center"
+            android:gravity="center"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/ffhb_pink"/>
+
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/contact_button_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_facebook_label"
+            android:layout_gravity="center"
+            android:gravity="center"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/ffhb_pink"/>
+
+        <Button xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/contact_button_website"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_website_label"
+            android:layout_gravity="center"
+            android:gravity="center"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/ffhb_pink"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/line_meetings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_below="@id/lines_contacts"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/contact_meetings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contact_meetings"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/skyline_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ffhb_skyline"
+        android:layout_below="@id/line_meetings"
+        android:layout_alignParentBottom = "true"/>
+
+
+</RelativeLayout>

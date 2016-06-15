@@ -23,6 +23,7 @@
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -82,6 +83,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".AboutFFHB"
+            android:label="@string/title_activity_about_ffhb"
+            android:parentActivityName=".MeshViewerActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity" />
+        </activity>
     </application>
 
 </manifest>
