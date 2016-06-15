@@ -4,10 +4,6 @@
     <group android:checkableBehavior="none">
         <item android:id="@+id/nav_myNodes" android:icon="@android:drawable/btn_star_big_on"
             android:title="@string/nav_myNodes" />
-        <item android:id="@+id/nav_nodeFinder" android:icon="@android:drawable/ic_menu_search"
-            android:title="@string/nav_nodeFinder" />
-        <item android:id="@+id/nav_debug" android:icon="@android:drawable/ic_dialog_alert"
-            android:title="@string/nav_debug" />
         <item android:id="@+id/nav_settings" android:icon="@android:drawable/ic_menu_manage"
             android:title="@string/nav_settings" />
     </group>
