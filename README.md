@@ -53,17 +53,33 @@ Die Detailansicht präsentiert (fast) alle Statistiken, die in der [nodes.json](
 </p>
 
 ## Gateway-Liste
-
+Die Gateway-Liste stellt analog der Node-Liste alle verfügbaren Gateways dar. Sobald ein Gateway aus der Liste angewählt wird, öffnen sich die detailierten Informationen. Die Liste ist ebenfalls mit einem [Fragment])https://github.com/He1md4ll/MobileMeshViewer/blob/master/app/src/main/java/freifunk/bremen/de/mobilemeshviewer/gateway/GatewayListFragment.java) umgesetzt.
 <p align="center">
   <img src="docs/screenshot_gateways.png?raw=true" width="200"/>
 </p>
 
 ## Gateway-Details
+Die Detailansicht bietet sowohl die Statistiken, als auch die Test der Gatemon-Test-Knoten. Diese prüfen verteilt die Verfügbarkeit einzelner Dienste.
 
 <p align="center">
   <img src="docs/screenshot_gateway_detail.png?raw=true" width="200"/>
 </p>
 
 ## Frameworks und technisches
+Verwendete Frameworks:
+* Roboguice
+* Robolectric
+* jUnit
+* Mockito
+* AssertJ
+* Retrofit
+* Greenrobot
+* Guava
+
+Klassendiagramm:
+<p align="center">
+  <img src="docs/uml_klassendiagramm.png?raw=true"/>
+</p>
+
 
 ## Zukunft
