@@ -1,7 +1,7 @@
 # MobileMeshViewer
 
 MobileMeshViewer ermöglicht die Freifunk Knotenstatistik auf dem Mobiltelefon abzurufen und zu überwachen. 
-Die App war ein Projekt für "Mobile Computing" an der Hochschule Bremen. Sie wurde entwickelt von Martin und Jelto Wodstrcil.
+Die App war ein Projekt für "Mobile Computing" an der Hochschule Bremen. Sie wurde entwickelt von Martin Suckau und Jelto Wodstrcil.
 Der MobileMeshViewer bietet:
 
 * Anzeige der detailierten Knotenstatisiken
@@ -81,7 +81,7 @@ Vereinfachtes Klassendiagramm:
 </p>
 
 ## Zukunft
-*Portierung/Generalisierung der App auf andere Communities (z.B. Hamburg, Oldenburg usw.)
-*Funktionen Node-Finder
-*Netzabdeckung messen
-*Öffentliches Git-Repository
+* Portierung/Generalisierung der App auf andere Communities (z.B. Hamburg, Oldenburg usw.)
+* Funktionen Node-Finder
+* Netzabdeckung messen
+* Öffentliches Git-Repository
