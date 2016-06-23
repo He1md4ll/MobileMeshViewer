@@ -114,7 +114,7 @@ public class NotificationService extends RoboService {
 
     /* package */PendingIntent getPendingIntent(Intent resultIntent) {
         final Intent[] intents = new Intent[]{getParentIntent(), resultIntent};
-        return PendingIntent.getActivities(this, 0, intents, PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getActivities(this, 0, intents, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private Intent getParentIntent() {
