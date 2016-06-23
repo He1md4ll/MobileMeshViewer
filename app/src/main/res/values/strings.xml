@@ -1,15 +1,20 @@
 <resources>
     <string name="app_name">MobileMeshViewer</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Navigationsleiste öffnen</string>
+    <string name="navigation_drawer_close">Navigationsleiste schließen</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="toolbarText">MeshViewer</string>
+    <string name="toolbar_titel">MobileMeshViewer</string>
+    <string name="toolbar_search_titel">Suche</string>
 
     <string name="snackbar_button_OK">OK</string>
     <string name="snackbar_success">Liste neu geladen</string>
     <string name="snackbar_fail">Aktualisierung fehlgeschlagen. Probiere es erneut.</string>
+
+    <string name="fab_delete_node">Knoten wird nicht mehr überwacht</string>
+    <string name="fab_add_node">Knoten wird jetzt überwacht</string>
+
+    <string name="list_empty">Keinen Eintrag gefunden.</string>
 
     <!-- Menu entries-->
     <string name="nav_myNodes">Meine Knoten</string>
@@ -22,31 +27,29 @@
     <string name="nav_drawerheadline">Mobile Mesh Viewer</string>
     <string name="nav_subdrawerheadline">Freifunk Bremen</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_settings">Settings</string>
+    <!-- Activity titles-->
+    <string name="title_activity_settings">Einstellungen</string>
+    <string name="title_activity_my_nodes">Meine Knoten</string>
+    <string name="title_activity_about_ffhb">Über uns</string>
+
+    <!-- Tab titles-->
+    <string name="fragment_node_titel">Knoten</string>
+    <string name="fragment_gateway_titel">Gateways</string>
 
     <!-- Strings related to Settings -->
     <string name="pref_header_general">General</string>
-
     <string name="pref_title_node_mon">Knotenüberwachung</string>
     <string name="pref_description_node_mon">Prüfung der "Eigenen Knoten" auf Konnektivität</string>
     <string name="pref_default_node_mon">false</string>
-
     <string name="pref_title_gate_mon">Gatewayüberwachung</string>
     <string name="pref_description_gate_mon">Prüfung der Gateways auf Konnektivität</string>
     <string name="pref_default_gate_mon">false</string>
-
-
     <string name="pref_title_ringtone">Alarmton</string>
     <string name="pref_default_ringtone"></string>
     <string name="pref_ringtone_silent">Stumm</string>
     <string name="pref_ringtone_unknown">Unbekannter Klingelton</string>
-
     <string name="pref_title_vibrate">Vibrieren</string>
     <string name="pref_default_vibrate">false</string>
-
-
     <string name="pref_title_sync_frequency">Aktualisierungsrate</string>
     <string-array name="pref_sync_frequency_titles">
         <item>24 Stunden</item>
@@ -71,15 +74,9 @@
         <item>-1</item>
     </string-array>
     <string name="pref_default_sync_frequency">5</string>
-
     <string name="pref_description_autostart">App bei Systemstart ausführen</string>
     <string name="pref_title_autostart">App in Autostart</string>
     <string name="pref_default_autostart">false</string>
-
-    <string name="list_empty">Keinen Eintrag gefunden.</string>
-    <string name="title_activity_node">NodeActivity</string>
-    <string name="title_activity_my_nodes">MyNodesActivity</string>
-    <string name="title_activity_gateway">GatewayActivity</string>
 
     <!--  Node Detail Page-->
     <string name="node_hardware_label">Hardware</string>
@@ -116,10 +113,7 @@
     <string name="days">Tage</string>
     <string name="autoupdate_enabled">aktiviert</string>
     <string name="autoupdate_disabled">deaktiviert</string>
-    <string name="fab_delete_node">Deleted node from observed nodes</string>
-    <string name="fab_add_node">Added node to observed nodes</string>
 
-    <string name="title_activity_about_ffhb">Über uns</string>
     <string name="contact_intro">Freifunk ist eine ehrenamtliche Initiative, die versucht ein freies Netzwerk auf Basis von WLAN-Routern aufzubauen. Jede(r) kann mitmachen und ist willkommen. Erreichen kannst du uns über:</string>
     <string name="contact_e_mail_label">E-Mail</string>
     <string name="contact_chat_label">IRC</string>

@@ -140,9 +140,9 @@ public class MeshViewerActivity extends RoboAppCompatActivity
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Nodes";
+                    return getString(R.string.fragment_node_titel);
                 case 1:
-                    return "Gateways";
+                    return getString(R.string.fragment_gateway_titel);
             }
             return null;
         }
