@@ -53,7 +53,7 @@ Die Detailansicht präsentiert nahezu alle ferfügbaren Statistiken, die in der 
 </p>
 
 ## Gatewayliste
-Die Gateway-Liste stellt analog der Knotenliste alle verfügbaren Gateways dar. Sobald ein Gateway aus der Liste angewählt wird, öffnen sich die detailierten Informationen. Die Liste ist ebenfalls mit einem [Fragment])https://github.com/He1md4ll/MobileMeshViewer/blob/master/app/src/main/java/freifunk/bremen/de/mobilemeshviewer/gateway/GatewayListFragment.java) umgesetzt.
+Die Gateway-Liste stellt analog der Knotenliste alle verfügbaren Gateways dar. Sobald ein Gateway aus der Liste angewählt wird, öffnen sich die detailierten Informationen. Die Liste ist ebenfalls mit einem [Fragment](https://github.com/He1md4ll/MobileMeshViewer/blob/master/app/src/main/java/freifunk/bremen/de/mobilemeshviewer/gateway/GatewayListFragment.java) umgesetzt.
 <p align="center">
   <img src="docs/screenshot_gateways.png?raw=true" width="200"/>
 </p>
