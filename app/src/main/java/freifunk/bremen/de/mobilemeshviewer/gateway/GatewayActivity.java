@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -34,6 +35,10 @@ public class GatewayActivity extends RoboAppCompatActivity {
 
     @InjectExtra(value = BUNDLE_GATEWAY)
     private Gateway gateway;
+    @InjectView(R.id.progress_container)
+    private View progressIndicator;
+    @InjectView(R.id.gateway_content)
+    private View gatewayContent;
     @InjectView(R.id.toolbar)
     private Toolbar toolbar;
     @InjectView(R.id.gateway_status_table)
@@ -121,19 +126,24 @@ public class GatewayActivity extends RoboAppCompatActivity {
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onGatewayNodeDetailFound(NodeDetailFoundEvent event) {
         final NodeDetail gatewayDetail = event.getNode();
-        gatewayFirmware.setText(gatewayDetail.getNodeinfo().getSoftware().getFirmware().getRelease()
-                + " \\ " + gatewayDetail.getNodeinfo().getSoftware().getFirmware().getBase());
+        gatewayFirmware.setText(getString(R.string.separator,
+                gatewayDetail.getNodeinfo().getSoftware().getFirmware().getRelease(),
+                gatewayDetail.getNodeinfo().getSoftware().getFirmware().getBase()));
         gatewayInstallDate.setText(nodeDetailConverter.convertDate(gatewayDetail.getFirstseen()));
         if (gatewayDetail.getFlagsNode().getOnline()) {
             gatewayTraffic.setText(nodeDetailConverter.convertTraffic(gatewayDetail.getStatistics().getTraffic()));
             gatewayUptime.setText(nodeDetailConverter.convertUptime(gatewayDetail.getStatistics().getUptime()));
-            gatewayLoadavg.setText(String.valueOf(gatewayDetail.getStatistics().getLoadavg().toString())
-                    + " / " + Math.round(gatewayDetail.getStatistics().getMemoryUsage() * 100) + "%");
+            gatewayLoadavg.setText(getString(R.string.traffic_separator,
+                    gatewayDetail.getStatistics().getLoadavg(),
+                    Math.round(gatewayDetail.getStatistics().getMemoryUsage() * 100), "%"));
         }
+        progressIndicator.setVisibility(View.GONE);
+        gatewayContent.setVisibility(View.VISIBLE);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onGatewayNodeDetailFound(NodeDetailNotFoundEvent ignored) {
+        progressIndicator.setVisibility(View.GONE);
         Snackbar.make(tableLayout, "Couldn't load details for " + gateway.getName(), Snackbar.LENGTH_LONG).show();
     }
 }
