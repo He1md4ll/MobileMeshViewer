@@ -1,9 +1,12 @@
 package freifunk.bremen.de.mobilemeshviewer.gateway;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.inject.Inject;
@@ -33,22 +36,8 @@ public class GatewayActivity extends RoboAppCompatActivity {
     private Gateway gateway;
     @InjectView(R.id.toolbar)
     private Toolbar toolbar;
-    @InjectView(R.id.gateway_uplink_ipv4)
-    private TextView gatewayUplink4;
-    @InjectView(R.id.gateway_uplink_ipv6)
-    private TextView gatewayUplink6;
-    @InjectView(R.id.gateway_address_ipv4)
-    private TextView gatewayAddress4;
-    @InjectView(R.id.gateway_address_ipv6)
-    private TextView gatewayAddress6;
-    @InjectView(R.id.gateway_dns_ipv4)
-    private TextView gatewayDns4;
-    @InjectView(R.id.gateway_dns_ipv6)
-    private TextView gatewayDns6;
-    @InjectView(R.id.gateway_ntp_ipv4)
-    private TextView gatewayNtp4;
-    @InjectView(R.id.gateway_ntp_ipv6)
-    private TextView gatewayNtp6;
+    @InjectView(R.id.gateway_status_table)
+    private TableLayout tableLayout;
     @InjectView(R.id.gateway_traffic)
     private TextView gatewayTraffic;
     @InjectView(R.id.gateway_firmware)
@@ -63,6 +52,8 @@ public class GatewayActivity extends RoboAppCompatActivity {
     private GatewayNodeDetailLoader gatewayNodeDetailLoader;
     @Inject
     private NodeDetailConverter nodeDetailConverter;
+    @Inject
+    private LayoutInflater layoutInflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +62,7 @@ public class GatewayActivity extends RoboAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(gateway.getName());
 
-        showStatus(gateway.getUplink(), gatewayUplink4, gatewayUplink6);
-        showStatus(gateway.getAddresses(), gatewayAddress4, gatewayAddress6);
-        showStatus(gateway.getDns(), gatewayDns4, gatewayDns6);
-        showStatus(gateway.getNtp(), gatewayNtp4, gatewayNtp6);
-
+        createTable();
         gatewayNodeDetailLoader.execute(gateway.getName());
     }
 
@@ -89,6 +76,46 @@ public class GatewayActivity extends RoboAppCompatActivity {
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    private void createTable() {
+        tableLayout.addView(createRow("UpLink", gateway.getUplink()));
+        tableLayout.addView(createRow("Address", gateway.getAddresses()));
+        tableLayout.addView(createRow("DNS", gateway.getDns()));
+        tableLayout.addView(createRow("NTP", gateway.getNtp()));
+    }
+
+    private TableRow createRow(String label, IpStatus status) {
+        final TableRow tableRow = (TableRow) layoutInflater.inflate(R.layout.template_gateway_table_row, null);
+        final TextView tableRowLabel = (TextView) tableRow.findViewById(R.id.table_row_label);
+        tableRowLabel.setText(label);
+
+        final ImageView tableRowStatus1 = (ImageView) tableRow.findViewById(R.id.table_row_status_1);
+        final ImageView tableRowStatus2 = (ImageView) tableRow.findViewById(R.id.table_row_status_2);
+        setStatus(status, tableRowStatus1, tableRowStatus2);
+
+        return tableRow;
+    }
+
+    private void setStatus(IpStatus status, ImageView imageIpv4, ImageView imageIpv6) {
+        switch (status) {
+            case BOTH:
+                imageIpv4.setImageResource(R.drawable.ic_online);
+                imageIpv6.setImageResource(R.drawable.ic_online);
+                break;
+            case IPv4:
+                imageIpv4.setImageResource(R.drawable.ic_online);
+                imageIpv6.setImageResource(R.drawable.ic_offline);
+                break;
+            case IPv6:
+                imageIpv4.setImageResource(R.drawable.ic_offline);
+                imageIpv6.setImageResource(R.drawable.ic_online);
+                break;
+            default:
+                imageIpv4.setImageResource(R.drawable.ic_offline);
+                imageIpv6.setImageResource(R.drawable.ic_offline);
+                break;
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -107,38 +134,6 @@ public class GatewayActivity extends RoboAppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onGatewayNodeDetailFound(NodeDetailNotFoundEvent ignored) {
-        Snackbar.make(gatewayUplink4, "Couldn't load details for " + gateway.getName(), Snackbar.LENGTH_LONG).show();
-    }
-
-    private void showStatus(IpStatus status, TextView textViewv4, TextView textViewv6){
-        String ok = "OK";
-        String nok = "NOK";
-
-        switch (status) {
-            case BOTH:
-                textViewv4.setText(ok);
-                textViewv4.setTextColor(Color.GREEN);
-                textViewv6.setText(ok);
-                textViewv6.setTextColor(Color.GREEN);
-                break;
-            case IPv4:
-                textViewv4.setText(ok);
-                textViewv4.setTextColor(Color.GREEN);
-                textViewv6.setText(nok);
-                textViewv6.setTextColor(Color.RED);
-                break;
-            case IPv6:
-                textViewv4.setText(nok);
-                textViewv4.setTextColor(Color.RED);
-                textViewv6.setText(ok);
-                textViewv6.setTextColor(Color.GREEN);
-                break;
-            case NONE:
-                textViewv4.setText(nok);
-                textViewv4.setTextColor(Color.RED);
-                textViewv6.setText(nok);
-                textViewv6.setTextColor(Color.RED);
-                break;
-        }
+        Snackbar.make(tableLayout, "Couldn't load details for " + gateway.getName(), Snackbar.LENGTH_LONG).show();
     }
 }

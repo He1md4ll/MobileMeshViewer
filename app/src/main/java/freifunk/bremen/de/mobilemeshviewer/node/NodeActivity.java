@@ -1,7 +1,6 @@
 package freifunk.bremen.de.mobilemeshviewer.node;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -84,9 +83,9 @@ public class NodeActivity extends RoboAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(node.getName());
         if (node.getStatus().getOnline()) {
-            toolbar.setTitleTextColor(Color.GREEN);
+            getSupportActionBar().setIcon(R.drawable.ic_online);
         } else {
-            toolbar.setTitleTextColor(Color.RED);
+            getSupportActionBar().setIcon(R.drawable.ic_offline);
         }
 
         nodeDetailLoader.execute(node.getId());

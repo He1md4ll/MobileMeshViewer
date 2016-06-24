@@ -12,177 +12,44 @@
     tools:context="freifunk.bremen.de.mobilemeshviewer.gateway.GatewayActivity"
     tools:showIn="@layout/activity_gateway">
 
-    <LinearLayout
-        android:id="@+id/column_left"
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:id="@+id/gateway_status_table"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="10dp"
-        android:orientation="vertical"
-        android:minWidth="100dp"
-        android:weightSum="1">
+        android:paddingRight="30dp"
+        android:stretchColumns="1">
 
-        <TextView
+        <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:gravity="left"/>
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/gateway_uplink_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/gateway_uplink_label"
-            android:layout_marginTop="20dp"
-            android:gravity="left"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:id="@+id/gateway_address_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/gateway_address_label"
-            android:layout_marginTop="20dp"
-            android:gravity="left"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/gateway_ipv4_label"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
-            android:id="@+id/gateway_dns_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/gateway_dns_label"
-            android:layout_marginTop="20dp"
-            android:gravity="left"/>
-
-        <TextView
-            android:id="@+id/gateway_ntp_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/gateway_ntp_label"
-            android:layout_marginTop="20dp"
-            android:gravity="left"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/column_center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:orientation="vertical"
-        android:weightSum="1"
-        android:minWidth="100dp"
-        android:layout_toRightOf="@id/column_left">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/gateway_ipv4_label"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/gateway_uplink_ipv4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginTop="20dp"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/gateway_address_ipv4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginTop="20dp"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/gateway_dns_ipv4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginTop="20dp"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/gateway_ntp_ipv4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginTop="20dp"
-            android:gravity="center"/>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/column_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:orientation="vertical"
-        android:weightSum="1"
-        android:minWidth="100dp"
-        android:layout_toRightOf="@id/column_center">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/gateway_ipv6_label"
-            android:gravity="right"/>
-
-        <TextView
-            android:id="@+id/gateway_uplink_ipv6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginTop="20dp"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/gateway_address_ipv6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginTop="20dp"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/gateway_dns_ipv6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginTop="20dp"
-            android:gravity="center"/>
-
-        <TextView
-            android:id="@+id/gateway_ntp_ipv6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginTop="20dp"
-            android:gravity="center"/>
-
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/gateway_ipv6_label"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </TableRow>
+    </TableLayout>
 
     <LinearLayout
         android:id="@+id/line_traffic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/column_left"
+        android:layout_below="@id/gateway_status_table"
         android:layout_marginTop="25dp"
         android:orientation="horizontal">
         <TextView
@@ -292,8 +159,4 @@
             android:gravity="end"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
-
-
-
-
 </RelativeLayout>
