@@ -36,6 +36,10 @@ public class NodeActivity extends RoboAppCompatActivity {
 
     @InjectExtra(value = BUNDLE_NODE)
     private Node node;
+    @InjectView(R.id.progress_container)
+    private View progressIndicator;
+    @InjectView(R.id.node_content)
+    private View nodeContent;
     @InjectView(R.id.node_hardware)
     private TextView nodeHardware;
     @InjectView(R.id.toolbar)
@@ -151,8 +155,9 @@ public class NodeActivity extends RoboAppCompatActivity {
         nodeHardware.setText(nodeDetail.getNodeinfo().getHardware().getModel());
         nodeMac.setText(nodeDetail.getNodeinfo().getNetwork().getMac());
         nodeId.setText(nodeDetail.getNodeinfo().getNodeId());
-        nodeFirmware.setText(nodeDetail.getNodeinfo().getSoftware().getFirmware().getRelease()
-                + " \\ " + nodeDetail.getNodeinfo().getSoftware().getFirmware().getBase());
+        nodeFirmware.setText(getString(R.string.separator,
+                nodeDetail.getNodeinfo().getSoftware().getFirmware().getBase(),
+                nodeDetail.getNodeinfo().getSoftware().getFirmware().getBase()));
         nodeAddresses1.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(0));
         nodeAddresses2.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(1));
         nodeAddresses3.setText(nodeDetail.getNodeinfo().getNetwork().getAddresses().get(2));
@@ -165,15 +170,19 @@ public class NodeActivity extends RoboAppCompatActivity {
 
         if (nodeDetail.getFlagsNode().getOnline()) {
             nodeUptime.setText(nodeDetailConverter.convertUptime(nodeDetail.getStatistics().getUptime()));
-            nodeLoadavg.setText(String.valueOf(nodeDetail.getStatistics().getLoadavg())
-                    + " / " + Math.round(nodeDetail.getStatistics().getMemoryUsage() * 100) + "%");
-            nodeClients.setText(nodeDetail.getStatistics().getClients() + "");
+            nodeLoadavg.setText(getString(R.string.traffic_separator,
+                    nodeDetail.getStatistics().getLoadavg(),
+                    Math.round(nodeDetail.getStatistics().getMemoryUsage() * 100), "%"));
+            nodeClients.setText(String.valueOf(nodeDetail.getStatistics().getClients()));
             nodeTraffic.setText(nodeDetailConverter.convertTraffic(nodeDetail.getStatistics().getTraffic()));
         }
+        progressIndicator.setVisibility(View.GONE);
+        nodeContent.setVisibility(View.VISIBLE);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onNodeDetailFound(NodeDetailNotFoundEvent ignored) {
+        progressIndicator.setVisibility(View.GONE);
         Snackbar.make(fab, "Couldn't load details for " + node.getName(), Snackbar.LENGTH_LONG).show();
     }
 }

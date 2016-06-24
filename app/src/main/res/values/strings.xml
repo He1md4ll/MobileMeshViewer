@@ -15,6 +15,10 @@
     <string name="fab_add_node">Knoten wird jetzt überwacht</string>
 
     <string name="list_empty">Keinen Eintrag gefunden.</string>
+    <string name="loading">Wird geladen…</string>
+
+    <string name="separator">%1$s \\ %2$s</string>
+    <string name="traffic_separator">%1$f / %2$s%3$s</string>
 
     <!-- Menu entries-->
     <string name="nav_myNodes">Meine Knoten</string>
