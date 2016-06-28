@@ -23,7 +23,6 @@ public class MyNodesActivity extends RoboAppCompatActivity {
         super.onCreate(savedInstanceState);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("My Nodes");
     }
 
     @Override

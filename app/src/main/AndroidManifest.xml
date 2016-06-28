@@ -30,6 +30,7 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
+            android:parentActivityName=".MeshViewerActivity"
             android:theme="@style/AppTheme.ActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -37,23 +38,24 @@
         </activity>
         <activity
             android:name=".node.NodeActivity"
-            android:label="@string/title_activity_node"
-            android:launchMode="standard">
+            android:launchMode="standard"
+            android:parentActivityName=".MeshViewerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity" />
         </activity>
         <activity
             android:name=".node.MyNodesActivity"
-            android:label="@string/title_activity_my_nodes">
+            android:label="@string/title_activity_my_nodes"
+            android:parentActivityName=".MeshViewerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity" />
         </activity>
         <activity
             android:name=".gateway.GatewayActivity"
-            android:label="@string/title_activity_gateway"
-            android:launchMode="standard">
+            android:launchMode="standard"
+            android:parentActivityName=".MeshViewerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity" />
