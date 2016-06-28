@@ -14,11 +14,14 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity;
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
@@ -119,5 +122,23 @@ public class NotificationService extends RoboService {
 
     private Intent getParentIntent() {
         return new Intent(this, MeshViewerActivity.class);
+    }
+
+    public class NotificationWrapper {
+        private long notificationID;
+        private List<String> messages;
+
+        public NotificationWrapper(long notificationID, String message) {
+            this.notificationID = notificationID;
+            this.messages = Lists.newArrayList(message);
+        }
+
+        public void addMessage(String message) {
+            messages.add(message);
+        }
+
+        public long getNotificationID() {
+            return notificationID;
+        }
     }
 }
