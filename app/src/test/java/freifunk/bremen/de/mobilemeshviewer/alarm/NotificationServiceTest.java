@@ -57,9 +57,9 @@ public class NotificationServiceTest extends RobolectricTest {
     }
 
     @Override
-    public void teardown() {
+    public void tearDown() {
         controller.destroy();
-        super.teardown();
+        super.tearDown();
     }
 
     @Test

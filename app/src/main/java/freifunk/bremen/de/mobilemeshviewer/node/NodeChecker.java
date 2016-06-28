@@ -18,7 +18,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -46,8 +45,6 @@ public class NodeChecker implements Checkable<Node> {
     private RetrofitServiceManager retrofitServiceManager;
     private Optional<List<Node>> currentNodeListOptional = Optional.absent();
     private Optional<List<Node>> currentGWListOptional = Optional.absent();
-    @Inject
-    private Gson gson;
 
     @Override
     public List<Node> fetchList() {
@@ -85,15 +82,17 @@ public class NodeChecker implements Checkable<Node> {
     }
 
     public Optional<NodeDetail> getDetailNodeById(String id) {
+        final Gson gson = new Gson();
         Optional<NodeDetail> nodeDetailOptional = Optional.absent();
         try {
             JsonReader reader = getDetailNodeList();
             reader.beginObject();
             while (reader.hasNext()) {
                 String name = reader.nextName();
-                if (name.equals("nodes")) {
+                if ("nodes".equals(name)) {
                     reader.beginObject();
                 } else if (name.equals(id)) {
+
                     nodeDetailOptional = Optional.of((NodeDetail) gson.fromJson(reader, new TypeToken<NodeDetail>() {
                     }.getType()));
                     break;
@@ -188,8 +187,6 @@ public class NodeChecker implements Checkable<Node> {
 
     /**
      * Method to remove VPNs from nodeList by regular expression "vpn\d\d"
-     * @param nodes
-     * @return
      */
     private List<Node> justVPNs(List<Node> nodes){
         List<Node> filterNodes = new ArrayList<Node>();

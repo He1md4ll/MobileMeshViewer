@@ -17,19 +17,19 @@ import freifunk.bremen.de.mobilemeshviewer.node.NodeChecker;
 public class CheckerServiceTest extends RobolectricTest {
 
     @Inject
-    private CheckerService checkerService;
+    private CheckerService classUnderTest;
     @Mock
     private NodeChecker nodeChecker;
     @Mock
     private GatewayChecker gatewayChecker;
 
     @Test
-    public void testOnHandleIntent() throws Exception {
+    public void testOnHandleIntent() {
         // Given
         final Intent intent = new Intent(RuntimeEnvironment.application, CheckerService.class);
 
         // When
-        checkerService.onHandleIntent(intent);
+        classUnderTest.onHandleIntent(intent);
 
         // Then
         Mockito.verify(nodeChecker).reloadList();

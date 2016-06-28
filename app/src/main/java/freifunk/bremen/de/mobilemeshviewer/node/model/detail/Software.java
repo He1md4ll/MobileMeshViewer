@@ -6,9 +6,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by anon on 08.04.2016.
- */
 public class Software implements Parcelable {
 
     public static final Creator CREATOR =
@@ -21,13 +18,6 @@ public class Software implements Parcelable {
                     return new Software[size];
                 }
             };
-
-    public Software() {
-    }
-
-    public Software(Parcel in) {
-        readFromParcel(in);
-    }
 
     @SerializedName("batman-adv")
     @Expose
@@ -44,6 +34,13 @@ public class Software implements Parcelable {
     @SerializedName("firmware")
     @Expose
     private Firmware firmware;
+
+    public Software() {
+    }
+
+    public Software(Parcel in) {
+        readFromParcel(in);
+    }
 
     public Batman getBatman() {
         return batman;

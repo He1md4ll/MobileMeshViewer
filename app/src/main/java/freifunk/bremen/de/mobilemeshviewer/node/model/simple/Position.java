@@ -32,19 +32,19 @@ public class Position implements Parcelable {
         readFromParcel(in);
     }
 
-    public Double get_long() {
+    public Double getLongPos() {
         return _long;
     }
 
-    public void set_long(Double _long) {
+    public void setLongPos(Double _long) {
         this._long = _long;
     }
 
-    public Double getLat() {
+    public Double getLatPos() {
         return lat;
     }
 
-    public void setLat(Double lat) {
+    public void setLatPos(Double lat) {
         this.lat = lat;
     }
 

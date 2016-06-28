@@ -38,7 +38,8 @@ public class MyNodesActivity extends RoboAppCompatActivity {
                     NavUtils.navigateUpTo(this, upIntent);
                 }
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -106,7 +106,7 @@ public class MeshViewerActivity extends RoboAppCompatActivity
             final Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_about) {
-            final Intent intent = new Intent(this, AboutFFHB.class);
+            final Intent intent = new Intent(this, AboutFFHBActivity.class);
             startActivity(intent);
         }
 

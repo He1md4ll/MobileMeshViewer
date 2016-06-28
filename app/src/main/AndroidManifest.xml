@@ -87,7 +87,7 @@
         </receiver>
 
         <activity
-            android:name=".AboutFFHB"
+            android:name=".AboutFFHBActivity"
             android:label="@string/title_activity_about_ffhb"
             android:parentActivityName=".MeshViewerActivity"
             android:theme="@style/AppTheme">

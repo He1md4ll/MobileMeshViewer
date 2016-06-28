@@ -3,9 +3,9 @@ package freifunk.bremen.de.mobilemeshviewer.node.model.detail;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by anon on 08.04.2016.
- */
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Mesh implements Parcelable {
 
     public static final Creator CREATOR =
@@ -18,6 +18,10 @@ public class Mesh implements Parcelable {
                     return new Mesh[size];
                 }
             };
+
+    @SerializedName("name")
+    @Expose
+    private String name;
 
     public Mesh() {
     }
@@ -38,10 +42,10 @@ public class Mesh implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(name);
     }
 
     private void readFromParcel(Parcel in) {
-
+        name = in.readString();
     }
 }

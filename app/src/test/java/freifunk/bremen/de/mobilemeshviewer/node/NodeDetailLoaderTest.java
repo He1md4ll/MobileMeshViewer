@@ -36,9 +36,9 @@ public class NodeDetailLoaderTest extends RobolectricTest {
     }
 
     @Override
-    public void teardown() {
+    public void tearDown() {
         EventBus.getDefault().unregister(this);
-        super.teardown();
+        super.tearDown();
     }
 
     @Test

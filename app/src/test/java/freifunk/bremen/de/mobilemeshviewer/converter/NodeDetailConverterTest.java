@@ -1,25 +1,18 @@
 package freifunk.bremen.de.mobilemeshviewer.converter;
 
-import android.content.Context;
-
-import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
-import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
-import freifunk.bremen.de.mobilemeshviewer.converter.NodeDetailConverter;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Autoupdater;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Traffic;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.TrafficBytes;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.TrafficBytesDropped;
-import retrofit2.Call;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,16 +21,11 @@ public class NodeDetailConverterTest extends RobolectricTest {
     @Inject
     private NodeDetailConverter classUnderTest;
     @Inject
-    Autoupdater autoupdater;
+    private Autoupdater autoupdater;
     @Inject
-    Traffic traffic;
+    private Traffic traffic;
     @Inject
-    TrafficBytes trafficBytes;
-    @Inject
-    TrafficBytesDropped trafficBytesDropped;
-
-    @Mock
-    Context context;
+    private TrafficBytesDropped trafficBytesDropped;
 
     @Override
     public void setUp() throws Exception {
@@ -56,7 +44,7 @@ public class NodeDetailConverterTest extends RobolectricTest {
 
         // Then
         assertThat(uptimeString).isEqualTo("1 Minute");
-        assertThat(uptimeString).isEqualTo("1 Minute");
+        assertThat(uptimeString1).isEqualTo("1 Minute");
     }
 
     @Test
@@ -228,8 +216,7 @@ public class NodeDetailConverterTest extends RobolectricTest {
         long oneDayInMS = 86400000;
         Date now = new Date();
         now.setTime(now.getTime() - oneDayInMS);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss");
-        final String date = "2016-04-27T12:00:00";
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss", Locale.GERMANY);
 
         //When
         String dateString = classUnderTest.convertDate(formatter.format(now));

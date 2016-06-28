@@ -6,9 +6,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by anon on 08.04.2016.
- */
 public class Nodeinfo implements Parcelable {
 
     public static final Parcelable.Creator CREATOR =
@@ -21,13 +18,6 @@ public class Nodeinfo implements Parcelable {
                     return new Nodeinfo[size];
                 }
             };
-
-    public Nodeinfo() {
-    }
-
-    public Nodeinfo(Parcel in) {
-        readFromParcel(in);
-    }
 
     @SerializedName("hardware")
     @Expose
@@ -53,6 +43,13 @@ public class Nodeinfo implements Parcelable {
     @SerializedName("location")
     @Expose
     private Location location;
+
+    public Nodeinfo() {
+    }
+
+    public Nodeinfo(Parcel in) {
+        readFromParcel(in);
+    }
 
     public Hardware getHardware() {
         return hardware;

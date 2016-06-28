@@ -145,8 +145,9 @@ public class NodeActivity extends RoboAppCompatActivity {
                     NavUtils.navigateUpTo(this, upIntent);
                 }
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

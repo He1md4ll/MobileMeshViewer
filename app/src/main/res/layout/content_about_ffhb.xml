@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="freifunk.bremen.de.mobilemeshviewer.AboutFFHB"
+    tools:context=".AboutFFHBActivity"
     tools:showIn="@layout/activity_about_ffhb">
 
     <LinearLayout
@@ -36,56 +36,56 @@
 
         <Button xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/contact_button_mail"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contact_e_mail_label"
             android:layout_gravity="center"
             android:gravity="center"
-            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/contact_e_mail_label"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/ffhb_pink"/>
 
         <Button xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/contact_button_irc"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contact_chat_label"
             android:layout_gravity="center"
             android:gravity="center"
-            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/contact_chat_label"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/ffhb_pink"/>
 
         <Button xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/contact_button_twitter"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contact_twitter_label"
             android:layout_gravity="center"
             android:gravity="center"
-            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/contact_twitter_label"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/ffhb_pink"/>
 
         <Button xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/contact_button_facebook"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contact_facebook_label"
             android:layout_gravity="center"
             android:gravity="center"
-            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/contact_facebook_label"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/ffhb_pink"/>
 
         <Button xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/contact_button_website"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contact_website_label"
             android:layout_gravity="center"
             android:gravity="center"
-            style="?android:attr/borderlessButtonStyle"
+            android:text="@string/contact_website_label"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/ffhb_pink"/>
 
@@ -95,8 +95,8 @@
         android:id="@+id/line_meetings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_below="@id/lines_contacts"
+        android:layout_marginTop="4dp"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/contact_meetings"
@@ -110,9 +110,9 @@
         android:id="@+id/skyline_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/ffhb_skyline"
+        android:layout_alignParentBottom="true"
         android:layout_below="@id/line_meetings"
-        android:layout_alignParentBottom = "true"/>
+        android:src="@drawable/ffhb_skyline" />
 
 
 </RelativeLayout>

@@ -31,7 +31,7 @@ public class RobolectricTest {
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         RoboGuice.Util.reset();
     }
 
