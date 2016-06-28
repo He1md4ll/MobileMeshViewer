@@ -57,9 +57,5 @@ public class ListLoader<T> extends AsyncTaskLoader<List<T>> {
     protected void onReset() {
         super.onReset();
         onStopLoading();
-
-        if (this.list != null) {
-            this.list = null;
-        }
     }
 }

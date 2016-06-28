@@ -27,11 +27,6 @@ public class NodeDetailConverterTest extends RobolectricTest {
     @Inject
     private TrafficBytesDropped trafficBytesDropped;
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
     @Test
     public void testConvertUptimeMinute() throws Exception {
         // Given
@@ -239,6 +234,4 @@ public class NodeDetailConverterTest extends RobolectricTest {
         //Then
         assertThat(dateString).isEqualTo("5 Tage");
     }
-
-
 }

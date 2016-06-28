@@ -97,7 +97,7 @@ public class MeshViewerActivity extends RoboAppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Intent intent;
+        Intent intent = null;
         int id = item.getItemId();
 
         switch (id) {
@@ -114,7 +114,7 @@ public class MeshViewerActivity extends RoboAppCompatActivity
                 break;
             }
             default:
-                intent = null;
+                break;
         }
         startActivity(intent);
         drawer.closeDrawer(GravityCompat.START);

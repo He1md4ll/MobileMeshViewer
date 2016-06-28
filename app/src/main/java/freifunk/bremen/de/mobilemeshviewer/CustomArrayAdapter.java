@@ -61,7 +61,7 @@ public class CustomArrayAdapter<T> extends BaseAdapter implements Filterable, Se
      * a TextView inside the inflated views hierarchy. This field must contain the
      * identifier that matches the one defined in the resource file.
      */
-    private int mFieldId = 0;
+    private int mFieldId;
 
     /**
      * Indicates whether or not {@link #notifyDataSetChanged()} must be called whenever
@@ -73,7 +73,7 @@ public class CustomArrayAdapter<T> extends BaseAdapter implements Filterable, Se
 
     // A copy of the original mObjects array, initialized from and then used instead as soon as
     // the mFilter ArrayFilter is used. mObjects will then only contain the filtered values.
-    private ArrayList<T> mOriginalValues;
+    private List<T> mOriginalValues;
     private ArrayFilter mFilter;
 
     private CharSequence filterText;
@@ -258,15 +258,17 @@ public class CustomArrayAdapter<T> extends BaseAdapter implements Filterable, Se
     private CharSequence highlight(String search, String originalText) {
         final String normalizedText = Normalizer.normalize(originalText, Normalizer.Form.NFD).toLowerCase();
         int start = normalizedText.indexOf(search);
+        final ColorStateList colorList = ContextCompat.getColorStateList(getContext(), R.color.colorPrimaryDark);
         final Spannable highlighted = new SpannableString(originalText);
+
         while (start >= 0) {
             final int spanStart = Math.min(start, originalText.length());
             final int spanEnd = Math.min(start + search.length(), originalText.length());
-            final ColorStateList colorList = ContextCompat.getColorStateList(getContext(), R.color.colorPrimaryDark);
             final TextAppearanceSpan highlightSpan = new TextAppearanceSpan(null, Typeface.BOLD, -1, colorList, null);
             highlighted.setSpan(highlightSpan, spanStart, spanEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             start = normalizedText.indexOf(search, spanEnd);
         }
+
         return highlighted;
     }
 
@@ -365,4 +367,3 @@ public class CustomArrayAdapter<T> extends BaseAdapter implements Filterable, Se
         }
     }
 }
-

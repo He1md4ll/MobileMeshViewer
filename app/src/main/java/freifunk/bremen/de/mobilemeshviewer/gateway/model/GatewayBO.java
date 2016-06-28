@@ -7,14 +7,14 @@ import com.google.common.collect.Iterables;
 public class GatewayBO {
 
     private String name;
-    private int ntpSum4 = 0;
-    private int ntpSum6 = 0;
-    private int addressesSum4 = 0;
-    private int addressesSum6 = 0;
-    private int dnsSum4 = 0;
-    private int dnsSum6 = 0;
-    private int uplinkSum4 = 0;
-    private int uplinkSum6 = 0;
+    private int ntpSum4;
+    private int ntpSum6;
+    private int addressesSum4;
+    private int addressesSum6;
+    private int dnsSum4;
+    private int dnsSum6;
+    private int uplinkSum4;
+    private int uplinkSum6;
 
     public static GatewayBO countFromVpnServer(VpnServer vpnServer, GatewayBO gatewayBO) {
         gatewayBO.setName(vpnServer.getName());

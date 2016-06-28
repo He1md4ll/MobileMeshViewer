@@ -84,10 +84,7 @@ public class SettingsActivity extends RoboAppCompatPreferenceActivity implements
             int index = listPreference.findIndexOfValue(preference.getSharedPreferences().getString(key, ""));
 
             // Set the summary to reflect the new value.
-            preference.setSummary(
-                    index >= 0
-                            ? listPreference.getEntries()[index]
-                            : null);
+            preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : "");
 
             if (PreferenceController.PREF_ALARM_INTERVAL.equals(key)) {
                 alarmController.changeNodeAlarm();

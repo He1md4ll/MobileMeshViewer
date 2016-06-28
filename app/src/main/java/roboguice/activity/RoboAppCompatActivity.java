@@ -78,7 +78,7 @@ import roboguice.util.RoboContext;
  */
 public class RoboAppCompatActivity extends AppCompatActivity implements RoboContext {
     protected EventManager eventManager;
-    protected HashMap<Key<?>, Object> scopedObjects = new HashMap<Key<?>, Object>();
+    protected Map<Key<?>, Object> scopedObjects = new HashMap<Key<?>, Object>();
 
     @Inject
     ContentViewListener ignored; // BUG find a better place to put this

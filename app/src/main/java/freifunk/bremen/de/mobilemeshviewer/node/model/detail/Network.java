@@ -6,11 +6,8 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Created by anon on 08.04.2016.
- */
 public class Network implements Parcelable {
 
     public static final Creator CREATOR =
@@ -25,10 +22,10 @@ public class Network implements Parcelable {
             };
     @SerializedName("addresses")
     @Expose
-    private ArrayList<String> addresses;
+    private List<String> addresses;
     @SerializedName("mesh_interfaces")
     @Expose
-    private ArrayList<String> meshInterfaces;
+    private List<String> meshInterfaces;
     @SerializedName("mesh")
     @Expose
     private Mesh mesh;
@@ -43,19 +40,19 @@ public class Network implements Parcelable {
         readFromParcel(in);
     }
 
-    public ArrayList<String> getAddresses() {
+    public List<String> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(ArrayList<String> addresses) {
+    public void setAddresses(List<String> addresses) {
         this.addresses = addresses;
     }
 
-    public ArrayList<String> getMeshInterfaces() {
+    public List<String> getMeshInterfaces() {
         return meshInterfaces;
     }
 
-    public void setMeshInterfaces(ArrayList<String> meshInterfaces) {
+    public void setMeshInterfaces(List<String> meshInterfaces) {
         this.meshInterfaces = meshInterfaces;
     }
 
@@ -73,11 +70,6 @@ public class Network implements Parcelable {
 
     public void setMac(String mac) {
         this.mac = mac;
-    }
-
-    @Override
-    public String toString() {
-        return true ? "Online" : "Offline";
     }
 
     @Override

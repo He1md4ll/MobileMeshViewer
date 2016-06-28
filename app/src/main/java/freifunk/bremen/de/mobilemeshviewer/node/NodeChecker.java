@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -84,6 +85,9 @@ public class NodeChecker implements Checkable<Node> {
     public Optional<NodeDetail> getDetailNodeById(String id) {
         final Gson gson = new Gson();
         Optional<NodeDetail> nodeDetailOptional = Optional.absent();
+        final Type nodeDetailType = new TypeToken<NodeDetail>() {
+        }.getType();
+
         try {
             JsonReader reader = getDetailNodeList();
             reader.beginObject();
@@ -93,8 +97,7 @@ public class NodeChecker implements Checkable<Node> {
                     reader.beginObject();
                 } else if (name.equals(id)) {
 
-                    nodeDetailOptional = Optional.of((NodeDetail) gson.fromJson(reader, new TypeToken<NodeDetail>() {
-                    }.getType()));
+                    nodeDetailOptional = Optional.of((NodeDetail) gson.fromJson(reader, nodeDetailType));
                     break;
                 } else {
                     reader.skipValue();

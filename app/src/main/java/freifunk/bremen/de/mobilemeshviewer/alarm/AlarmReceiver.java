@@ -13,7 +13,7 @@ import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private static boolean alarmProcessing = false;
+    private static boolean alarmProcessing;
 
     public static boolean isAlarmProcessing() {
         return alarmProcessing;
