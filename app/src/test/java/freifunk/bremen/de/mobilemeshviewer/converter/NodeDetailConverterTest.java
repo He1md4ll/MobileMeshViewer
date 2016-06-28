@@ -81,7 +81,7 @@ public class NodeDetailConverterTest extends RobolectricTest {
 
         // Then
         assertThat(uptimeString).isEqualTo("1 Stunde");
-        assertThat(uptimeString).isEqualTo("1 Stunde");
+        assertThat(uptimeString1).isEqualTo("1 Stunde");
     }
 
     @Test
@@ -231,8 +231,7 @@ public class NodeDetailConverterTest extends RobolectricTest {
         long oneDayInMS = 86400000;
         Date now = new Date();
         now.setTime(now.getTime() - oneDayInMS * 5);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss");
-        final String date = "2016-04-27T12:00:00";
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss", Locale.GERMANY);
 
         //When
         String dateString = classUnderTest.convertDate(formatter.format(now));

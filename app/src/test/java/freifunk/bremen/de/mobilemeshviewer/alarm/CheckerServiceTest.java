@@ -24,7 +24,7 @@ public class CheckerServiceTest extends RobolectricTest {
     private GatewayChecker gatewayChecker;
 
     @Test
-    public void testOnHandleIntent() {
+    public void testOnHandleIntent() throws Exception {
         // Given
         final Intent intent = new Intent(RuntimeEnvironment.application, CheckerService.class);
 

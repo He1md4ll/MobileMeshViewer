@@ -1,5 +1,9 @@
 package freifunk.bremen.de.mobilemeshviewer.gateway.model;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.Iterables;
+
+// TODO: Refactor states of Ntp, Address, Dn and Uplink --> Interface
 public class GatewayBO {
 
     private String name;
@@ -14,31 +18,53 @@ public class GatewayBO {
 
     public static GatewayBO countFromVpnServer(VpnServer vpnServer, GatewayBO gatewayBO) {
         gatewayBO.setName(vpnServer.getName());
-        if (vpnServer.getNtp().get(0).getIpv4() == 1) {
-            gatewayBO.incNtpSum4();
-        }
-        if (vpnServer.getNtp().get(0).getIpv6() == 1) {
-            gatewayBO.incNtpSum6();
-        }
-        if (vpnServer.getAddresses().get(0).getIpv4() == 1) {
-            gatewayBO.incAddressesSum4();
-        }
-        if (vpnServer.getAddresses().get(0).getIpv6() == 1) {
-            gatewayBO.incAddressesSum6();
-        }
-        if (vpnServer.getDns().get(0).getIpv4() == 1) {
-            gatewayBO.incDnsSum4();
-        }
-        if (vpnServer.getDns().get(0).getIpv6() == 1) {
-            gatewayBO.incDnsSum6();
-        }
-        if (vpnServer.getUplink().get(0).getIpv4() == 1) {
+
+        determineNtpStatus(vpnServer, gatewayBO);
+        determineAddressStatus(vpnServer, gatewayBO);
+        determineDnsStatus(vpnServer, gatewayBO);
+        determineUplinkStatus(vpnServer, gatewayBO);
+
+        return gatewayBO;
+    }
+
+    private static void determineUplinkStatus(VpnServer vpnServer, GatewayBO gatewayBO) {
+        final Optional<Uplink> uplinkStatus = Optional.fromNullable(Iterables.getFirst(vpnServer.getUplink(), null));
+        if (uplinkStatus.isPresent() && uplinkStatus.get().getIpv4() == 1) {
             gatewayBO.incUplinkSum4();
         }
-        if (vpnServer.getUplink().get(0).getIpv6() == 1) {
+        if (uplinkStatus.isPresent() && uplinkStatus.get().getIpv6() == 1) {
             gatewayBO.incUplinkSum6();
         }
-        return gatewayBO;
+    }
+
+    private static void determineDnsStatus(VpnServer vpnServer, GatewayBO gatewayBO) {
+        final Optional<Dn> dnsStatus = Optional.fromNullable(Iterables.getFirst(vpnServer.getDns(), null));
+        if (dnsStatus.isPresent() && dnsStatus.get().getIpv4() == 1) {
+            gatewayBO.incDnsSum4();
+        }
+        if (dnsStatus.isPresent() && dnsStatus.get().getIpv6() == 1) {
+            gatewayBO.incDnsSum6();
+        }
+    }
+
+    private static void determineAddressStatus(VpnServer vpnServer, GatewayBO gatewayBO) {
+        final Optional<Address> addressStatus = Optional.fromNullable(Iterables.getFirst(vpnServer.getAddresses(), null));
+        if (addressStatus.isPresent() && addressStatus.get().getIpv4() == 1) {
+            gatewayBO.incAddressesSum4();
+        }
+        if (addressStatus.isPresent() && addressStatus.get().getIpv6() == 1) {
+            gatewayBO.incAddressesSum6();
+        }
+    }
+
+    private static void determineNtpStatus(VpnServer vpnServer, GatewayBO gatewayBO) {
+        final Optional<Ntp> ntpStatus = Optional.fromNullable(Iterables.getFirst(vpnServer.getNtp(), null));
+        if (ntpStatus.isPresent() && ntpStatus.get().getIpv4() == 1) {
+            gatewayBO.incNtpSum4();
+        }
+        if (ntpStatus.isPresent() && ntpStatus.get().getIpv6() == 1) {
+            gatewayBO.incNtpSum6();
+        }
     }
 
     public void incNtpSum4() {

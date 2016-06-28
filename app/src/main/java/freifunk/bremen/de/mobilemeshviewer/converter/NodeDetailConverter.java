@@ -21,7 +21,7 @@ import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Traffic;
 public class NodeDetailConverter {
 
     @Inject
-    Context context;
+    private Context context;
 
     public String convertUptime(double uptime){
         return secondsToString(uptime, TimeUnit.SECONDS);
@@ -64,33 +64,34 @@ public class NodeDetailConverter {
         return secondsToString(now.getTime() - installed.getTime(), TimeUnit.MILLISECONDS);
     }
 
-    private String secondsToString(double uptime, TimeUnit timeUnit){
+    private String secondsToString(double uptime, final TimeUnit timeUnit) {
+        String secondsHuman;
+        double uptimeConverted = uptime;
 
         if (timeUnit.equals(TimeUnit.MILLISECONDS)) {
-            uptime = uptime / 1000;
+            uptimeConverted = uptime / 1000;
         }
-        String seconds_human;
 
-        if (uptime < 60*60){ // unter 1h -> Minuten
-            if (uptime >= 60 && uptime < 60*2){
-                seconds_human = (int)Math.floor(uptime / 60) + " " + context.getString(R.string.minute); //Singular
+        if (uptimeConverted < 60 * 60) { // unter 1h -> Minuten
+            if (uptimeConverted >= 60 && uptimeConverted < 60 * 2) {
+                secondsHuman = (int) Math.floor(uptimeConverted / 60) + " " + context.getString(R.string.minute); //Singular
             }else {
-                seconds_human = (int)Math.floor(uptime / 60) + " " + context.getString(R.string.minutes); //Plural
+                secondsHuman = (int) Math.floor(uptimeConverted / 60) + " " + context.getString(R.string.minutes); //Plural
             }
-        }else if (uptime < 60*60*24) { // unter 1 Tag -> Stunden
-            if (uptime >= 60*60 && uptime < 60*60*2){
-                seconds_human = (int)Math.floor(uptime / 60 / 60) + " " + context.getString(R.string.hour); //Singular
+        } else if (uptimeConverted < 60 * 60 * 24) { // unter 1 Tag -> Stunden
+            if (uptimeConverted >= 60 * 60 && uptimeConverted < 60 * 60 * 2) {
+                secondsHuman = (int) Math.floor(uptimeConverted / 60 / 60) + " " + context.getString(R.string.hour); //Singular
             } else {
-                seconds_human = (int)Math.floor(uptime / 60 / 60) + " " + context.getString(R.string.hours); //Plural
+                secondsHuman = (int) Math.floor(uptimeConverted / 60 / 60) + " " + context.getString(R.string.hours); //Plural
             }
         } else { // über 1 Tag
-            if (uptime < 60*60*24*2) {
-                seconds_human = (int)Math.floor(uptime / 60 / 60 / 24) + " " + context.getString(R.string.day); //Singular
+            if (uptimeConverted < 60 * 60 * 24 * 2) {
+                secondsHuman = (int) Math.floor(uptimeConverted / 60 / 60 / 24) + " " + context.getString(R.string.day); //Singular
             } else {
-                seconds_human = (int)Math.floor(uptime / 60 / 60 / 24) + " " + context.getString(R.string.days); //Plural
+                secondsHuman = (int) Math.floor(uptimeConverted / 60 / 60 / 24) + " " + context.getString(R.string.days); //Plural
             }
         }
 
-        return seconds_human;
+        return secondsHuman;
     }
 }

@@ -97,19 +97,26 @@ public class MeshViewerActivity extends RoboAppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        Intent intent;
         int id = item.getItemId();
 
-        if (id == R.id.nav_myNodes) {
-            final Intent intent = new Intent(this, MyNodesActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_settings) {
-            final Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_about) {
-            final Intent intent = new Intent(this, AboutFFHBActivity.class);
-            startActivity(intent);
+        switch (id) {
+            case R.id.nav_myNodes: {
+                intent = new Intent(this, MyNodesActivity.class);
+                break;
+            }
+            case R.id.nav_settings: {
+                intent = new Intent(this, SettingsActivity.class);
+                break;
+            }
+            case R.id.nav_about: {
+                intent = new Intent(this, AboutFFHBActivity.class);
+                break;
+            }
+            default:
+                intent = null;
         }
-
+        startActivity(intent);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -127,8 +134,9 @@ public class MeshViewerActivity extends RoboAppCompatActivity
                     return nodeListFragment;
                 case 1:
                     return gatewayListFragment;
+                default:
+                    return null;
             }
-            return null;
         }
 
         @Override
@@ -143,8 +151,9 @@ public class MeshViewerActivity extends RoboAppCompatActivity
                     return getString(R.string.fragment_node_titel);
                 case 1:
                     return getString(R.string.fragment_gateway_titel);
+                default:
+                    return null;
             }
-            return null;
         }
     }
 }

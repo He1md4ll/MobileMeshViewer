@@ -4,7 +4,9 @@ package freifunk.bremen.de.mobilemeshviewer.gateway.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Uplink {
+import freifunk.bremen.de.mobilemeshviewer.node.model.detail.IpStatable;
+
+public class Uplink implements IpStatable {
 
     @SerializedName("ipv4")
     @Expose
@@ -16,6 +18,7 @@ public class Uplink {
     /**
      * @return The ipv4
      */
+    @Override
     public Integer getIpv4() {
         return ipv4;
     }
@@ -30,6 +33,7 @@ public class Uplink {
     /**
      * @return The ipv6
      */
+    @Override
     public Integer getIpv6() {
         return ipv6;
     }
