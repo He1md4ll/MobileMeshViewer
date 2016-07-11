@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Ordering;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -114,8 +115,8 @@ public class Node implements Parcelable, Comparable<Node> {
     @Override
     public int compareTo(@NonNull Node that) {
         return ComparisonChain.start()
-                .compare(this.getName().toLowerCase(), that.getName().toLowerCase())
-                .compare(this.getId(), that.getId())
+                .compare(this.getName(), that.getName(), String.CASE_INSENSITIVE_ORDER)
+                .compare(this.getId(), that.getId(), Ordering.<String>natural().nullsFirst())
                 .result();
     }
 }
