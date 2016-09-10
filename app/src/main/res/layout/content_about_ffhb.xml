@@ -106,13 +106,13 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
-    <android.support.v7.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/skyline_image"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
         android:layout_below="@id/line_meetings"
+        android:contentDescription="@string/ffhb_logo"
+        android:scaleType="fitEnd"
         android:src="@drawable/ffhb_skyline" />
-
 
 </RelativeLayout>
