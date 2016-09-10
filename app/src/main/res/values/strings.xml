@@ -21,6 +21,11 @@
     <string name="traffic_separator">%1$f / %2$s%3$s</string>
     <string name="ffhb_logo">Freifunk Logo</string>
 
+    <string name="dialog_interval_title">Kleine Aktualisierungsrate</string>
+    <string name="dialog_interval_msg">Häufige Aktualisierungen führen zu einem erhöhten Akku- und Datenverbrauch.\n\nSoll das Intervall %smin trotzdem beibehalten werden?</string>
+    <string name="dialog_confirm">Ja</string>
+    <string name="dialog_deny">Nein</string>
+
     <!-- Menu entries-->
     <string name="nav_myNodes">Meine Knoten</string>
     <string name="nav_nodeFinder">Knoten-Finder</string>
@@ -78,7 +83,7 @@
         <item>1</item>
         <item>-1</item>
     </string-array>
-    <string name="pref_default_sync_frequency">5</string>
+    <string name="pref_default_sync_frequency">15</string>
     <string name="pref_description_autostart">App bei Systemstart ausführen</string>
     <string name="pref_title_autostart">App in Autostart</string>
     <string name="pref_default_autostart">false</string>

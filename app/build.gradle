@@ -41,7 +41,7 @@ dependencies {
     testCompile "org.robolectric:robolectric:3.1-rc1"
     testCompile "com.squareup.assertj:assertj-android:1.1.2-SNAPSHOT"
 
-    provided 'org.roboguice:roboblender:3.+'
+    provided 'org.roboguice:roboblender:3.0'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:support-v13:23.1.1'
     compile 'com.android.support:design:23.1.1'
@@ -50,5 +50,5 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.1'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
     compile 'com.google.guava:guava:19.0-rc2'
-    compile 'org.roboguice:roboguice:3.+'
+    compile 'org.roboguice:roboguice:3.0'
 }

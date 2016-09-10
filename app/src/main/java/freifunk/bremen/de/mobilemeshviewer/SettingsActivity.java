@@ -1,6 +1,8 @@
 package freifunk.bremen.de.mobilemeshviewer;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -37,6 +39,9 @@ public class SettingsActivity extends RoboAppCompatPreferenceActivity implements
     @Inject
     private AlarmController alarmController;
 
+    @Inject
+    private PreferenceController preferenceController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,21 +63,47 @@ public class SettingsActivity extends RoboAppCompatPreferenceActivity implements
         return super.onMenuItemSelected(featureId, item);
     }
 
-    private void setupDescription(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Map<String, ?> allPrefs = prefs.getAll();
-
-        for (Map.Entry<String, ?> entry : allPrefs.entrySet()) {
-            updateSettingsText(entry.getKey());
-        }
-
-    }
-
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         updateSettingsText(key);
     }
 
+    private void setupDescription(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        findPreference(PreferenceController.PREF_ALARM_INTERVAL).setOnPreferenceChangeListener(buildIntervalChangeListener());
+
+        Map<String, ?> allPrefs = prefs.getAll();
+        for (Map.Entry<String, ?> entry : allPrefs.entrySet()) {
+            updateSettingsText(entry.getKey());
+        }
+    }
+
+    private Preference.OnPreferenceChangeListener buildIntervalChangeListener() {
+        return new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(final Preference pref, final Object newValue) {
+                final Long newInterval = Long.valueOf((String) newValue);
+                final Long defaultInterval = preferenceController.getDefaultAlarmInterval();
+
+                if (newInterval < defaultInterval) {
+                    new AlertDialog.Builder(SettingsActivity.this)
+                            .setTitle(R.string.dialog_interval_title)
+                            .setMessage(String.format(getString(R.string.dialog_interval_msg), newValue))
+                            .setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    preferenceController.setAlarmInterval(newValue);
+                                }
+                            })
+                            .setNegativeButton(R.string.dialog_deny, null)
+                            .show();
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        };
+    }
 
     private void updateSettingsText(String key) {
         Preference preference = findPreference(key);

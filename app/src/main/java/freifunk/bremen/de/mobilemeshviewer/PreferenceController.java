@@ -37,7 +37,7 @@ public class PreferenceController {
     public static final String PREF_VIBRATION = "pref_vibrate";
     public static final String PREF_AUTOSTART = "pref_autostart";
     private static final long MINUTE_MULTIPLIER = 60 * 1000;
-    private static final String DEFAULT_ALARM_INTERVAL = "5";
+    private static final String DEFAULT_ALARM_INTERVAL = "15";
     private static final Boolean DEFAULT_NODE_MONITORING = Boolean.FALSE;
     private static final Boolean DEFAULT_GATEWAY_MONITORING = Boolean.FALSE;
     private static final Boolean DEFAULT_VIBRATION = Boolean.FALSE;
@@ -82,6 +82,14 @@ public class PreferenceController {
     public long getAlarmInterval() {
         final String alarmInterval = sharedPreferences.getString(PREF_ALARM_INTERVAL, DEFAULT_ALARM_INTERVAL);
         return Long.valueOf(alarmInterval) * MINUTE_MULTIPLIER;
+    }
+
+    public void setAlarmInterval(Object newInterval) {
+        sharedPreferences.edit().putString(PREF_ALARM_INTERVAL, String.valueOf(newInterval)).apply();
+    }
+
+    public long getDefaultAlarmInterval() {
+        return Long.valueOf(DEFAULT_ALARM_INTERVAL);
     }
 
     public long getLastNodeDetailUpdate() {
