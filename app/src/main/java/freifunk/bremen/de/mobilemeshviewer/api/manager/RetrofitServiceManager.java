@@ -5,15 +5,15 @@ import com.google.inject.Inject;
 
 import java.io.IOException;
 
+import freifunk.bremen.de.mobilemeshviewer.api.FfhbRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
-import freifunk.bremen.de.mobilemeshviewer.api.MortzuRestConsumer;
 import roboguice.inject.ContextSingleton;
 
 @ContextSingleton
 public class RetrofitServiceManager {
 
     private Optional<FreifunkRestConsumer> freifunkServiceOptional = Optional.absent();
-    private Optional<MortzuRestConsumer> mortzuServiceOptional = Optional.absent();
+    private Optional<FfhbRestConsumer> ffhbServiceOptional = Optional.absent();
 
 
     @Inject
@@ -31,13 +31,13 @@ public class RetrofitServiceManager {
         }
     }
 
-    public MortzuRestConsumer getMortzuService() throws IOException {
+    public FfhbRestConsumer getFfhbService() throws IOException {
         if (connectionManager.isNetworkAvailable()) {
-            if (!mortzuServiceOptional.isPresent()) {
-                mortzuServiceOptional = Optional.of(connectionManager
-                        .getRetrofitMortzuConnection().create(MortzuRestConsumer.class));
+            if (!ffhbServiceOptional.isPresent()) {
+                ffhbServiceOptional = Optional.of(connectionManager
+                        .getRetrofitFfhbConnection().create(FfhbRestConsumer.class));
             }
-            return mortzuServiceOptional.get();
+            return ffhbServiceOptional.get();
         } else {
             throw new IOException("No network connection present!");
         }

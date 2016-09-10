@@ -10,8 +10,8 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
+import freifunk.bremen.de.mobilemeshviewer.api.FfhbRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
-import freifunk.bremen.de.mobilemeshviewer.api.MortzuRestConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -61,26 +61,26 @@ public class RetrofitServiceManagerTest extends RobolectricTest {
     }
 
     @Test
-    public void testGetMortzuService() throws Exception {
+    public void testGetFfhbService() throws Exception {
         // Given
         Mockito.when(connectionManager.isNetworkAvailable()).thenReturn(Boolean.TRUE);
 
         // When
-        Optional<MortzuRestConsumer> mortzuRestConsumerOptional = Optional.fromNullable(classUnderTest.getMortzuService());
+        Optional<FfhbRestConsumer> ffhbRestConsumerOptional = Optional.fromNullable(classUnderTest.getFfhbService());
 
         // Then
-        assertThat(mortzuRestConsumerOptional.isPresent()).isTrue();
+        assertThat(ffhbRestConsumerOptional.isPresent()).isTrue();
         Mockito.verify(connectionManager).isNetworkAvailable();
-        Mockito.verify(connectionManager).getRetrofitConnection(ConnectionManager.URL_MORTZU);
+        Mockito.verify(connectionManager).getRetrofitConnection(ConnectionManager.URL_FFHB);
     }
 
     @Test(expected = IOException.class)
-    public void testGetMortzuServiceNoConnection() throws Exception {
+    public void testGetFfhbServiceNoConnection() throws Exception {
         // Given
         Mockito.when(connectionManager.isNetworkAvailable()).thenReturn(Boolean.FALSE);
 
         // When - Exception
-        classUnderTest.getMortzuService();
+        classUnderTest.getFfhbService();
     }
 
     private class TestModule extends AbstractModule {

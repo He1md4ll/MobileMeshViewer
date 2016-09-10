@@ -18,7 +18,7 @@ import roboguice.inject.ContextSingleton;
 public class ConnectionManager {
 
     public static final String URL_FREIFUNK = "https://downloads.bremen.freifunk.net/";
-    public static final String URL_MORTZU = "https://status.ffhb.mortzu.de/";
+    public static final String URL_FFHB = "https://status.ffhb.de/";
 
     private Map<String, Retrofit> retrofitMap = new HashMap<>();
 
@@ -29,8 +29,8 @@ public class ConnectionManager {
         return getRetrofitConnection(URL_FREIFUNK);
     }
 
-    public Retrofit getRetrofitMortzuConnection() {
-        return getRetrofitConnection(URL_MORTZU);
+    public Retrofit getRetrofitFfhbConnection() {
+        return getRetrofitConnection(URL_FFHB);
     }
 
     public Retrofit getRetrofitConnection(String url) {

@@ -20,7 +20,7 @@ import java.util.List;
 
 import freifunk.bremen.de.mobilemeshviewer.Checkable;
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
-import freifunk.bremen.de.mobilemeshviewer.api.MortzuRestConsumer;
+import freifunk.bremen.de.mobilemeshviewer.api.FfhbRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
 import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.GatewayStatusChangedEvent;
@@ -92,11 +92,11 @@ public class GatewayChecker implements Checkable<Gateway> {
     }
 
     private List<Gateway> loadList() {
-        final MortzuRestConsumer mortzuService;
+        final FfhbRestConsumer ffhbService;
         List<Gateway> gatewayList = Collections.emptyList();
         try {
-            mortzuService = retrofitServiceManager.getMortzuService();
-            Call<List<CheckServer>> call = mortzuService.getGatewayList();
+            ffhbService = retrofitServiceManager.getFfhbService();
+            Call<List<CheckServer>> call = ffhbService.getGatewayList();
             Response<List<CheckServer>> response = call.execute();
             if (response.isSuccessful()) {
                 Log.d(this.getClass().getSimpleName(), "Checked for new GatewayList from server");

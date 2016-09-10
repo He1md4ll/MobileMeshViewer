@@ -10,22 +10,22 @@ import retrofit2.Call;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MortzuRestConsumerTest extends RobolectricTest {
+public class FfhbRestConsumerTest extends RobolectricTest {
 
     @Inject
     private RetrofitServiceManager serviceManager;
-    private MortzuRestConsumer mortzuRestConsumer;
+    private FfhbRestConsumer ffhbRestConsumer;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        mortzuRestConsumer = serviceManager.getMortzuService();
+        ffhbRestConsumer = serviceManager.getFfhbService();
     }
 
     @Test
     public void integrationTestGetGatewayList() throws Exception {
         // When
-        final Call<?> call = mortzuRestConsumer.getGatewayList();
+        final Call<?> call = ffhbRestConsumer.getGatewayList();
         // Then
         assertThat(call.isExecuted()).isFalse();
         assertThat(call.isCanceled()).isFalse();
