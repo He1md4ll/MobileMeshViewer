@@ -2,26 +2,33 @@ package freifunk.bremen.de.mobilemeshviewer.alarm;
 
 import android.content.Intent;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 
+import freifunk.bremen.de.mobilemeshviewer.Checkable;
+import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
-import freifunk.bremen.de.mobilemeshviewer.gateway.GatewayChecker;
-import freifunk.bremen.de.mobilemeshviewer.node.NodeChecker;
+import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
+import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
+import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 
 public class CheckerServiceTest extends RobolectricTest {
 
-    @Inject
-    private CheckerService classUnderTest;
+    CheckerService classUnderTest;
     @Mock
-    private NodeChecker nodeChecker;
+    private Checkable<Node> nodeChecker;
     @Mock
-    private GatewayChecker gatewayChecker;
+    private Checkable<Gateway> gatewayChecker;
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        classUnderTest = Robolectric.buildService(CheckerService.class).create().attach().startCommand(0, 0).get();
+        //component.inject(classUnderTest);
+    }
 
     @Test
     public void testOnHandleIntent() throws Exception {
@@ -37,16 +44,25 @@ public class CheckerServiceTest extends RobolectricTest {
     }
 
     @Override
-    public AbstractModule getModuleForInjection() {
-        return new TestModule();
+    public TestModule getModuleForInjection() {
+        return new CustomTestModule();
     }
 
-    private class TestModule extends AbstractModule {
+    @Override
+    public void inject() {
+        component.inject(this);
+    }
+
+    public class CustomTestModule extends TestModule {
+
         @Override
-        protected void configure() {
-            // Replace injected class with mock
-            bind(NodeChecker.class).toInstance(nodeChecker);
-            bind(GatewayChecker.class).toInstance(gatewayChecker);
+        public Checkable<Node> providesNodeChecker(PreferenceController preferenceController, RetrofitServiceManager retrofitServiceManager) {
+            return nodeChecker;
+        }
+
+        @Override
+        public Checkable<Gateway> providesGatewayChecker(PreferenceController preferenceController, RetrofitServiceManager retrofitServiceManager) {
+            return gatewayChecker;
         }
     }
 }

@@ -16,12 +16,12 @@ import android.preference.RingtonePreference;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
-import com.google.inject.Inject;
-
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
-import roboguice.activity.RoboAppCompatPreferenceActivity;
+import freifunk.bremen.de.mobilemeshviewer.binding.MeshViewerApp;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -34,17 +34,19 @@ import roboguice.activity.RoboAppCompatPreferenceActivity;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
-public class SettingsActivity extends RoboAppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Inject
-    private AlarmController alarmController;
+    AlarmController alarmController;
 
     @Inject
-    private PreferenceController preferenceController;
+    PreferenceController preferenceController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MeshViewerApp) getApplication()).getMeshViewerComponent().inject(this);
+
         addPreferencesFromResource(R.xml.pref_general);
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
         PreferenceManager.getDefaultSharedPreferences(this);

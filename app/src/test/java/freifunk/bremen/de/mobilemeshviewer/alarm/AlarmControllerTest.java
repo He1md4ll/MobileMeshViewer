@@ -3,9 +3,7 @@ package freifunk.bremen.de.mobilemeshviewer.alarm;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
+import android.content.SharedPreferences;
 
 import org.junit.Test;
 import org.mockito.Mock;
@@ -16,6 +14,8 @@ import org.robolectric.shadows.ShadowApplication;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
 
@@ -25,7 +25,7 @@ import static org.robolectric.Shadows.shadowOf;
 public class AlarmControllerTest extends RobolectricTest {
 
     @Inject
-    private AlarmController classUnderTest;
+    AlarmController classUnderTest;
     @Mock
     private PreferenceController preferenceController;
     private ShadowAlarmManager shadowAlarmManager;
@@ -36,11 +36,6 @@ public class AlarmControllerTest extends RobolectricTest {
         alarmManager = Mockito.spy((AlarmManager) RuntimeEnvironment.application.getSystemService(Context.ALARM_SERVICE));
         shadowAlarmManager = shadowOf(alarmManager);
         super.setUp();
-    }
-
-    @Override
-    public AbstractModule getModuleForInjection() {
-        return new TestModule();
     }
 
     @Test
@@ -111,12 +106,26 @@ public class AlarmControllerTest extends RobolectricTest {
         assertThat(ShadowApplication.getInstance().getBroadcastIntents()).isNotNull().hasSize(1);
     }
 
-    private class TestModule extends AbstractModule {
+    @Override
+    public TestModule getModuleForInjection() {
+        return new CustomTestModule();
+    }
+
+    @Override
+    public void inject() {
+        component.inject(this);
+    }
+
+    private class CustomTestModule extends TestModule {
+
         @Override
-        protected void configure() {
-            // Replace injected class with mock
-            bind(PreferenceController.class).toInstance(preferenceController);
-            bind(AlarmManager.class).toInstance(alarmManager);
+        public PreferenceController providesPreferenceController(SharedPreferences sharedPreferences) {
+            return preferenceController;
+        }
+
+        @Override
+        public AlarmManager providesAlarmManager() {
+            return alarmManager;
         }
     }
 }

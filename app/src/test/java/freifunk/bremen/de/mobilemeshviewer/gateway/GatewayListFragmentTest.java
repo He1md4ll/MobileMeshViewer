@@ -1,11 +1,10 @@
 package freifunk.bremen.de.mobilemeshviewer.gateway;
 
+import android.app.AlarmManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
 
 import org.greenrobot.eventbus.EventBus;
 import org.junit.Test;
@@ -17,8 +16,10 @@ import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowListView;
 import org.robolectric.util.ActivityController;
 
+import freifunk.bremen.de.mobilemeshviewer.Checkable;
 import freifunk.bremen.de.mobilemeshviewer.ListLoader;
 import freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity;
+import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.R;
 import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
 import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
@@ -26,7 +27,6 @@ import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.IpStatus;
 
-import static org.assertj.android.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -66,9 +66,9 @@ public class GatewayListFragmentTest extends RobolectricTest {
         classUnderTest.onCreateOptionsMenu(menu, null);
 
         // Then
-        assertThat(toolbar).isVisible();
-        assertThat(menu).hasSize(0);
-        assertThat(menu).hasNoVisibleItems();
+        assertThat(toolbar.isShown()).isTrue();
+        assertThat(menu.size()).isZero();
+        assertThat(menu.hasVisibleItems()).isFalse();
 
     }
 
@@ -87,7 +87,7 @@ public class GatewayListFragmentTest extends RobolectricTest {
         // Then
         final Intent intent = shadowActivity.getNextStartedActivity();
         assertThat(intent).isNotNull();
-        assertThat(intent).hasExtra(GatewayActivity.BUNDLE_GATEWAY);
+        assertThat(intent.getParcelableExtra(GatewayActivity.BUNDLE_GATEWAY)).isNotNull();
         assertThat(intent.getParcelableExtra(GatewayActivity.BUNDLE_GATEWAY)).isEqualTo(gateway);
     }
 
@@ -104,20 +104,30 @@ public class GatewayListFragmentTest extends RobolectricTest {
     }
 
     @Override
-    public AbstractModule getModuleForInjection() {
-        return new TestModule();
+    public TestModule getModuleForInjection() {
+        return new CustomTestModule();
     }
 
-    private class TestModule extends AbstractModule {
+    @Override
+    public void inject() {
+        component.inject(this);
+    }
+
+    private class CustomTestModule extends TestModule {
+
         @Override
-        protected void configure() {
-            bind(AlarmController.class).toInstance(alarmController);
-            bind(GatewayListFragment.class).toInstance(classUnderTest);
+        public AlarmController providesAlarmController(AlarmManager alarmManager, Context context, PreferenceController preferenceController) {
+            return alarmController;
         }
 
-        @Provides
-        public ListLoader<Gateway> getStuff() {
+        @Override
+        public ListLoader<Gateway> providesGatewayListLoader(Context context, Checkable<Gateway> gatewayCheckable) {
             return gatewayListLoader;
+        }
+
+        @Override
+        public GatewayListFragment providesGatewayListFragment() {
+            return classUnderTest;
         }
     }
 }

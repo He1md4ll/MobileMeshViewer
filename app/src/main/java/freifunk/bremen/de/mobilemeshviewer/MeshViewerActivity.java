@@ -12,46 +12,50 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
+import freifunk.bremen.de.mobilemeshviewer.binding.MeshViewerApp;
 import freifunk.bremen.de.mobilemeshviewer.gateway.GatewayListFragment;
 import freifunk.bremen.de.mobilemeshviewer.node.MyNodesActivity;
 import freifunk.bremen.de.mobilemeshviewer.node.NodeListFragment;
-import roboguice.activity.RoboAppCompatActivity;
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
 
-@ContentView(R.layout.activity_mesh_viewer)
-public class MeshViewerActivity extends RoboAppCompatActivity
+public class MeshViewerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final boolean DEVELOPER_MODE = Boolean.TRUE;
-    @InjectView(R.id.toolbar)
-    private Toolbar toolbar;
-    @InjectView(R.id.drawer_layout)
-    private DrawerLayout drawer;
-    @InjectView(R.id.nav_view)
-    private NavigationView navigationView;
-    @InjectView(R.id.container)
-    private ViewPager viewPager;
-    @InjectView(R.id.tabs)
-    private TabLayout tabLayout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+    @BindView(R.id.container)
+    ViewPager viewPager;
+    @BindView(R.id.tabs)
+    TabLayout tabLayout;
     @Inject
-    private AlarmController alarmController;
+    AlarmController alarmController;
     @Inject
-    private GatewayListFragment gatewayListFragment;
+    GatewayListFragment gatewayListFragment;
     @Inject
-    private NodeListFragment nodeListFragment;
+    NodeListFragment nodeListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_mesh_viewer);
+        ((MeshViewerApp) getApplication()).getMeshViewerComponent().inject(this);
+        ButterKnife.bind(this);
+
 
         if (DEVELOPER_MODE) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()

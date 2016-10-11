@@ -4,26 +4,28 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import roboguice.inject.ContextSingleton;
 
-@ContextSingleton
 public class ConnectionManager {
 
     public static final String URL_FREIFUNK = "https://downloads.bremen.freifunk.net/";
     public static final String URL_FFHB = "https://status.ffhb.de/";
 
     private Map<String, Retrofit> retrofitMap = new HashMap<>();
+    private ConnectivityManager connectivityManager;
 
     @Inject
-    private ConnectivityManager connectivityManager;
+    public ConnectionManager(ConnectivityManager connectivityManager) {
+        this.connectivityManager = connectivityManager;
+    }
 
     public Retrofit getRetrofitFreifunkConnection() {
         return getRetrofitConnection(URL_FREIFUNK);

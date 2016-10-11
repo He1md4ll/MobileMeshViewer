@@ -7,6 +7,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ffhb_splash" />
+            android:src="@drawable/ffhb_skyline" />
     </item>
 </layer-list>

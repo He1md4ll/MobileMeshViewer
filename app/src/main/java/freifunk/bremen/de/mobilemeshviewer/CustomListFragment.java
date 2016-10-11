@@ -8,24 +8,34 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
 import freifunk.bremen.de.mobilemeshviewer.event.ReloadFinishedEvent;
 
-public abstract class CustomListFragment<T> extends SwipeRefreshListRoboFragment implements LoaderManager.LoaderCallbacks<List<T>> {
+public abstract class CustomListFragment<T> extends SwipeRefreshListFragment implements LoaderManager.LoaderCallbacks<List<T>> {
 
-    @Inject
-    private ListLoader<T> listLoader;
-    @Inject
-    private AlarmController alarmController;
+
     private CustomArrayAdapter<T> adapter;
     private boolean visible;
+    private ListLoader<T> listLoader;
+    private AlarmController alarmController;
     private Optional<Snackbar> snackbarOptional = Optional.absent();
+
+    @Inject
+    public void setListLoader(ListLoader<T> listLoader) {
+        this.listLoader = listLoader;
+    }
+
+    @Inject
+    public void setAlarmController(AlarmController alarmController) {
+        this.alarmController = alarmController;
+    }
 
     public CustomArrayAdapter<T> getAdapter() {
         return adapter;

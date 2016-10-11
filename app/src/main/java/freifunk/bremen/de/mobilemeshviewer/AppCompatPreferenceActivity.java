@@ -1,7 +1,8 @@
-package roboguice.activity;
+package freifunk.bremen.de.mobilemeshviewer;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +17,7 @@ import android.view.ViewGroup;
  * A {@link android.preference.PreferenceActivity} which implements and proxies the necessary calls
  * to be used with AppCompat.
  */
-public abstract class RoboAppCompatPreferenceActivity extends RoboPreferenceActivity {
+public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
 
     private AppCompatDelegate mDelegate;
 

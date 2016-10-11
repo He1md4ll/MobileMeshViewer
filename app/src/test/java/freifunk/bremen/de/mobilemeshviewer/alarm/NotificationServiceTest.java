@@ -3,12 +3,9 @@ package freifunk.bremen.de.mobilemeshviewer.alarm;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
 import org.junit.Test;
@@ -19,9 +16,10 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowNotificationManager;
 import org.robolectric.shadows.ShadowService;
-import org.robolectric.util.ServiceController;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
@@ -38,28 +36,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class NotificationServiceTest extends RobolectricTest {
 
+    @Inject
+    NotificationManager notificationManager;
     @Mock
     private PreferenceController preferenceController;
-    @Inject
     private NotificationService classUnderTest;
-    private ServiceController<NotificationService> controller;
     private ShadowService shadowService;
-    private NotificationManager notificationManager;
+
     private ShadowNotificationManager shadowNotificationManager;
 
     @Override
     public void setUp() throws Exception {
-        notificationManager = (NotificationManager) RuntimeEnvironment.application.getSystemService(Context.NOTIFICATION_SERVICE);
         super.setUp();
-        controller = ServiceController.of(Robolectric.getShadowsAdapter(), classUnderTest, new Intent()).create().attach().startCommand(0, 0);
-        shadowService = Shadows.shadowOf(controller.get());
+        classUnderTest = Robolectric.buildService(NotificationService.class).create().attach().startCommand(0, 0).get();
         shadowNotificationManager = Shadows.shadowOf(notificationManager);
-    }
-
-    @Override
-    public void tearDown() {
-        controller.destroy();
-        super.tearDown();
+        shadowService = Shadows.shadowOf(classUnderTest);
     }
 
     @Test
@@ -184,22 +175,26 @@ public class NotificationServiceTest extends RobolectricTest {
         assertThat(pendingIntent).isNotNull();
     }
 
-    @Override
-    public AbstractModule getModuleForInjection() {
-        return new TestModule();
-    }
-
     private PendingIntent getPendingIntent() {
         final Intent resultIntent = new Intent(RuntimeEnvironment.application, NodeActivity.class);
         return classUnderTest.getPendingIntent(resultIntent);
     }
 
-    private class TestModule extends AbstractModule {
+    @Override
+    public TestModule getModuleForInjection() {
+        return new CustomTestModule();
+    }
+
+    @Override
+    public void inject() {
+        component.inject(this);
+    }
+
+    private class CustomTestModule extends TestModule {
+
         @Override
-        protected void configure() {
-            // Replace injected class with mock
-            bind(PreferenceController.class).toInstance(preferenceController);
-            bind(NotificationManager.class).toInstance(notificationManager);
+        public PreferenceController providesPreferenceController(SharedPreferences sharedPreferences) {
+            return preferenceController;
         }
     }
 }

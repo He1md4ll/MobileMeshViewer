@@ -113,6 +113,6 @@
         android:layout_below="@id/line_meetings"
         android:contentDescription="@string/ffhb_logo"
         android:scaleType="fitEnd"
-        android:src="@drawable/ffhb_skyline" />
+        android:src="@drawable/ffhb_skyline_org" />
 
 </RelativeLayout>

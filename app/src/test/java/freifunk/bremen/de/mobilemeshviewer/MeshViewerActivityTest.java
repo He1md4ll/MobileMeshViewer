@@ -1,15 +1,14 @@
 package freifunk.bremen.de.mobilemeshviewer;
 
+import android.app.AlarmManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-
-import com.google.inject.AbstractModule;
 
 import org.junit.Test;
 import org.mockito.Mock;
@@ -22,9 +21,10 @@ import org.robolectric.shadows.ShadowActivity;
 import freifunk.bremen.de.mobilemeshviewer.alarm.AlarmController;
 import freifunk.bremen.de.mobilemeshviewer.node.MyNodesActivity;
 
-import static org.assertj.android.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 
+// HINT: Visibility checks are not possible due to a bug in Robolectric
+//       visible() method of ActivityController breaks drawer functionality
 public class MeshViewerActivityTest extends RobolectricTest {
 
     @Mock
@@ -41,19 +41,10 @@ public class MeshViewerActivityTest extends RobolectricTest {
     public void testOnCreate() throws Exception {
         // Given - When
         final ShadowActivity shadowActivity = Shadows.shadowOf(classUnderTest);
-        final Toolbar toolbar = (Toolbar) shadowActivity.findViewById(R.id.toolbar);
-        final DrawerLayout drawer = (DrawerLayout) shadowActivity.findViewById(R.id.drawer_layout);
-        final NavigationView navigationView = (NavigationView) shadowActivity.findViewById(R.id.nav_view);
         final ViewPager viewPager = (ViewPager) shadowActivity.findViewById(R.id.container);
         final TabLayout tabLayout = (TabLayout) shadowActivity.findViewById(R.id.tabs);
 
         // Then
-        assertThat(toolbar).isVisible();
-        assertThat(drawer).isVisible();
-        assertThat(navigationView).isVisible();
-        assertThat(viewPager).isVisible();
-        assertThat(tabLayout).isVisible();
-
         assertThat(shadowActivity.callGetThemeResId()).isEqualTo(R.style.AppTheme);
         assertThat(classUnderTest.getSupportActionBar()).isNotNull();
         assertThat(viewPager.getAdapter()).isNotNull();
@@ -75,7 +66,7 @@ public class MeshViewerActivityTest extends RobolectricTest {
 
         // Then
         assertThat(drawer.isDrawerOpen(GravityCompat.START)).isFalse();
-        assertThat(classUnderTest).isNotFinishing();
+        assertThat(classUnderTest.isFinishing()).isFalse();
     }
 
     @Test
@@ -89,7 +80,7 @@ public class MeshViewerActivityTest extends RobolectricTest {
 
         // Then
         assertThat(drawer.isDrawerOpen(GravityCompat.START)).isFalse();
-        assertThat(classUnderTest).isFinishing();
+        assertThat(classUnderTest.isFinishing()).isTrue();
     }
 
     @Test
@@ -120,14 +111,19 @@ public class MeshViewerActivityTest extends RobolectricTest {
     }
 
     @Override
-    public AbstractModule getModuleForInjection() {
-        return new TestModule();
+    public TestModule getModuleForInjection() {
+        return new CustomTestModule();
     }
 
-    private class TestModule extends AbstractModule {
+    @Override
+    public void inject() {
+        component.inject(this);
+    }
+
+    private class CustomTestModule extends TestModule {
         @Override
-        protected void configure() {
-            bind(AlarmController.class).toInstance(alarmController);
+        public AlarmController providesAlarmController(AlarmManager alarmManager, Context context, PreferenceController preferenceController) {
+            return alarmController;
         }
     }
 }

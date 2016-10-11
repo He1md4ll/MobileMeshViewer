@@ -21,7 +21,7 @@
             android:layout_gravity="bottom"
             android:contentDescription="@string/ffhb_logo"
             android:scaleType="fitEnd"
-            android:src="@drawable/ffhb_skyline" />
+            android:src="@drawable/ffhb_skyline_org" />
 
     </android.support.design.widget.NavigationView>
 

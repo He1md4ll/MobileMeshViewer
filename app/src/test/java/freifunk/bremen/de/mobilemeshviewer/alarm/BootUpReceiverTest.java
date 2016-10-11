@@ -1,9 +1,10 @@
 package freifunk.bremen.de.mobilemeshviewer.alarm;
 
+import android.app.AlarmManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-
-import com.google.inject.AbstractModule;
+import android.content.SharedPreferences;
 
 import org.junit.Test;
 import org.mockito.Mock;
@@ -62,16 +63,25 @@ public class BootUpReceiverTest extends RobolectricTest {
     }
 
     @Override
-    public AbstractModule getModuleForInjection() {
-        return new TestModule();
+    public TestModule getModuleForInjection() {
+        return new CustomTestModule();
     }
 
-    private class TestModule extends AbstractModule {
+    @Override
+    public void inject() {
+        component.inject(this);
+    }
+
+    private class CustomTestModule extends TestModule {
+
         @Override
-        protected void configure() {
-            // Replace injected class with mock
-            bind(PreferenceController.class).toInstance(preferenceController);
-            bind(AlarmController.class).toInstance(alarmController);
+        public PreferenceController providesPreferenceController(SharedPreferences sharedPreferences) {
+            return preferenceController;
+        }
+
+        @Override
+        public AlarmController providesAlarmController(AlarmManager alarmManager, Context context, PreferenceController preferenceController) {
+            return alarmController;
         }
     }
 }

@@ -2,67 +2,66 @@ package freifunk.bremen.de.mobilemeshviewer.gateway;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.google.inject.Inject;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.binding.MeshViewerApp;
 import freifunk.bremen.de.mobilemeshviewer.converter.NodeDetailConverter;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailFoundEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailNotFoundEvent;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.IpStatus;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetail;
-import roboguice.activity.RoboAppCompatActivity;
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
 
-@ContentView(R.layout.activity_gateway)
-public class GatewayActivity extends RoboAppCompatActivity {
+public class GatewayActivity extends AppCompatActivity {
 
     public static final String BUNDLE_GATEWAY = "gateway";
-
-    @InjectExtra(value = BUNDLE_GATEWAY)
+    @BindView(R.id.progress_container)
+    View progressIndicator;
+    @BindView(R.id.gateway_content)
+    View gatewayContent;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.gateway_status_table)
+    TableLayout tableLayout;
+    @BindView(R.id.gateway_traffic)
+    TextView gatewayTraffic;
+    @BindView(R.id.gateway_firmware)
+    TextView gatewayFirmware;
+    @BindView(R.id.gateway_uptime)
+    TextView gatewayUptime;
+    @BindView(R.id.gateway_loadavg)
+    TextView gatewayLoadavg;
+    @BindView(R.id.gateway_install_date)
+    TextView gatewayInstallDate;
+    @Inject
+    GatewayNodeDetailLoader gatewayNodeDetailLoader;
+    @Inject
+    NodeDetailConverter nodeDetailConverter;
     private Gateway gateway;
-    @InjectView(R.id.progress_container)
-    private View progressIndicator;
-    @InjectView(R.id.gateway_content)
-    private View gatewayContent;
-    @InjectView(R.id.toolbar)
-    private Toolbar toolbar;
-    @InjectView(R.id.gateway_status_table)
-    private TableLayout tableLayout;
-    @InjectView(R.id.gateway_traffic)
-    private TextView gatewayTraffic;
-    @InjectView(R.id.gateway_firmware)
-    private TextView gatewayFirmware;
-    @InjectView(R.id.gateway_uptime)
-    private TextView gatewayUptime;
-    @InjectView(R.id.gateway_loadavg)
-    private TextView gatewayLoadavg;
-    @InjectView(R.id.gateway_install_date)
-    private TextView gatewayInstallDate;
-    @Inject
-    private GatewayNodeDetailLoader gatewayNodeDetailLoader;
-    @Inject
-    private NodeDetailConverter nodeDetailConverter;
-    @Inject
-    private LayoutInflater layoutInflater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_gateway);
+        ((MeshViewerApp) getApplication()).getMeshViewerComponent().inject(this);
+        ButterKnife.bind(this);
+        gateway = getIntent().getExtras().getParcelable(BUNDLE_GATEWAY);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(gateway.getName());
@@ -91,7 +90,7 @@ public class GatewayActivity extends RoboAppCompatActivity {
     }
 
     private TableRow createRow(String label, IpStatus status) {
-        final TableRow tableRow = (TableRow) layoutInflater.inflate(R.layout.template_gateway_table_row, null);
+        final TableRow tableRow = (TableRow) getLayoutInflater().inflate(R.layout.template_gateway_table_row, null);
         final TextView tableRowLabel = (TextView) tableRow.findViewById(R.id.table_row_label);
         tableRowLabel.setText(label);
 

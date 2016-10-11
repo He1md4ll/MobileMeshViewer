@@ -1,31 +1,35 @@
 package freifunk.bremen.de.mobilemeshviewer.node;
 
 import com.google.common.base.Optional;
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.junit.After;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.robolectric.shadows.ShadowApplication;
 
+import javax.inject.Inject;
+
+import freifunk.bremen.de.mobilemeshviewer.Checkable;
+import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
+import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailFoundEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailNotFoundEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetail;
+import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class NodeDetailLoaderTest extends RobolectricTest {
 
+    @Inject
+    NodeDetailLoader classUnderTest;
     @Mock
     private NodeChecker nodeChecker;
-
-    @Inject
-    private NodeDetailLoader classUnderTest;
     private Optional<NodeDetail> result = Optional.absent();
     private boolean verify = Boolean.FALSE;
 
@@ -35,10 +39,9 @@ public class NodeDetailLoaderTest extends RobolectricTest {
         EventBus.getDefault().register(this);
     }
 
-    @Override
+    @After
     public void tearDown() {
         EventBus.getDefault().unregister(this);
-        super.tearDown();
     }
 
     @Test
@@ -89,14 +92,20 @@ public class NodeDetailLoaderTest extends RobolectricTest {
     }
 
     @Override
-    public AbstractModule getModuleForInjection() {
-        return new TestModule();
+    public TestModule getModuleForInjection() {
+        return new CustomTestModule();
     }
 
-    private class TestModule extends AbstractModule {
+    @Override
+    public void inject() {
+        component.inject(this);
+    }
+
+    private class CustomTestModule extends TestModule {
+
         @Override
-        protected void configure() {
-            bind(NodeChecker.class).toInstance(nodeChecker);
+        public Checkable<Node> providesNodeChecker(PreferenceController preferenceController, RetrofitServiceManager retrofitServiceManager) {
+            return nodeChecker;
         }
     }
 }

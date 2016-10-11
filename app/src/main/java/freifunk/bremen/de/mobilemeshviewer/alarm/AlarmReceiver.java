@@ -21,12 +21,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public synchronized void onReceive(Context context, Intent intent) {
+        Context test = context.getApplicationContext();
         if (!alarmProcessing) {
             alarmProcessing = true;
             EventBus.getDefault().register(this);
-            final Intent notificationServiceIntent = new Intent(context, NotificationService.class);
+            final Intent notificationServiceIntent = new Intent(context.getApplicationContext(), NotificationService.class);
             context.startService(notificationServiceIntent);
-            final Intent nodeServiceIntent = new Intent(context, CheckerService.class);
+            final Intent nodeServiceIntent = new Intent(context.getApplicationContext(), CheckerService.class);
             context.startService(nodeServiceIntent);
             Log.i(this.getClass().getSimpleName(), "Received NodeAlarm from manager");
         } else {

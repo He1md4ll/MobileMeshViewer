@@ -1,10 +1,10 @@
 package freifunk.bremen.de.mobilemeshviewer;
 
+import android.app.AlarmManager;
+import android.content.Context;
 import android.support.design.widget.Snackbar;
 
 import com.google.common.collect.Lists;
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
 
 import org.greenrobot.eventbus.EventBus;
 import org.junit.Test;
@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Can not use Fragment lifecycle directly because it's still buggy in Robolectric
  */
 public class CustomListFragmentTest extends RobolectricTest {
+
     @Mock
     private ListLoader<Gateway> gatewayListLoader;
     @Mock
@@ -34,7 +35,6 @@ public class CustomListFragmentTest extends RobolectricTest {
     private GatewayListFragment classUnderTest;
     private ActivityController<MeshViewerActivity> controller;
 
-    @Override
     public void setUp() throws Exception {
         classUnderTest = new GatewayListFragment();
         super.setUp();
@@ -179,20 +179,30 @@ public class CustomListFragmentTest extends RobolectricTest {
     }
 
     @Override
-    public AbstractModule getModuleForInjection() {
-        return new TestModule();
+    public void inject() {
+        // Nothing to do here
     }
 
-    private class TestModule extends AbstractModule {
+    @Override
+    public TestModule getModuleForInjection() {
+        return new CustomTestModule();
+    }
+
+    private class CustomTestModule extends TestModule {
+
         @Override
-        protected void configure() {
-            bind(AlarmController.class).toInstance(alarmController);
-            bind(GatewayListFragment.class).toInstance(classUnderTest);
+        public AlarmController providesAlarmController(AlarmManager alarmManager, Context context, PreferenceController preferenceController) {
+            return alarmController;
         }
 
-        @Provides
-        public ListLoader<Gateway> getStuff() {
+        @Override
+        public ListLoader<Gateway> providesGatewayListLoader(Context context, Checkable<Gateway> gatewayCheckable) {
             return gatewayListLoader;
+        }
+
+        @Override
+        public GatewayListFragment providesGatewayListFragment() {
+            return classUnderTest;
         }
     }
 }

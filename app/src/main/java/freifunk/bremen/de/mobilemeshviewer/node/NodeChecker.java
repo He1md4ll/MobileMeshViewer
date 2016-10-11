@@ -10,8 +10,6 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import freifunk.bremen.de.mobilemeshviewer.Checkable;
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
@@ -40,12 +41,16 @@ import retrofit2.Response;
 @Singleton
 public class NodeChecker implements Checkable<Node> {
 
-    @Inject
     private PreferenceController preferenceController;
-    @Inject
     private RetrofitServiceManager retrofitServiceManager;
     private Optional<List<Node>> currentNodeListOptional = Optional.absent();
     private Optional<List<Node>> currentGWListOptional = Optional.absent();
+
+    @Inject
+    public NodeChecker(PreferenceController preferenceController, RetrofitServiceManager retrofitServiceManager) {
+        this.preferenceController = preferenceController;
+        this.retrofitServiceManager = retrofitServiceManager;
+    }
 
     @Override
     public List<Node> fetchList() {

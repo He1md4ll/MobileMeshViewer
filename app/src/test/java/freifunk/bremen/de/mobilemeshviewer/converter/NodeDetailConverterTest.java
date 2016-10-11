@@ -1,14 +1,17 @@
 package freifunk.bremen.de.mobilemeshviewer.converter;
 
-import com.google.inject.Inject;
-
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
+import freifunk.bremen.de.mobilemeshviewer.BuildConfig;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Autoupdater;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Traffic;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.TrafficBytes;
@@ -16,16 +19,22 @@ import freifunk.bremen.de.mobilemeshviewer.node.model.detail.TrafficBytesDropped
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NodeDetailConverterTest extends RobolectricTest {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 22)
+public class NodeDetailConverterTest {
 
-    @Inject
     private NodeDetailConverter classUnderTest;
-    @Inject
     private Autoupdater autoupdater;
-    @Inject
     private Traffic traffic;
-    @Inject
     private TrafficBytesDropped trafficBytesDropped;
+
+    @Before
+    public void setUp() {
+        classUnderTest = new NodeDetailConverter(RuntimeEnvironment.application);
+        autoupdater = new Autoupdater();
+        traffic = new Traffic();
+        trafficBytesDropped = new TrafficBytesDropped();
+    }
 
     @Test
     public void testConvertUptimeMinute() throws Exception {

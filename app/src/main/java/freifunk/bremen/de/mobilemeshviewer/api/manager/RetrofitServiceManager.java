@@ -1,23 +1,24 @@
 package freifunk.bremen.de.mobilemeshviewer.api.manager;
 
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import freifunk.bremen.de.mobilemeshviewer.api.FfhbRestConsumer;
 import freifunk.bremen.de.mobilemeshviewer.api.FreifunkRestConsumer;
-import roboguice.inject.ContextSingleton;
 
-@ContextSingleton
 public class RetrofitServiceManager {
 
     private Optional<FreifunkRestConsumer> freifunkServiceOptional = Optional.absent();
     private Optional<FfhbRestConsumer> ffhbServiceOptional = Optional.absent();
-
+    private ConnectionManager connectionManager;
 
     @Inject
-    private ConnectionManager connectionManager;
+    public RetrofitServiceManager(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
+    }
 
     public FreifunkRestConsumer getFreifunkService() throws IOException {
         if (connectionManager.isNetworkAvailable()) {

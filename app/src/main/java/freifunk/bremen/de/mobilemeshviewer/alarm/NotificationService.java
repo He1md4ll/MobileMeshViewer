@@ -3,6 +3,7 @@ package freifunk.bremen.de.mobilemeshviewer.alarm;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,7 +16,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.common.collect.Lists;
-import com.google.inject.Inject;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -23,9 +23,12 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import freifunk.bremen.de.mobilemeshviewer.MeshViewerActivity;
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.binding.MeshViewerApp;
 import freifunk.bremen.de.mobilemeshviewer.event.GatewayListUpdatedEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.GatewayStatusChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChangedEvent;
@@ -33,14 +36,13 @@ import freifunk.bremen.de.mobilemeshviewer.gateway.GatewayActivity;
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import freifunk.bremen.de.mobilemeshviewer.node.NodeActivity;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
-import roboguice.service.RoboService;
 
-public class NotificationService extends RoboService {
+public class NotificationService extends Service {
 
     @Inject
-    private NotificationManager notificationManager;
+    NotificationManager notificationManager;
     @Inject
-    private PreferenceController preferenceController;
+    PreferenceController preferenceController;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -49,6 +51,8 @@ public class NotificationService extends RoboService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        ((MeshViewerApp) getApplication()).getMeshViewerComponent().inject(this);
+
         Log.i(this.getClass().getSimpleName(), "Starting service to build notification");
         EventBus.getDefault().register(this);
         return START_NOT_STICKY;

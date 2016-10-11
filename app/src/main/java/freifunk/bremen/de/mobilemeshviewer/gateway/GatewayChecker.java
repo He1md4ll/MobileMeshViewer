@@ -8,8 +8,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -17,6 +15,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import freifunk.bremen.de.mobilemeshviewer.Checkable;
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
@@ -34,11 +35,15 @@ import retrofit2.Response;
 @Singleton
 public class GatewayChecker implements Checkable<Gateway> {
 
-    @Inject
     private PreferenceController preferenceController;
-    @Inject
     private RetrofitServiceManager retrofitServiceManager;
     private Optional<List<Gateway>> currentGatewayListOptional = Optional.absent();
+
+    @Inject
+    public GatewayChecker(PreferenceController preferenceController, RetrofitServiceManager retrofitServiceManager) {
+        this.preferenceController = preferenceController;
+        this.retrofitServiceManager = retrofitServiceManager;
+    }
 
     @Override
     public List<Gateway> fetchList() {

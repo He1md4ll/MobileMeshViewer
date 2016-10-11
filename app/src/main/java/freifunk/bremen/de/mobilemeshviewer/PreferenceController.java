@@ -11,7 +11,6 @@ import com.google.common.io.CharStreams;
 import com.google.common.io.Closeables;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.google.inject.Inject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,11 +18,11 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import freifunk.bremen.de.mobilemeshviewer.gateway.model.Gateway;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
-import roboguice.inject.ContextSingleton;
 
-@ContextSingleton
 public class PreferenceController {
 
     public static final String PREF_NODE_LIST_KEY = "pref_nodeList";
@@ -43,8 +42,12 @@ public class PreferenceController {
     private static final Boolean DEFAULT_VIBRATION = Boolean.FALSE;
     private static final Boolean DEFAULT_AUTOSTART = Boolean.FALSE;
 
-    @Inject
     private SharedPreferences sharedPreferences;
+
+    @Inject
+    public PreferenceController(SharedPreferences sharedPreferences) {
+        this.sharedPreferences = sharedPreferences;
+    }
 
     public void addNodeToObservedList(Node item) {
         final List<Node> observedList = getObservedNodeList();

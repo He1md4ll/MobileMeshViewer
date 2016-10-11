@@ -6,20 +6,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
-import roboguice.inject.ContextSingleton;
 
-@ContextSingleton
 public class AlarmController {
 
-    @Inject
-    private AlarmManager alarmManager;
-    @Inject
     private Context context;
-    @Inject
+    private AlarmManager alarmManager;
     private PreferenceController preferenceController;
+
+    @Inject
+    public AlarmController(AlarmManager alarmManager, Context context, PreferenceController preferenceController) {
+        this.alarmManager = alarmManager;
+        this.context = context;
+        this.preferenceController = preferenceController;
+    }
 
     public void startNodeAlarm() {
         Log.i(this.getClass().getSimpleName(), "Starting alarm");

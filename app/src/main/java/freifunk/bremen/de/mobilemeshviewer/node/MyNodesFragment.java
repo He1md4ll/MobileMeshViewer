@@ -1,5 +1,6 @@
 package freifunk.bremen.de.mobilemeshviewer.node;
 
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,22 +9,23 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.inject.Inject;
-
 import java.util.List;
+
+import javax.inject.Inject;
 
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.binding.MeshViewerApp;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
-import roboguice.fragment.provided.RoboListFragment;
 
-public class MyNodesFragment extends RoboListFragment {
+public class MyNodesFragment extends ListFragment {
 
     @Inject
-    private PreferenceController preferenceController;
+    PreferenceController preferenceController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ((MeshViewerApp) getActivity().getApplication()).getMeshViewerComponent().inject(this);
         return inflater.inflate(android.R.layout.list_content, container, false);
     }
 

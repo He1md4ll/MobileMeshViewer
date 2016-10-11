@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import freifunk.bremen.de.mobilemeshviewer.CustomArrayAdapter;
 import freifunk.bremen.de.mobilemeshviewer.CustomListFragment;
 import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.binding.MeshViewerApp;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeListUpdatedEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeStatusChangedEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
@@ -27,6 +28,8 @@ public class NodeListFragment extends CustomListFragment<Node> implements Search
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        ((MeshViewerApp) getActivity().getApplication()).getMeshViewerComponent().inject(this);
+
         getListView().setFastScrollAlwaysVisible(false);
         getListView().setFastScrollEnabled(true);
         final CustomArrayAdapter<Node> customArrayAdapter = new CustomArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, Lists.<Node>newArrayList());

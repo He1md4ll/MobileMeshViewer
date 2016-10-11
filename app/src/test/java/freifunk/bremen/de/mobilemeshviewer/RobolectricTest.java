@@ -1,8 +1,5 @@
 package freifunk.bremen.de.mobilemeshviewer;
 
-import com.google.inject.AbstractModule;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -11,38 +8,36 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import roboguice.RoboGuice;
-import roboguice.inject.RoboInjector;
+import freifunk.bremen.de.mobilemeshviewer.binding.MeshViewerApp;
+import freifunk.bremen.de.mobilemeshviewer.binding.MeshViewerModule;
 
 @Ignore
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 22)
-public class RobolectricTest {
+public abstract class RobolectricTest {
+
+    protected TestComponent component;
 
     @Before
     public void setUp() throws Exception {
-        // Create mock for private members of test
         MockitoAnnotations.initMocks(this);
 
-        // Override injector and perform injection
-        RoboGuice.overrideApplicationInjector(RuntimeEnvironment.application, getModuleForInjection());
-        RoboInjector injector = RoboGuice.getInjector(RuntimeEnvironment.application);
-        injector.injectMembersWithoutViews(this);
+        component = DaggerTestComponent.builder()
+                .meshViewerModule(getModuleForInjection()).build();
+        ((MeshViewerApp) RuntimeEnvironment.application).setComponent(component);
+        inject();
     }
 
-    @After
-    public void tearDown() {
-        RoboGuice.Util.reset();
-    }
-
-    public AbstractModule getModuleForInjection() {
+    public TestModule getModuleForInjection() {
         return new TestModule();
     }
 
-    private class TestModule extends AbstractModule {
-        @Override
-        protected void configure() {
-            // Replace injected class with mock
+    public abstract void inject();
+
+    public class TestModule extends MeshViewerModule {
+
+        public TestModule() {
+            super(RuntimeEnvironment.application);
         }
     }
 }

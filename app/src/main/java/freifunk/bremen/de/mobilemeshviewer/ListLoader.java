@@ -3,19 +3,19 @@ package freifunk.bremen.de.mobilemeshviewer;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
-import com.google.inject.Inject;
-
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class ListLoader<T> extends AsyncTaskLoader<List<T>> {
 
-    @Inject
     private Checkable<T> checker;
     private List<T> list;
 
     @Inject
-    public ListLoader(Context context) {
+    public ListLoader(Context context, Checkable<T> checker) {
         super(context);
+        this.checker = checker;
     }
 
     @Override

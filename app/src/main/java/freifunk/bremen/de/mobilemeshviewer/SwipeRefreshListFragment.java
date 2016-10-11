@@ -1,5 +1,6 @@
 package freifunk.bremen.de.mobilemeshviewer;
 
+import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
@@ -9,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import roboguice.fragment.provided.RoboListFragment;
-
-public class SwipeRefreshListRoboFragment extends RoboListFragment {
+public class SwipeRefreshListFragment extends ListFragment {
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 

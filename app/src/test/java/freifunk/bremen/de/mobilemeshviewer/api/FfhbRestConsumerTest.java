@@ -1,8 +1,8 @@
 package freifunk.bremen.de.mobilemeshviewer.api;
 
-import com.google.inject.Inject;
-
 import org.junit.Test;
+
+import javax.inject.Inject;
 
 import freifunk.bremen.de.mobilemeshviewer.RobolectricTest;
 import freifunk.bremen.de.mobilemeshviewer.api.manager.RetrofitServiceManager;
@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FfhbRestConsumerTest extends RobolectricTest {
 
     @Inject
-    private RetrofitServiceManager serviceManager;
+    RetrofitServiceManager serviceManager;
     private FfhbRestConsumer ffhbRestConsumer;
 
     @Override
@@ -29,6 +29,11 @@ public class FfhbRestConsumerTest extends RobolectricTest {
         // Then
         assertThat(call.isExecuted()).isFalse();
         assertThat(call.isCanceled()).isFalse();
+    }
+
+    @Override
+    public void inject() {
+        component.inject(this);
     }
 
 }

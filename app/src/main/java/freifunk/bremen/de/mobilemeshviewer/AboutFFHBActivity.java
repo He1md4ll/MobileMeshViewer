@@ -3,33 +3,35 @@ package freifunk.bremen.de.mobilemeshviewer;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-import roboguice.activity.RoboAppCompatActivity;
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-@ContentView(R.layout.activity_about_ffhb)
-public class AboutFFHBActivity extends RoboAppCompatActivity {
+public class AboutFFHBActivity extends AppCompatActivity {
 
-    @InjectView(R.id.toolbar)
-    private Toolbar toolbar;
-    @InjectView(R.id.contact_button_mail)
-    private Button buttonMail;
-    @InjectView(R.id.contact_button_irc)
-    private Button buttonChat;
-    @InjectView(R.id.contact_button_twitter)
-    private Button buttonTwitter;
-    @InjectView(R.id.contact_button_facebook)
-    private Button buttonFacebook;
-    @InjectView(R.id.contact_button_website)
-    private Button buttonWebsite;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.contact_button_mail)
+    Button buttonMail;
+    @BindView(R.id.contact_button_irc)
+    Button buttonChat;
+    @BindView(R.id.contact_button_twitter)
+    Button buttonTwitter;
+    @BindView(R.id.contact_button_facebook)
+    Button buttonFacebook;
+    @BindView(R.id.contact_button_website)
+    Button buttonWebsite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_about_ffhb);
+        ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.title_activity_about_ffhb));

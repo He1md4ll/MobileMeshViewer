@@ -4,14 +4,14 @@ package freifunk.bremen.de.mobilemeshviewer.converter;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.inject.Inject;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import freifunk.bremen.de.mobilemeshviewer.R;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Autoupdater;
@@ -20,8 +20,12 @@ import freifunk.bremen.de.mobilemeshviewer.node.model.detail.Traffic;
 
 public class NodeDetailConverter {
 
-    @Inject
     private Context context;
+
+    @Inject
+    public NodeDetailConverter(Context context) {
+        this.context = context;
+    }
 
     public String convertUptime(double uptime){
         return secondsToString(uptime, TimeUnit.SECONDS);

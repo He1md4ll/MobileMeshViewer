@@ -6,83 +6,84 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.inject.Inject;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
 import freifunk.bremen.de.mobilemeshviewer.R;
+import freifunk.bremen.de.mobilemeshviewer.binding.MeshViewerApp;
 import freifunk.bremen.de.mobilemeshviewer.converter.NodeDetailConverter;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailFoundEvent;
 import freifunk.bremen.de.mobilemeshviewer.event.NodeDetailNotFoundEvent;
 import freifunk.bremen.de.mobilemeshviewer.node.model.detail.NodeDetail;
 import freifunk.bremen.de.mobilemeshviewer.node.model.simple.Node;
-import roboguice.activity.RoboAppCompatActivity;
-import roboguice.inject.ContentView;
-import roboguice.inject.InjectExtra;
-import roboguice.inject.InjectView;
 
-@ContentView(R.layout.activity_node)
-public class NodeActivity extends RoboAppCompatActivity {
+public class NodeActivity extends AppCompatActivity {
 
     public static final String BUNDLE_NODE = "node";
-
-    @InjectExtra(value = BUNDLE_NODE)
+    @BindView(R.id.progress_container)
+    View progressIndicator;
+    @BindView(R.id.node_content)
+    View nodeContent;
+    @BindView(R.id.node_hardware)
+    TextView nodeHardware;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.node_mac)
+    TextView nodeMac;
+    @BindView(R.id.node_id)
+    TextView nodeId;
+    @BindView(R.id.node_firmware)
+    TextView nodeFirmware;
+    @BindView(R.id.node_uptime)
+    TextView nodeUptime;
+    @BindView(R.id.node_addresses1)
+    TextView nodeAddresses1;
+    @BindView(R.id.node_addresses2)
+    TextView nodeAddresses2;
+    @BindView(R.id.node_addresses3)
+    TextView nodeAddresses3;
+    @BindView(R.id.node_autoupdate)
+    TextView nodeAutoupdate;
+    @BindView(R.id.node_clients)
+    TextView nodeClients;
+    @BindView(R.id.node_loadavg)
+    TextView nodeLoadavg;
+    @BindView(R.id.node_owner)
+    TextView nodeOwner;
+    @BindView(R.id.node_traffic)
+    TextView nodeTraffic;
+    @BindView(R.id.node_install_date)
+    TextView nodeInstallDate;
+    @Inject
+    PreferenceController preferenceController;
+    @Inject
+    NodeDetailLoader nodeDetailLoader;
+    @Inject
+    NodeDetailConverter nodeDetailConverter;
     private Node node;
-    @InjectView(R.id.progress_container)
-    private View progressIndicator;
-    @InjectView(R.id.node_content)
-    private View nodeContent;
-    @InjectView(R.id.node_hardware)
-    private TextView nodeHardware;
-    @InjectView(R.id.toolbar)
-    private Toolbar toolbar;
-    @InjectView(R.id.fab)
-    private FloatingActionButton fab;
-    @InjectView(R.id.node_mac)
-    private TextView nodeMac;
-    @InjectView(R.id.node_id)
-    private TextView nodeId;
-    @InjectView(R.id.node_firmware)
-    private TextView nodeFirmware;
-    @InjectView(R.id.node_uptime)
-    private TextView nodeUptime;
-    @InjectView(R.id.node_addresses1)
-    private TextView nodeAddresses1;
-    @InjectView(R.id.node_addresses2)
-    private TextView nodeAddresses2;
-    @InjectView(R.id.node_addresses3)
-    private TextView nodeAddresses3;
-    @InjectView(R.id.node_autoupdate)
-    private TextView nodeAutoupdate;
-    @InjectView(R.id.node_clients)
-    private TextView nodeClients;
-    @InjectView(R.id.node_loadavg)
-    private TextView nodeLoadavg;
-    @InjectView(R.id.node_owner)
-    private TextView nodeOwner;
-    @InjectView(R.id.node_traffic)
-    private  TextView nodeTraffic;
-    @InjectView(R.id.node_install_date)
-    private TextView nodeInstallDate;
-    @Inject
-    private PreferenceController preferenceController;
-    @Inject
-    private NodeDetailLoader nodeDetailLoader;
-    @Inject
-    private NodeDetailConverter nodeDetailConverter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_node);
+        ((MeshViewerApp) getApplication()).getMeshViewerComponent().inject(this);
+        ButterKnife.bind(this);
+        node = getIntent().getExtras().getParcelable(BUNDLE_NODE);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(node.getName());

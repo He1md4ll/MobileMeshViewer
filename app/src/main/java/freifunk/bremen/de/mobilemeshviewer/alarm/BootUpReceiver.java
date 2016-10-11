@@ -1,23 +1,26 @@
 package freifunk.bremen.de.mobilemeshviewer.alarm;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import freifunk.bremen.de.mobilemeshviewer.PreferenceController;
-import roboguice.receiver.RoboBroadcastReceiver;
+import freifunk.bremen.de.mobilemeshviewer.binding.MeshViewerApp;
 
-public class BootUpReceiver extends RoboBroadcastReceiver {
+public class BootUpReceiver extends BroadcastReceiver {
 
     @Inject
-    private AlarmController alarmController;
+    AlarmController alarmController;
     @Inject
-    private PreferenceController preferenceController;
+    PreferenceController preferenceController;
 
     @Override
-    protected void handleReceive(Context context, Intent intent) {
+    public void onReceive(Context context, Intent intent) {
+        ((MeshViewerApp) context).getMeshViewerComponent().inject(this);
+
         final boolean autoStart = preferenceController.isAutostartEnabled();
         Log.i(this.getClass().getSimpleName(), "Got boot up intent. Auto start: " + autoStart);
         if (autoStart) {
